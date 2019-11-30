@@ -1,3 +1,12 @@
+.start {
+	position: relative;
+	width: 100vw;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
 .currency {
 	padding: 24px;
 	// padding-right: 24px;

@@ -5,4 +5,14 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: $mainFont;
+	display: flex;
+	overflow: hidden;
+	// overflow: auto;
+	// показывает 2 страницу
+	// transform: translateX(-100%);
+}
+.item-field {
+	flex: 1;
+	background-color: #EFF2F5;
+	overflow-y: auto;
 }
