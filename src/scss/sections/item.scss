@@ -66,18 +66,21 @@
 		color: $default-color;
 		line-height: 1.2;
 	}
+	.item__header-arrow {
+		display: flex;
+		align-items: center;
+	}
 
 	.chevron {
 		display: none;
 	}
 	.plus {
-		// margin-top: 3px;
-		// height: 16px;
+		padding-bottom: 2px;
 		display: inline-block;
-		// color: $default-color;
-		// font-size: 24px;
-		// font-weight: bold;
-		// line-height: 0;
+		color: $default-color;
+		font-size: 24px;
+		font-weight: bold;
+		line-height: 0;
 	}
 	// .plus:after {
 	// 	position: absolute;
