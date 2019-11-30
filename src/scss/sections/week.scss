@@ -28,3 +28,18 @@
 		}
 	}
 }
+
+.week-orepations {
+	display: flex;
+	flex-wrap: wrap;
+}
+.week-orepations__input {
+	flex: 0 0 100%;
+	margin-bottom: 16px;
+}
+.week-orepations__button {
+	flex: 1;
+}
+.week-orepations__button:last-child {
+	margin-left: 14px;
+}

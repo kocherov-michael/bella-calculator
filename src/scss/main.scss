@@ -3,15 +3,17 @@
 @import "base/header";
 @import "base/footer";
 
+// Forms
+@import "forms/buttons";
+@import "forms/input";
+
 // Sections
 @import "sections/start";
 @import "sections/worker";
 @import "sections/item";
 @import "sections/week";
+@import "sections/hand-over";
 
-// Forms
-@import "forms/buttons";
-@import "forms/input";
 
 // Pages
 // @import "pages/start";

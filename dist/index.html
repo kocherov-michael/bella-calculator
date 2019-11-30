@@ -4,8 +4,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Balance calculator</title>
-	<!-- <link rel="stylesheet" href="style.css"> -->
-	<!-- <link rel="stylesheet" href="./assets/css/app.css"> -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=cyrillic-ext" rel="stylesheet">
 	<link rel="shortcut icon" type="image/png" href="favicon.png" sizes="16x16">
 <link href="assets/css/app.css" rel="stylesheet"></head>
@@ -113,10 +111,24 @@
 				</div>
 		
 				<footer class="footer">
-					<span class="footer__text">Общий остаток:</span>
-					<span class="footer__value">5678.56</span>
-					<span class="footer__nominal">г</span>
+
+					<div class="footer__result">
+							<div class="footer__result-item">
+									<span class="footer__text">Сдача:</span>
+									<span class="footer__value">5678.56</span>
+									<span class="footer__nominal">г</span>
+							</div>
+
+							<div class="footer__result-item hide">
+								<span class="footer__text">Зарплата:</span>
+								<span class="footer__value">5678</span>
+								<span class="footer__nominal">₽</span>
+
+							</div>
+						</div>
 				</footer>
+
+
 		
 			</section>
 		
@@ -172,15 +184,28 @@
 						</div>
 					</div>
 		
+
 					<footer class="footer">
-						<span class="footer__text">Остаток:</span>
-						<span class="footer__value">5678.56</span>
-						<span class="footer__nominal">г</span>
+
+						<div class="footer__result">
+							<div class="footer__result-item">
+								<span class="footer__text">Остаток:</span>
+								<span class="footer__value">5678.56</span>
+								<span class="footer__nominal">г</span>
+							</div>
+
+							<div class="footer__result-item hide">
+								<span class="footer__text">Зарплата:</span>
+								<span class="footer__value">5678</span>
+								<span class="footer__nominal">₽</span>
+
+							</div>
+						</div>
 					</footer>
 		
 			</section>
 
-			<section class="page week">
+			<section class="page week hide">
 					<header class="header">
 		
 						<div class="header__nav">
@@ -210,7 +235,7 @@
 							</div>
 
 						</div>
-						
+
 						<div class="item salary-item">
 
 							<div class="item__header">
@@ -278,8 +303,8 @@
 						<div class="footer__actions">
 							<form action="" class="week-orepations">
 								<input type="number" class="week-orepations__input input">
-								<button class="week-orepations__button button button-danger">Прибавить</button>
-								<button class="week-orepations__button button button-subtract">Вычесть</button>
+								<button class="week-orepations__button button button_danger">Прибавить</button>
+								<button class="week-orepations__button button button_subtract">Вычесть</button>
 							</form>
 						</div>
 
@@ -288,6 +313,133 @@
 							<span class="footer__text">Остаток:</span>
 							<span class="footer__value">5678.56</span>
 							<span class="footer__nominal">г</span>
+						</div>
+					</footer>
+		
+			</section>
+
+			<section class="page hand-over">
+					<header class="header">
+		
+						<div class="header__nav">
+							<div class="header__arrow">
+								<img src="assets/img/arrow.svg" alt="назад">
+							</div>
+							<div class="header__text">Сдача</div>
+							<div class="header__menu">
+								<div class="menu-icon">
+									<div class="menu-icon__line"></div>
+								</div>
+							</div>
+						</div>
+					
+					</header>
+		
+					<div class="item-field">
+
+						
+						<div class="item salary-item">
+
+							<div class="item__header">
+								<div class="item__header-text">
+										-
+										<span>1 000</span> + 
+										<span>7</span>% = 
+										<span>1070</span>
+								</div>
+								<div class="item__header-arrow">
+									<!-- <span>Прежний остаток</span> -->
+									<div class="chevron"></div>
+								</div>
+							</div>
+
+							<div class="item__uppper">
+								<span>БСМ30</span>
+								<span>3</span>&nbsp;
+								<span>цепи</span>
+							</div>
+
+							<div class="item__lower">
+								<span>Сумма:</span>
+								<span>520</span>&nbsp;
+								<span>₽</span>
+							</div>
+
+						</div>
+						
+					</div>
+		
+					<footer class="footer">
+						<div class="footer__actions">
+							<form action="" class="hand-over-orepations">
+								<input type="number" class="hand-over-orepations__input input">
+								<select type="select" class="hand-over-orepations__input input" size="0">
+									<option class="option" value="choose" selected>Плетение</option>
+									<option class="option" value="бсм20">бсм20</option>
+									<option class="option" value="бсм30">бсм30</option>
+									<option class="option" value="бсм40">бсм40</option>
+									<option class="option" value="бсм50">бсм50</option>
+									<option class="option" value="бсм60">бсм60</option>
+									<option class="option" value="бсм100">бсм100</option>
+									<option class="option" value="бсм10">бсм10</option>
+									<option class="option" value="бсм20">бсм20</option>
+									<option class="option" value="бсм30">бсм30</option>
+									<option class="option" value="бсм40">бсм40</option>
+									<option class="option" value="бсм50">бсм50</option>
+									<option class="option" value="бсм60">бсм60</option>
+									<option class="option" value="бсм100">бсм100</option>
+									<option class="option" value="бсм10">бсм10</option>
+									<option class="option" value="бсм20">бсм20</option>
+									<option class="option" value="бсм30">бсм30</option>
+									<option class="option" value="бсм40">бсм40</option>
+									<option class="option" value="бсм50">бсм50</option>
+									<option class="option" value="бсм60">бсм60</option>
+									<option class="option" value="бсм100">бсм100</option>
+									<option class="option" value="бсм10">бсм10</option>
+									<option class="option" value="бсм20">бсм20</option>
+									<option class="option" value="бсм30">бсм30</option>
+									<option class="option" value="бсм40">бсм40</option>
+									<option class="option" value="бсм50">бсм50</option>
+									<option class="option" value="бсм60">бсм60</option>
+									<option class="option" value="бсм100">бсм100</option>
+									<option class="option" value="бсм10">бсм10</option>
+									<option class="option" value="бсм20">бсм20</option>
+									<option class="option" value="бсм30">бсм30</option>
+									<option class="option" value="бсм40">бсм40</option>
+									<option class="option" value="бсм50">бсм50</option>
+									<option class="option" value="бсм60">бсм60</option>
+									<option class="option" value="бсм100">бсм100</option>
+								</select>
+								<input type="number" class="hand-over-orepations__input input">
+								<select type="select" class="hand-over-orepations__input input">
+									<option class="option" value="chain">Цепь</option>
+									<option class="option" value="bracelet">Браслет</option>
+								</select>
+								<button class="hand-over-orepations__button button button_danger">
+									<div class="button__header">
+										<div class="button__header-text">Добавить к сдаче</div>
+										<div class="button__header-arrow">
+											<div class="chevron"></div>
+										</div>
+									</div>
+								</button>
+								<!-- <button class="hand-over-orepations__button button button-danger">Прибавить</button> -->
+							</form>
+						</div>
+
+						<div class="footer__result">
+							<div class="footer__result-item">
+									<span class="footer__text">Сдача:</span>
+									<span class="footer__value">5678.56</span>
+									<span class="footer__nominal">г</span>
+							</div>
+
+							<div class="footer__result-item">
+								<span class="footer__text">Зарплата:</span>
+								<span class="footer__value">5678</span>
+								<span class="footer__nominal">₽</span>
+
+							</div>
 						</div>
 					</footer>
 		

@@ -1,5 +1,5 @@
 .input {
-	padding: 20px;
+	padding: 16px;
 	border-radius: 10px;
 	border: 1px solid $border-secondary;
 	color: $mainFontColor;
@@ -8,4 +8,15 @@
 
 .input:focus {
 	outline: none;
+}
+
+select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	font-family: inherit;
+	font-size: inherit;
+	background: url('/assets/img/shevron-down.svg') no-repeat;
+	background-position: right 23px top 50%;
+	
 }

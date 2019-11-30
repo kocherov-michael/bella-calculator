@@ -11,12 +11,23 @@
 	box-shadow: $shadow-section;
 	color: $default-color;
 }
+
 .footer__result {
-	display: flex;
 	font-size: 18px;
-	padding: 24px;
 	background-color: $neutral-primary;
+	padding: 24px;
 }
+
+.footer__result-item {
+	display: flex;
+}
+
+.footer__result-item:last-child {
+	padding-top: 10px;
+	margin-top: 10px;
+	border-top: 2px solid $border-light;
+}
+
 .footer__text{
 	flex: 1;
 }
@@ -29,17 +40,3 @@
 	background-color: $default-color;
 }
 
-.week-orepations {
-	display: flex;
-	flex-wrap: wrap;
-}
-.week-orepations__input {
-	flex: 0 0 100%;
-	margin-bottom: 16px;
-}
-.week-orepations__button {
-	flex: 1;
-}
-.week-orepations__button:last-child {
-	margin-left: 14px;
-}

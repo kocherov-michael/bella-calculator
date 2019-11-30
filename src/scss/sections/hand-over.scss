@@ -1,0 +1,20 @@
+.hand-over-orepations {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 16px;
+}
+
+.hand-over-orepations__input {
+	box-sizing: border-box;
+	min-width: 130px;
+}
+
+.hand-over-orepations__button {
+	grid-column-start: 1; 
+	grid-column-end: 3;
+}
+.option {
+	padding: 20px;
+	font-size: 30px;
+	line-height: 30;
+}

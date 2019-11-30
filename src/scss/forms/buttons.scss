@@ -1,7 +1,7 @@
 .button {
 
 	color: $default-color;
-	padding: 20px 28px 20px 24px;
+	padding: 18px 28px 18px 24px;
 	border-radius: 10px;
 	border: none;
 	font-size: 16px;
@@ -9,16 +9,54 @@
 	font-family: $mainFont;
 }
 
-.button-danger {
+.button_danger {
 	background-color: $danger-color;
 	box-shadow: $shadow-warning-item;
 }
 
-.button-subtract {
+.button_subtract {
 	background-color: $neutral-secondary;
 	box-shadow: $shadow-secondary;
 }
 
 .button:focus, .button:active {
 	outline: none;
+}
+
+.button__header {
+	display: flex;
+}
+
+.button__header-text {
+	font-weight: bold;
+	flex: 1;
+	text-align: start;
+}
+
+.button__header-arrow {
+	position: relative;
+}
+
+.button_danger {
+	background-color: $danger-color;
+	box-shadow: $shadow-warning-item;
+
+	.button__header-text {
+		color: $default-color;
+	}
+
+	.chevron {
+		display: none;
+	}
+	.button__header-arrow:after {
+		position: absolute;
+		// bottom: 0;
+		bottom: 11px;
+		right: -3px;
+		content: "+";
+		font-weight: bold;
+		color: $default-color;
+		font-size: 24px;
+		line-height: 0;
+	}
 }
