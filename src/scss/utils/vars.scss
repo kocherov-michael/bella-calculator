@@ -15,11 +15,11 @@ $phoneWidth              : 480px;
 $smPhoneWidth            : 320px;
 
 // Main color
-$default-color           : #ffffff;
+$default-color           : #ffffff; // use
 $primary-color           : #444ce0;
 $success-color           : #81C006;
 
-$danger-color            : #ff6f61;
+$danger-color            : #ff6f61; // use
 
 $warning-color           : #fed330;
 $light-color             : #999999;
@@ -43,7 +43,10 @@ $border-lighter          : #EBEEF5;
 $border-lightex          : #F2F6FC;
 
 $border-menu             : #3a3a3a;
+
+$background-primary      : #EFF2F5; // use
+
 $shadow-section          : 0 0 10px #afbac3;
-$shadow-neutral-item     : 0 7px 10px rgba(128,171,185,0.3);
-$shadow-secondary  : 0 5px 10px rgba(64,74,84,0.5);
-$shadow-warning-item     : 0 5px 10px rgba(255,111,97,0.4);
+$shadow-neutral-item     : 0 7px 10px rgba(128,171,185,0.3); // use
+$shadow-secondary        : 0 5px 10px rgba(64,74,84,0.5); // use
+$shadow-warning-item     : 0 5px 10px rgba(255,111,97,0.4); // use

@@ -31,8 +31,8 @@
 	font-weight: bold;
 	flex: 1;
 	text-align: start;
-	background: url('/assets/img/plus.png') no-repeat;
-	background-position: right 0px top 50%;
+	// background: url('/assets/img/plus.png') no-repeat;
+	// background-position: right 0px top 50%;
 }
 
 .button__header-arrow {
@@ -50,15 +50,24 @@
 	.chevron {
 		display: none;
 	}
-	.button__header-arrow:after {
-		position: absolute;
-		// bottom: 0;
-		bottom: 11px;
-		right: -3px;
-		content: "";
-		font-weight: bold;
+
+	.plus {
+		padding-bottom: 2px;
+		display: inline-block;
 		color: $default-color;
 		font-size: 24px;
+		font-weight: bold;
 		line-height: 0;
 	}
+	// .button__header-arrow:after {
+	// 	position: absolute;
+	// 	// bottom: 0;
+	// 	bottom: 11px;
+	// 	right: -3px;
+	// 	content: "";
+	// 	font-weight: bold;
+	// 	color: $default-color;
+	// 	font-size: 24px;
+	// 	line-height: 0;
+	// }
 }

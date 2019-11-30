@@ -11,12 +11,32 @@
 }
 
 select {
+	width: 100%;
+	// убираем стандартную галочку
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
+
 	font-family: inherit;
 	font-size: inherit;
-	background: url('/assets/img/shevron-down.png') no-repeat;
-	background-position: right 23px top 50%;
 	
+}
+.hand-over-orepations__label {
+	position: relative;
+
+	.chevron {
+		position: absolute;
+		top: 50%;
+		right: 28px;
+		width: 7px;
+		height: 7px;
+		border-right: 2px solid $border-menu;
+		border-bottom: 2px solid $border-menu;
+		transform: translateY(-50%) rotate(45deg);
+		// игнорируем клики по элементу
+		pointer-events: none;
+	}
+}
+.option {
+	font-size: 24px;
 }
