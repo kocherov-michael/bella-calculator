@@ -5,11 +5,20 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: $mainFont;
+}
+.wrapper {
+	
 	display: flex;
 	overflow: hidden;
 	// overflow: auto;
+}
+.container {
+	display: flex;
 	// показывает 2 страницу
-	// transform: translateX(-100%);
+	transform: translateX(-33.3333333%);
+	// transform: translateX(-66.666666667%);
+	// overflow: auto;
+
 }
 .item-field {
 	flex: 1;
