@@ -10,14 +10,14 @@ body {
 .wrapper {
 	
 	display: flex;
-	overflow: hidden;
-	// overflow: auto;
+	// overflow: hidden;
+	overflow: auto;
 }
 .container {
 	display: flex;
 	// показывает 2 страницу
 	// transform: translateX(-33.3333333%);
-	transform: translateX(-50%);
+	// transform: translateX(-50%);
 	// transform: translateX(-66.666666667%);
 	// overflow: auto;
 

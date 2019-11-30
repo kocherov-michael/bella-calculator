@@ -31,6 +31,8 @@
 	font-weight: bold;
 	flex: 1;
 	text-align: start;
+	background: url('/assets/img/plus.png') no-repeat;
+	background-position: right 0px top 50%;
 }
 
 .button__header-arrow {
@@ -53,7 +55,7 @@
 		// bottom: 0;
 		bottom: 11px;
 		right: -3px;
-		content: "+";
+		content: "";
 		font-weight: bold;
 		color: $default-color;
 		font-size: 24px;
