@@ -13,7 +13,7 @@
 	<div class="wrapper">
 		<div class="container">
 
-			<section class="start">
+			<section class="page start">
 		
 				<header class="header">
 		
@@ -120,12 +120,14 @@
 		
 			</section>
 		
-			<section class="worker">
+			<section class="page worker hide">
 					<header class="header">
 		
 						<div class="header__nav">
-							<div class="header__arrow"></div>
-							<div class="header__text"></div>
+							<div class="header__arrow">
+								<img src="assets/img/arrow.svg" alt="назад">
+							</div>
+							<div class="header__text">Максим</div>
 							<div class="header__menu">
 								<div class="menu-icon">
 									<div class="menu-icon__line"></div>
@@ -171,76 +173,122 @@
 					</div>
 		
 					<footer class="footer">
-						<span class="footer__text">Общий остаток:</span>
+						<span class="footer__text">Остаток:</span>
 						<span class="footer__value">5678.56</span>
 						<span class="footer__nominal">г</span>
 					</footer>
 		
 			</section>
 
-			<section class="worker">
+			<section class="page week">
 					<header class="header">
 		
 						<div class="header__nav">
-							<div class="header__arrow"></div>
-							<div class="header__text"></div>
+							<div class="header__arrow">
+								<img src="assets/img/arrow.svg" alt="назад">
+							</div>
+							<div class="header__text">Неделя 34</div>
 							<div class="header__menu">
 								<div class="menu-icon">
 									<div class="menu-icon__line"></div>
 								</div>
 							</div>
 						</div>
-				
+					
 					</header>
 		
 					<div class="item-field">
-						<div class="item">
-							<div class="item__text">Максим</div>
-							<div class="item__arrow">
-								<div class="chevron"></div>
+
+						<div class="item previous-week">
+
+							<div class="item__header">
+								<div class="item__header-text">+ 4829.45</div>
+								<div class="item__header-arrow">
+									<span>Прежний остаток</span>
+									<div class="chevron"></div>
+								</div>
 							</div>
+
 						</div>
-			
-						<div class="item">
-							<div class="item__text">Максим</div>
-							<div class="item__arrow">
-								<div class="chevron"></div>
+						
+						<div class="item salary-item">
+
+							<div class="item__header">
+								<div class="item__header-text">Сдача</div>
+								<div class="item__header-arrow">
+									<!-- <span>Прежний остаток</span> -->
+									<div class="chevron"></div>
+								</div>
 							</div>
-						</div>
-			
-						<div class="item">
-							<div class="item__text">Максим</div>
-							<div class="item__arrow">
-								<div class="chevron"></div>
+
+							<div class="item__uppper">
+								<span>Зарплата:</span>
+								<span>8890</span>
+								<span>&nbsp;₽</span>
 							</div>
-						</div>
-			
-						<div class="item">
-							<div class="item__text">Максим</div>
-							<div class="item__arrow">
-								<div class="chevron"></div>
+
+							<div class="item__lower">
+								<span>Вес:</span>
+								<span>5678</span>
+								<span>&nbsp;г</span>
 							</div>
+
 						</div>
-			
-						<div class="item">
-							<div class="item__text">Максим</div>
-							<div class="item__arrow">
-								<div class="chevron"></div>
+
+						<div class="item week-item">
+
+							<div class="item__header">
+								<div class="item__header-text">+ 4829.45</div>
+								<div class="item__header-arrow">
+									<span class="item__header-previous">Прежний остаток</span>
+									<div class="chevron"></div>
+								</div>
 							</div>
-						</div>
-			
-						<div class="item item_warning">
-							<div class="item__text">Добавить сотрудника</div>
-							<div class="item__arrow">
-								<div class="chevron"></div>
+
+							<div class="item__lower">
+								<span>Промежуточный баланс:</span>
+								<span>5678</span>
+								<span>&nbsp;г</span>
 							</div>
+
 						</div>
+
+						<div class="item week-item closed">
+
+							<div class="item__header">
+								<div class="item__header-text item__header-text_minus">- 829.45</div>
+								<div class="item__header-arrow">
+									<span class="item__header-previous">Прежний остаток</span>
+									<div class="chevron"></div>
+								</div>
+							</div>
+
+							<div class="item__lower">
+								<span>Промежуточный баланс:</span>
+								<span>5678</span>
+								<span>&nbsp;г</span>
+							</div>
+
+						</div>
+
+
 					</div>
 		
 					<footer class="footer">
-						<span class="footer__text">Общий остаток:</span>
-						<span class="footer__value">5678.56</span>
-						<span class="footer__nominal">г</span>
+						<div class="footer__actions">
+							<form action="" class="week-orepations">
+								<input type="number" class="week-orepations__input input">
+								<button class="week-orepations__button button button-danger">Прибавить</button>
+								<button class="week-orepations__button button button-subtract">Вычесть</button>
+							</form>
+						</div>
+
+						<div class="footer__result">
+							
+							<span class="footer__text">Остаток:</span>
+							<span class="footer__value">5678.56</span>
+							<span class="footer__nominal">г</span>
+						</div>
 					</footer>
 		
 			</section>

@@ -1,0 +1,24 @@
+.button {
+
+	color: $default-color;
+	padding: 20px 28px 20px 24px;
+	border-radius: 10px;
+	border: none;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: $mainFont;
+}
+
+.button-danger {
+	background-color: $danger-color;
+	box-shadow: $shadow-warning-item;
+}
+
+.button-subtract {
+	background-color: $neutral-secondary;
+	box-shadow: $shadow-secondary;
+}
+
+.button:focus, .button:active {
+	outline: none;
+}

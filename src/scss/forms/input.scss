@@ -1,0 +1,11 @@
+.input {
+	padding: 20px;
+	border-radius: 10px;
+	border: 1px solid $border-secondary;
+	color: $mainFontColor;
+	font-size: 18px;
+}
+
+.input:focus {
+	outline: none;
+}

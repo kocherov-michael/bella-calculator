@@ -1,0 +1,30 @@
+.week {
+	.previous-week {
+		.chevron, .item__lower, .item__uppper {
+			display: none;
+		}
+	}
+
+	.week-item {
+		.item__header-previous {
+			display: none;
+		}
+		.chevron {
+			transform: rotate(45deg);
+		}
+	}
+}
+
+.item__header-text_minus {
+	color: $danger-color;
+}
+.week {
+	.week-item.closed {
+		.chevron {
+			transform: rotate(-135deg);
+		}
+		.item__lower {
+			display: none;
+		}
+	}
+}

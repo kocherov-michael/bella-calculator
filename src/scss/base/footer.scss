@@ -5,12 +5,17 @@
 	left: 0;
 	right: 0;
 	min-height: 65px;
-	padding: 24px;
-	display: flex;
-	background-color: $neutral-primary;
+	
+	// display: flex;
+	
 	box-shadow: $shadow-section;
 	color: $default-color;
+}
+.footer__result {
+	display: flex;
 	font-size: 18px;
+	padding: 24px;
+	background-color: $neutral-primary;
 }
 .footer__text{
 	flex: 1;
@@ -18,4 +23,23 @@
 
 .footer__nominal {
 	margin-left: 6px;
+}
+.footer__actions {
+	padding: 24px;
+	background-color: $default-color;
+}
+
+.week-orepations {
+	display: flex;
+	flex-wrap: wrap;
+}
+.week-orepations__input {
+	flex: 0 0 100%;
+	margin-bottom: 16px;
+}
+.week-orepations__button {
+	flex: 1;
+}
+.week-orepations__button:last-child {
+	margin-left: 14px;
 }

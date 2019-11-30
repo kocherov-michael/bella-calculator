@@ -1,9 +1,10 @@
 .header {
 	// position: fixed;
 	// position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
+	// top: 0;
+	// left: 0;
+	// right: 0;
+	position: relative;
 	z-index: 10;
 	background-color: #fff;
 	box-shadow: $shadow-section;
@@ -15,8 +16,9 @@
 
 .header__text {
 	flex: 1;
+	align-self: center;
 }
-.header__menu {
+.header__menu, .header__arrow {
 	min-width: 50px;
 	min-height: 50px;
 	padding-right: 24px;

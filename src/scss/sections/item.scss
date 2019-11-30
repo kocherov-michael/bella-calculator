@@ -3,12 +3,12 @@
 	flex-direction: column;
 	align-items: stretch;
 	padding: 20px 28px 20px 24px;
-	background-color: #fff;
+	background-color: $default-color;
 	// border: 1px solid red;
 	border-radius: 10px;
 	// align-items: center;
 	margin-top: 15px;
-	margin: 15px;
+	margin: 15px 24px;
 	box-shadow: $shadow-neutral-item;
 }
 
@@ -68,7 +68,7 @@
 	.item__header-arrow:after {
 		position: absolute;
 		// bottom: 0;
-		bottom: 8px;
+		bottom: 11px;
 		right: -3px;
 		content: "+";
 		font-weight: bold;
@@ -76,4 +76,9 @@
 		font-size: 24px;
 		line-height: 0;
 	}
+}
+
+.salary-item {
+	// position: sticky;
+	// bottom: 0;
 }
