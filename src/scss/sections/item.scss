@@ -9,9 +9,10 @@
 	font-size: inherit;
 	font-family: $mainFont;
 	box-shadow: $shadow-neutral-item;
+	cursor: pointer;
 }
 
-.item-field>.item {
+.item-field .item {
 	margin-top: 16px;
 	margin-bottom: 16px;
 }

@@ -638,5 +638,5 @@ function dataHandler (data) {
 
 import Page from './js/Page'
 const page = new Page({
-	start: '.start'
+	start: 'start'
 })
