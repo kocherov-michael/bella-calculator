@@ -21,6 +21,7 @@ export default class Item {
 		const parentElement = args.field
 		const newElement = document.createElement('div')
 		newElement.classList.add('item',classNameView, classNameType)
+		newElement.setAttribute('data-next', 'weeks')
 		// newElement.classList.add(className)
 
 		newElement.innerHTML = 

@@ -9,11 +9,16 @@
 </head>
 <body>
 	<div class="wrapper">
-		<div class="container">
+		<div class="container" data-container>
+
+
 
 			<!-- ==================================================================================== -->
 
-			<section class="page start">
+
+
+
+			<section class="page start" data-page="start">
 					<div class="form-container hide" data-add-form="start">
 						<div class="form active-form">
 							<div class="form__heading">
@@ -55,7 +60,7 @@
 					<div class="header__nav">
 						<div class="header__arrow"></div>
 						<div class="header__text"></div>
-						<div class="header__menu" data-header-menu>
+						<div class="header__menu" data-header-menu="start">
 							<div class="menu-icon">
 								<div class="menu-icon__line"></div>
 							</div>
@@ -155,24 +160,28 @@
 		
 			</section>
 
+
+
 			<!-- ==================================================================================== -->
 		
-			<section class="page worker hide" data-weeksList="weeksList">
 
-					<div class="form-container hide">
+
+			<section class="page worker hide" data-page="weeksList">
+
+					<div class="form-container hide"  data-add-form="weeksList">
 						<div class="form active-form">
 							<div class="form__heading">
 								<div class="form__heading-text">Введите номер недели</div>
-								<div class="form__heading-close">&#10006;</div>
+								<div class="form__heading-close" data-close-icon>&#10006;</div>
 							</div>
 							<div class="form__inputs">
 	
-									<input type="text" class="input" placeholder="Номер недели" value="">
+									<input type="text" class="input" placeholder="Номер недели" value="" name="newWeekNumber">
 	
 							</div>
 							<div class="form__buttons">
 								<div class="form__buttons-save">
-									<button class="item item_warning">
+									<button class="item item_warning" data-save-button>
 										<div class="item__header">
 											<div class="item__header-text">Сохранить</div>
 											<div class="item__header-arrow">
@@ -182,7 +191,7 @@
 									</button>
 								</div>
 								<div class="form__buttons-cancel">
-									<button class="item item_cancel">
+									<button class="item item_cancel" data-cancel-button>
 										<div class="item__header">
 											<div class="item__header-text">Отменить</div>
 											<div class="item__header-arrow">
@@ -202,7 +211,7 @@
 								<img src="assets/img/arrow.svg" alt="назад">
 							</div>
 							<div class="header__text">Максим</div>
-							<div class="header__menu">
+							<div class="header__menu" data-header-menu="weeksList">
 								<div class="menu-icon">
 									<div class="menu-icon__line"></div>
 								</div>
@@ -212,6 +221,8 @@
 					</header>
 		
 					<div class="item-field">
+
+							<div class="item-field__items" data-item-field="weeksList"></div>
 
 						<div class="item">
 							<div class="item__header">
@@ -235,7 +246,7 @@
 						</div>
 			
 						
-						<div class="item item_warning item_add">
+						<div class="item item_warning item_add" data-add="weeksList">
 							<div class="item__header">
 								<div class="item__header-text">Добавить неделю</div>
 								<div class="item__header-arrow">
@@ -267,7 +278,11 @@
 		
 			</section>
 
+
+
 			<!-- ==================================================================================== -->
+
+
 
 			<section class="page week hide">
 					<header class="header">

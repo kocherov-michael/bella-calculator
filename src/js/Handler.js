@@ -6,6 +6,7 @@ export default class Handler {
 		this.storage = new Storage()
 		this.page = new Page()
 		this.args = args
+		
 
 		if (args.menu) {
 			this.menuHandler(args.menu)
@@ -19,7 +20,7 @@ export default class Handler {
 		
 	}
 	menuHandler (page) {
-		const sectionElement =  document.querySelector(`.${page}`)
+		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
 		const headerMenuElement = sectionElement.querySelector('[data-header-menu]')
 		const headerMenuListElement = sectionElement.querySelector('[data-menu-list]')
 
@@ -28,19 +29,20 @@ export default class Handler {
 			headerMenuListElement.classList.toggle('menu-show')
 		} )
 
-		// вешаем обработчик на кнопку Сохранить формы добавления сотрудника
-		this.addFormElement =  document.querySelector(`[data-add-form=${page}]`)
-
-		this.formHandler(this.addFormElement)
+		
 	}
-
-	// Обработчик кнопки Добавить сотрудника
+	
+	// Обработчик кнопки Добавить сотрудника / неделю
 	addItemHandler (page) {
-		const sectionElement =  document.querySelector(`.${page}`)
-		const addWorkerElement = sectionElement.querySelector(`[data-add=${page}]`)
+		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
+		const addNewElement = sectionElement.querySelector(`[data-add=${page}]`)
 
-		addWorkerElement.addEventListener('click', () => {
-			this.addFormElement.classList.remove('hide')
+		// вешаем обработчик на кнопку Сохранить формы добавления сотрудника
+		const addFormElement =  document.querySelector(`[data-add-form=${page}]`)
+		this.formHandler(addFormElement)
+
+		addNewElement.addEventListener('click', () => {
+			addFormElement.classList.remove('hide')
 
 		})
 	}
@@ -65,7 +67,10 @@ export default class Handler {
 
 	// Сохраняем введённые значения формы
 	saveFormValues() {
-		const newItemValues = {}
+		const newItemValues = {
+			workerName: this.args.workerName
+		}
+		// console.log(this.args.workerName)
 		this.formElement.querySelectorAll('input').forEach( (input) => {
 			// console.log(input)
 			// newItemValues.inputValue = input.getAttribute('value')
@@ -73,7 +78,7 @@ export default class Handler {
 			newItemValues.inputName = input.name
 			input.value = ''
 		})
-		// console.log(newItemValues)
+		console.log(newItemValues)
 		this.storage.save(newItemValues)
 		this.closeForm()
 		this.page.addFieldList(this.args.addItem)
@@ -83,10 +88,18 @@ export default class Handler {
 	// обработчик нажатия на обычный элемент
 	itemHandler(element) {
 		element.addEventListener('click', () => {
+			// console.log(element)
 			const name = element.querySelector('[data-item-name]').textContent
-			console.log(name)
-			const weeksList = this.storage.getWorkerWeeks(name)
-			console.log(weeksList)
+			const attr = element.getAttribute('data-next')
+			console.log(attr)
+			const workerObj = this.storage.getWorkerWeeks(name)
+			
+			// Если next = weeks, то перелистываем на недели
+			if (attr === 'weeks') {
+				const nextPage = document.querySelector('[data-page="weeksList"]')
+				const currentPage = document.querySelector('[data-page="start"]')
+				this.page.changeNextPage(workerObj, currentPage, nextPage, name)
+			}
 		})
 	}
 

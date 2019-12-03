@@ -12,6 +12,7 @@ body {
 	display: flex;
 	// overflow: hidden;
 	overflow: auto;
+	// transition: all 1s ease;
 }
 .container {
 	display: flex;
@@ -21,6 +22,10 @@ body {
 	// transform: translateX(-66.666666667%);
 	// overflow: auto;
 
+}
+.nextPage {
+	transform: translateX(-50%);
+	transition: transform .4s ease;
 }
 .page {
 	position: relative;

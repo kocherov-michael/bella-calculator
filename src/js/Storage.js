@@ -5,7 +5,27 @@ export default class Storage {
 	save (data) {
 		const dataArray = this.read() || []
 		// console.log('прочитали ил памяти', dataArray)
-		dataArray.push({name: data.inputValue})
+
+		if (data.workerName) {
+			console.log(dataArray)
+			let weeksArray
+			for (let i = 0; i < dataArray.length; i++) {
+				if (dataArray[i].name === data.workerName) {
+					weeksArray = dataArray[i].weeks
+					console.log(weeksArray)
+					weeksArray.push({weekNumber: data.inputValue, weekItems: []})
+					dataArray[i].weeks = weeksArray
+				}
+			}
+
+		} else {
+
+			dataArray.push({
+				name: data.inputValue, 
+				weeks: []
+			})
+		}
+
 		localStorage.setItem('bella-workers', JSON.stringify(dataArray))
 		// console.log('сохранено', dataArray)
 	}
@@ -21,8 +41,8 @@ export default class Storage {
 		// console.log(dataArray)
 		for(let i = 0; i < dataArray.length; i++) {
 			if (dataArray[i].name === name) {
-				// console.log( dataArray[i].weeks || 'empty')
-				return dataArray[i].weeks || 'empty'
+				console.log( dataArray)
+				return dataArray[i] || 'empty'
 			}
 		}
 	}
