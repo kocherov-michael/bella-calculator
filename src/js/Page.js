@@ -1,3 +1,5 @@
+import Handler from './Handler'
+
 export default class Page {
 	constructor (args = {}) {
 		if (args.start) {
@@ -8,6 +10,9 @@ export default class Page {
 
 	renderPage (x) {
 		console.log(x)
+		const handler = new Handler({
+			menu: x
+		})
 	}
 
 }

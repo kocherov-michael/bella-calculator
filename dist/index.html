@@ -14,16 +14,22 @@
 			<!-- ==================================================================================== -->
 
 			<section class="page start">
+				
 		
 				<header class="header">
 		
 					<div class="header__nav">
 						<div class="header__arrow"></div>
 						<div class="header__text"></div>
-						<div class="header__menu">
+						<div class="header__menu" data-header-menu>
 							<div class="menu-icon">
 								<div class="menu-icon__line"></div>
 							</div>
+						</div>
+
+						<div class="menu" data-menu-list>
+							<button class="menu__item">Плетения</button>
+							<button class="menu__item">Восстановить удаления</button>
 						</div>
 					</div>
 		
@@ -469,6 +475,126 @@
 					</footer>
 		
 			</section>
+
+		<!-- ============================================================================= -->
+
+			<section class="page weaving">
+				<header class="header">
+
+					<div class="header__nav">
+						<div class="header__arrow">
+							<img src="assets/img/arrow.svg" alt="назад">
+						</div>
+						<div class="header__text">Неделя 34</div>
+						<div class="header__menu">
+							<div class="menu-icon">
+								<div class="menu-icon__line"></div>
+							</div>
+						</div>
+					</div>
+				
+				</header>
+
+				<div class="item-field">
+
+					<div class="item previous-week">
+
+						<div class="item__header">
+							<div class="item__header-text">+ 4829.45</div>
+							<div class="item__header-arrow">
+								<span>Прежний остаток</span>
+								<div class="chevron"></div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="item salary-item">
+
+						<div class="item__header">
+							<div class="item__header-text">Сдача</div>
+							<div class="item__header-arrow">
+								<!-- <span>Прежний остаток</span> -->
+								<div class="chevron"></div>
+							</div>
+						</div>
+
+						<div class="item__uppper">
+							<span>Зарплата:</span>
+							<span>8890</span>
+							<span>&nbsp;₽</span>
+						</div>
+
+						<div class="item__lower">
+							<span>Вес:</span>
+							<span>5678</span>
+							<span>&nbsp;г</span>
+						</div>
+
+					</div>
+
+					<div class="item week-item">
+
+						<div class="item__header">
+							<div class="item__header-text">+ 4829.45</div>
+							<div class="item__header-arrow">
+								<span class="item__header-previous">Прежний остаток</span>
+								<div class="chevron"></div>
+							</div>
+						</div>
+
+						<div class="item__lower">
+							<span>Промежуточный баланс:</span>
+							<span>5678</span>
+							<span>&nbsp;г</span>
+						</div>
+
+					</div>
+
+					<div class="item week-item closed">
+
+						<div class="item__header">
+							<div class="item__header-text item__header-text_minus">- 829.45</div>
+							<div class="item__header-arrow">
+								<span class="item__header-previous">Прежний остаток</span>
+								<div class="chevron"></div>
+							</div>
+						</div>
+
+						<div class="item__lower">
+							<span>Промежуточный баланс:</span>
+							<span>5678</span>
+							<span>&nbsp;г</span>
+						</div>
+
+					</div>
+
+
+				</div>
+
+				<footer class="footer">
+					<div class="footer__actions">
+						<form action="" class="week-orepations">
+							<input type="number" class="week-orepations__input input">
+							
+							<button class="week-orepations__button item item_warning">Прибавить</button>
+							<button class="week-orepations__button item item_subtract">Вычесть</button>
+
+						</form>
+					</div>
+
+					<div class="footer__result">
+						
+						<span class="footer__text">Остаток:</span>
+						<span class="footer__value">5678.56</span>
+						<span class="footer__nominal">г</span>
+					</div>
+				</footer>
+
+			</section>
+
+		<!-- ============================================================================= -->
+
 		</div>
 
 	</div>

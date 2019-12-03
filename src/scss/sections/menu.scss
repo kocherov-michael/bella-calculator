@@ -1,0 +1,48 @@
+.menu {
+	position: absolute;
+	// z-index: -9;
+	top: 0;
+	// bottom: 0;
+	height: 0;
+	left: 0;
+	right: 0;
+	background-color: #fff;
+	// background-color: pink;
+	// padding: 160px 24px 0;
+	padding: 0 24px;
+	// display: none;
+	transition: height .4s ease 0s;
+	overflow: hidden;
+
+	.menu__item {
+		opacity: 0;
+		transition: opacity .4s ease .2s;
+		display: block;
+		cursor: pointer;
+	}
+	
+}
+
+.menu__item {
+	font-size: 24px;
+	color: $mainFontColor;
+	margin-bottom: 48px;
+}
+
+.menu__item:first-child {
+	margin-top: 160px;
+
+}
+.menu-show {
+	// display: block;
+	bottom: 0;
+	// padding: 160px 24px 0;
+	height: 100vh;
+	z-index: 9;
+	.menu__item {
+		opacity: 1;
+	}
+
+	
+}
+
