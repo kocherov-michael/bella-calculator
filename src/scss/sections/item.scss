@@ -8,12 +8,12 @@
 	border: none;
 	font-size: inherit;
 	font-family: $mainFont;
-	// margin: 15px 0;
 	box-shadow: $shadow-neutral-item;
+}
 
-	.plus {
-		display: none;
-	}
+.item-field>.item {
+	margin-top: 16px;
+	margin-bottom: 16px;
 }
 
 .item__header {
@@ -29,17 +29,20 @@
 
 .item__header-arrow {
 	position: relative;
+
+	height: 1em;
+	width: 10px;
 }
 
 .chevron {
 	position: absolute;
-	top: 5px;
-	right: 2px;
-	width: 7px;
-	height: 7px;
+	width: .5em;
+	height: .5em;
+	top: 50%;
+	right: 0;
 	border-right: 2px solid $border-menu;
 	border-bottom: 2px solid $border-menu;
-	transform: rotate(-45deg);
+	transform: rotate(-45deg)  translateY(-50%);
 }
 
 .item__uppper {
@@ -77,16 +80,24 @@
 		align-items: center;
 	}
 
+}
+
+.item_add {
 	.chevron {
-		display: none;
+		border: none;
+		transform: none;
+		height: 100%;
+		width: 100%;
+		top: 0;
 	}
-	.plus {
-		padding-bottom: 2px;
-		display: inline-block;
-		color: $default-color;
-		font-size: 24px;
-		font-weight: bold;
-		line-height: 0;
+	.chevron:after {
+		content: "+";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		font-size: 1.5em;
+		line-height: 1;
+		transform: translate(-50%,-50%);
 	}
 }
 
@@ -115,8 +126,8 @@
 	position: absolute;
 	content: '';
 	display: block;
-	width: 10px;
-	height: 5px;
+	width: 0.625em;
+	height: 0.3125em;
 	top: 50%;
 	border-bottom: 3px solid #fff;
 	border-left: 3px solid #fff;
