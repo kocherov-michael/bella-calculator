@@ -1,0 +1,47 @@
+.form {
+	// padding: 21px 24px;
+	border-radius: 10px;
+	border: 1px solid $border-secondary;
+	color: $mainFontColor;
+	font-size: 18px;
+	background-color: $default-color;
+}
+
+.form__heading {
+	display: flex;
+	padding: 21px 24px;
+	font-weight: bold;
+}
+
+.form__heading-text {
+	flex: 1;
+
+}
+
+.form__heading-close {
+	font-size: 16px;
+	color: $neutral-primary;
+	cursor: pointer;
+}
+
+.form__inputs {
+	display: flex;
+	flex-direction: column;
+	padding: 3px 24px 0;
+	input {
+		margin-bottom: 16px;
+	}
+}
+
+.form__buttons {
+	padding: 0 24px 24px;
+}
+
+.form__buttons-save {
+	margin-bottom: 16px;
+
+	.item__header-arrow {
+		height: 1em;
+		width: 10px;
+	}
+}

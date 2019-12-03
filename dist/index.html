@@ -13,7 +13,7 @@
 
 			<!-- ==================================================================================== -->
 
-			<section class="page start">
+			<section class="page start hide">
 				
 		
 				<header class="header">
@@ -146,7 +146,7 @@
 
 			<!-- ==================================================================================== -->
 		
-			<section class="page worker">
+			<section class="page worker hide">
 					<header class="header">
 		
 						<div class="header__nav">
@@ -222,7 +222,7 @@
 
 			<!-- ==================================================================================== -->
 
-			<section class="page week">
+			<section class="page week hide">
 					<header class="header">
 		
 						<div class="header__nav">
@@ -339,7 +339,7 @@
 
 			<!-- ==================================================================================== -->
 
-			<section class="page hand-over">
+			<section class="page hand-over hide">
 					<header class="header">
 		
 						<div class="header__nav">
@@ -479,13 +479,53 @@
 		<!-- ============================================================================= -->
 
 			<section class="page weaving">
+				<div class="weaving-container">
+					<div class="form weaving-form">
+						<div class="form__heading">
+							<div class="form__heading-text">Введите название</div>
+							<div class="form__heading-close">&#10006;</div>
+						</div>
+						<div class="form__inputs">
+
+								<input type="text" class="input" placeholder="Плетение">
+								<input type="number" class="input" placeholder="Угар %">
+								<input type="number" class="input" placeholder="Цепь ₽">
+								<input type="number" class="input" placeholder="Браслет ₽">
+
+						</div>
+						<div class="form__buttons">
+							<div class="form__buttons-save">
+								<button class="item item_warning">
+									<div class="item__header">
+										<div class="item__header-text">Сохранить</div>
+										<div class="item__header-arrow">
+											<!-- <div class="chevron"></div> -->
+											<div class="symbol"></div>
+										</div>
+									</div>
+								</button>
+							</div>
+							<div class="form__buttons-cancel">
+								<button class="item item_cancel">
+									<div class="item__header">
+										<div class="item__header-text">Отменить</div>
+										<div class="item__header-arrow">
+											<!-- <div class="chevron"></div> -->
+											<div class="cross">&#10006;</div>
+										</div>
+									</div>
+								</button>
+							</div>
+						</div>
+					</div>	
+				</div>
 				<header class="header">
 
 					<div class="header__nav">
 						<div class="header__arrow">
 							<img src="assets/img/arrow.svg" alt="назад">
 						</div>
-						<div class="header__text">Неделя 34</div>
+						<div class="header__text">Плетения</div>
 						<div class="header__menu">
 							<div class="menu-icon">
 								<div class="menu-icon__line"></div>
@@ -497,82 +537,75 @@
 
 				<div class="item-field">
 
-					<div class="item previous-week">
+
+					<div class="item weaving-item">
 
 						<div class="item__header">
-							<div class="item__header-text">+ 4829.45</div>
-							<div class="item__header-arrow">
-								<span>Прежний остаток</span>
-								<div class="chevron"></div>
-							</div>
-						</div>
-
-					</div>
-
-					<div class="item salary-item">
-
-						<div class="item__header">
-							<div class="item__header-text">Сдача</div>
+							<div class="item__header-text">БСМ30</div>
 							<div class="item__header-arrow">
 								<!-- <span>Прежний остаток</span> -->
-								<div class="chevron"></div>
+								<!-- <div class="chevron"></div> -->
+								<div class="weaving-item__percent"><span>7</span>%</div>
 							</div>
 						</div>
 
 						<div class="item__uppper">
-							<span>Зарплата:</span>
-							<span>8890</span>
+							<span>Цепь:</span>
+							<span>231</span>
 							<span>&nbsp;₽</span>
 						</div>
 
 						<div class="item__lower">
-							<span>Вес:</span>
-							<span>5678</span>
-							<span>&nbsp;г</span>
+							<span>Браслет:</span>
+							<span>88</span>
+							<span>&nbsp;₽</span>
 						</div>
 
 					</div>
 
-					<div class="item week-item">
+					<div class="item weaving-item">
 
 						<div class="item__header">
-							<div class="item__header-text">+ 4829.45</div>
+							<div class="item__header-text">БСМ40</div>
 							<div class="item__header-arrow">
-								<span class="item__header-previous">Прежний остаток</span>
-								<div class="chevron"></div>
+								<!-- <span>Прежний остаток</span> -->
+								<!-- <div class="chevron"></div> -->
+								<div class="weaving-item__percent"><span>7</span>%</div>
 							</div>
 						</div>
 
+						<div class="item__uppper">
+							<span>Цепь:</span>
+							<span>220</span>
+							<span>&nbsp;₽</span>
+						</div>
+
 						<div class="item__lower">
-							<span>Промежуточный баланс:</span>
-							<span>5678</span>
-							<span>&nbsp;г</span>
+							<span>Браслет:</span>
+							<span>88</span>
+							<span>&nbsp;₽</span>
 						</div>
 
 					</div>
 
-					<div class="item week-item closed">
+					<div class="weaving-item__button">
 
-						<div class="item__header">
-							<div class="item__header-text item__header-text_minus">- 829.45</div>
-							<div class="item__header-arrow">
-								<span class="item__header-previous">Прежний остаток</span>
-								<div class="chevron"></div>
+						<button class="item item_warning">
+							<div class="item__header">
+								<div class="item__header-text">Добавить к сдаче</div>
+								<div class="item__header-arrow">
+									<div class="chevron"></div>
+									<div class="plus">+</div>
+								</div>
 							</div>
-						</div>
-
-						<div class="item__lower">
-							<span>Промежуточный баланс:</span>
-							<span>5678</span>
-							<span>&nbsp;г</span>
-						</div>
-
+						</button>
 					</div>
+
 
 
 				</div>
 
-				<footer class="footer">
+				<!-- <footer class="footer">
 					<div class="footer__actions">
 						<form action="" class="week-orepations">
 							<input type="number" class="week-orepations__input input">
@@ -589,7 +622,7 @@
 						<span class="footer__value">5678.56</span>
 						<span class="footer__nominal">г</span>
 					</div>
-				</footer>
+				</footer> -->
 
 			</section>
 

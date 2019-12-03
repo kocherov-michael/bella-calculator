@@ -20,15 +20,16 @@ $primary-color           : #444ce0;
 $success-color           : #81C006;
 
 $danger-color            : #ff6f61; // use
+$cancel-color            : #99a7b5; // use
 
 $warning-color           : #fed330;
 $light-color             : #999999;
 $purple-color            : #8854d0;
 
 // Neutral Color
-$neutral-primary         : #99A7B5;
+$neutral-primary         : #D2DBE1; // use
 
-$neutral-regular         : #606266;
+// $neutral-regular         : #606266;
 
 $neutral-secondary       : #404a54; // use
 $neutral-placeholder     : #C0C4CC;
@@ -39,14 +40,16 @@ $border-secondary        : #c2cacf; //use
 
 $border-light            : #B2BCC7; //use
 
-$border-lighter          : #EBEEF5;
-$border-lightex          : #F2F6FC;
+// $border-lighter          : #EBEEF5;
+// $border-lightex          : #F2F6FC;
 
 $border-menu             : #3a3a3a;
 
 $background-primary      : #EFF2F5; // use
+$mainColorOpacity      : rgba(58,58,58,.95); // use
 
 $shadow-section          : 0 0 10px #afbac3;
 $shadow-neutral-item     : 0 7px 10px rgba(128,171,185,0.3); // use
+$shadow-cancel-item      : 0 5px 10px rgba(210,219,225,1); // use
 $shadow-secondary        : 0 5px 10px rgba(64,74,84,0.5); // use
 $shadow-warning-item     : 0 5px 10px rgba(255,111,97,0.4); // use

@@ -8,7 +8,7 @@
 	border: none;
 	font-size: inherit;
 	font-family: $mainFont;
-	margin: 15px 0;
+	// margin: 15px 0;
 	box-shadow: $shadow-neutral-item;
 
 	.plus {
@@ -60,7 +60,7 @@
 }
 
 
-.item_warning, .item_subtract {
+.item_warning, .item_subtract, .item_cancel {
 	background-color: $danger-color;
 	box-shadow: $shadow-warning-item;
 	color: $default-color;
@@ -95,3 +95,30 @@
 	box-shadow: $shadow-secondary;
 }
 
+.item_cancel {
+	background-color: $cancel-color;
+	box-shadow: $shadow-cancel-item;
+}
+
+.cross {
+	font-size: 16px;
+}
+
+.symbol {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1em;
+	width: 10px;
+}
+.symbol:after {
+	position: absolute;
+	content: '';
+	display: block;
+	width: 10px;
+	height: 5px;
+	top: 50%;
+	border-bottom: 3px solid #fff;
+	border-left: 3px solid #fff;
+	transform: rotate(-45deg) translateY(-50%);
+}
