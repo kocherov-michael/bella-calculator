@@ -23,20 +23,22 @@ export default class Page {
 		
 	}
 	
+
+	// Создаём список элементов из памяти
 	addFieldList (page) {
-		console.log(page)
+		// console.log(page)
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
 	
 		itemFieldElement.innerHTML = ''
 	
 		const data = this.storage.read(page)
-		console.log(data)
+		// console.log(data)
 	
 		data.forEach( (worker) => {
 			
 			const workerButton = new Item({
 				field: itemFieldElement,
-				text: worker,
+				text: worker.name,
 				type: 'single'
 			})
 		})

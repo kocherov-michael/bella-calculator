@@ -13,6 +13,9 @@ export default class Handler {
 		if (args.addItem) {
 			this.addItemHandler(args.addItem)
 		}
+		if (args.itemHandler) {
+			this.itemHandler(args.itemHandler)
+		}
 		
 	}
 	menuHandler (page) {
@@ -68,12 +71,23 @@ export default class Handler {
 			// newItemValues.inputValue = input.getAttribute('value')
 			newItemValues.inputValue = input.value
 			newItemValues.inputName = input.name
+			input.value = ''
 		})
 		// console.log(newItemValues)
 		this.storage.save(newItemValues)
 		this.closeForm()
 		this.page.addFieldList(this.args.addItem)
 		// this.storage.read()
+	}
+
+	// обработчик нажатия на обычный элемент
+	itemHandler(element) {
+		element.addEventListener('click', () => {
+			const name = element.querySelector('[data-item-name]').textContent
+			console.log(name)
+			const weeksList = this.storage.getWorkerWeeks(name)
+			console.log(weeksList)
+		})
 	}
 
 }
