@@ -7,17 +7,52 @@ export default class Page {
 		this.storage = new Storage()
 		this.pages = [
 			'start',
-			'weeksList'
+			'weeksList',
+			'weekItems'
 		]
-		console.log('page')
 
 		if (args.start) {
-			this.renderPage(args.start)
+			// this.renderPage(args.start)
+			this.renderStartPage(args.start)
 		}
 	}
 
-	renderPage (page, name = '') {
-		this.addArrowBack(page)
+	renderWeekItemsPage (page, name = '', weekNumber = '') {
+		this.addHeader(page, name)
+		// this.addCreateButton(page, name)
+		this.addForm(page, name)
+
+		const handler = new Handler({
+			menu: page,
+			// addItem: page,
+			workerName: name,
+			backButton: page
+		})
+		
+		this.addFieldList(page, name)
+		this.showHeaderName(page, name)
+
+	}
+
+	renderStartPage (page, name = '') {
+		this.addHeader(page)
+		this.addCreateButton(page, name)
+		this.addForm(page, name)
+
+		const handler = new Handler({
+			menu: page,
+			addItem: page,
+			// workerName: name,
+			// backButton: page
+		})
+		
+		this.addFieldList(page, name)
+		// this.showHeaderName(page, name)
+
+	}
+
+	renderWeekListPage (page, name = '') {
+		this.addHeader(page)
 		this.addCreateButton(page, name)
 		this.addForm(page, name)
 
@@ -33,9 +68,13 @@ export default class Page {
 
 	}
 
+
+
 	// Добавить форму
 	addForm (page, name) {
 		const formContainerElement = document.querySelector(`[data-add-form="${page}"]`)
+		// если на странице нет скрытых форм, то пропускаем
+		if (!formContainerElement) return
 
 		let attr
 		let placeholder
@@ -115,16 +154,16 @@ export default class Page {
 	}
 
 	// добавить стрелку назад
-	addArrowBack(page){
+	addHeader(page, name){
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
 		
 		// получаем аттрибут предыдущей страницы
-		const previousPage = this.pages[this.pages.indexOf(page) - 1] || ''
+		const previousPage = this.getPreviousPage(page)
 
 		headerElement.innerHTML = ''
 		headerElement.innerHTML = 
 		`<div class="header__nav">
-		<div class="header__arrow" data-header-back="${previousPage}"></div>
+		<div class="header__arrow" data-header-back="${previousPage}" data-header-back-worker="${name}"></div>
 		<div class="header__text" data-header-text="${page}"></div>
 		<div class="header__menu" data-header-menu="${page}">
 			<div class="menu-icon">
@@ -166,7 +205,7 @@ export default class Page {
 		itemFieldElement.innerHTML = ''
 	
 		// получаем данные из памяти
-		const data = this.storage.read()
+		const data = Storage.read()
 	
 		// если страница стартовая
 		if (page === 'start') {
@@ -178,13 +217,15 @@ export default class Page {
 					field: itemFieldElement,
 					// имя работника
 					text: worker.workerName,
-					type: 'single'
+					type: 'single',
+					workerName: worker.workerName
 				})
 			})
 		}
 		// если страница с неделями
 		else if ( page === 'weeksList') {
 			// console.log(data)
+			// console.log('РИСУЕМ', data, name || 'хер')
 			for( let i = 0; i < data.length; i++) {
 				if ( data[i].workerName === name) {
 					// console.log(data[i].weeks)
@@ -195,7 +236,8 @@ export default class Page {
 							field: itemFieldElement,
 							// номер недели
 							text: week.weekNumber,
-							type: 'week'
+							type: 'week',
+							workerName: name
 						})
 					})
 				}
@@ -205,8 +247,10 @@ export default class Page {
 	}
 
 	// перелистываем страницу вперёд
-	changeNextPage (workerObj, currentPage, nextPage, name) {
-		// console.log('next')
+	changeNextPage (workerObj, currentPage, nextPage, name, weekNumber) {
+		// console.log(workerObj)
+		console.log(nextPage)
+		console.log(name)
 		
 		const containerElement = document.querySelector('[data-container]')
 
@@ -215,7 +259,13 @@ export default class Page {
 
 		const nextAttr = nextPage.getAttribute('data-page')
 		// this.addFieldList(nextAttr, name)
-		this.renderPage(nextAttr, name)
+
+		if (nextAttr === 'weeksList') {
+			this.renderWeekListPage(nextAttr, name)
+		}
+		else if (nextAttr === 'weekItems') {
+			this.renderWeekItemsPage(nextAttr, name, weekNumber)
+		}
 		
 		setTimeout( () => {
 			currentPage.classList.add('hide')
@@ -237,6 +287,7 @@ export default class Page {
 		// this.renderPage(previousAttr, name)
 		this.addFieldList(previousAttr, name)
 		
+		
 		setTimeout( () => {
 			containerElement.classList.add('previousPage')
 		}, 0)
@@ -248,6 +299,16 @@ export default class Page {
 		}, 400)
 		// console.log(this)
 		// console.log(this.handler)
+	}
+
+	getPreviousPage (currentAttr) {
+		// console.log(currentAttr)
+		// console.log(Page.pages)
+		// const pages = [
+		// 	'start',
+		// 	'weeksList'
+		// ]
+		return this.pages[this.pages.indexOf(currentAttr) - 1] || ''
 	}
 
 }

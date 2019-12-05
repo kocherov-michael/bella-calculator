@@ -6,7 +6,6 @@ export default class Handler {
 		this.storage = new Storage()
 		this.page = new Page()
 		this.args = args
-		console.log('handler')
 		
 
 		if (args.menu) {
@@ -132,23 +131,37 @@ export default class Handler {
 		// this.storage.read()
 	}
 
+
 	// обработчик нажатия на обычный элемент
 	itemHandler(element) {
-
+		// console.log(element)
 		element.addEventListener('click', () => {
-			const name = element.querySelector('[data-item-name]').textContent
-			const attr = element.getAttribute('data-next')
-			// console.log(attr)
-			const workerObj = this.storage.getWorkerWeeks(name)
-			
-			// Если next = weeks, то перелистываем на недели
-			if (attr === 'weeks') {
-				const nextPage = document.querySelector('[data-page="weeksList"]')
-				const currentPage = document.querySelector('[data-page="start"]')
-				this.page.changeNextPage(workerObj, currentPage, nextPage, name)
+			// const name = element.querySelector('[data-item-name]').textContent
+			const name = element.getAttribute('data-worker')
+			const nextAttr = element.getAttribute('data-next')
+			const currentParentElement = element.closest('[data-item-field]')
+			const currentAttr = currentParentElement.getAttribute('data-item-field')
+			const weekNumber = element.getAttribute('data-week-number')
+
+			let dataObj
+			if (currentAttr === 'start') {
+				// загружаем недели для работника
+				dataObj = Storage.getWorkerWeeks(name)
+				console.log(dataObj)
 			}
+			else if (currentAttr === 'weeksList') {
+				// загружаем элементы для недели
+				dataObj = Storage.getOneWeek(name, weekNumber)
+			}
+			
+			// определяем текущую и следующую страницы
+			const nextPage = document.querySelector(`[data-page="${nextAttr}"]`)
+			const currentPage = document.querySelector(`[data-page="${currentAttr}"]`)
+
+			this.page.changeNextPage(dataObj, currentPage, nextPage, name, weekNumber)
 		})
 	}
+
 
 	// обработчик на кноку назад в шапке
 	backButtonHandler (page) {
@@ -161,9 +174,10 @@ export default class Handler {
 		backButtonElement.addEventListener('click', () => {
 			// backButtonElement
 			const targetPageAttr = backButtonElement.getAttribute('data-header-back')
+			const targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
 			const targetPageElement = document.querySelector(`[data-page=${targetPageAttr}]`)
 			// console.log(targetPage)
-			this.page.changePreviousPage('', currentPageElement, targetPageElement, '')
+			this.page.changePreviousPage('', currentPageElement, targetPageElement, targetPageWorkerAttr)
 			backButtonElement = null
 		})
 	}

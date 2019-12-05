@@ -3,7 +3,7 @@ export default class Storage {
 
 	}
 	save (data) {
-		const dataArray = this.read() || []
+		const dataArray = Storage.read() || []
 		// console.log('прочитали ил памяти', dataArray)
 
 		// if (data.workerName) {
@@ -54,20 +54,40 @@ export default class Storage {
 		// console.log('сохранено', dataArray)
 		return true
 	}
-	read (page) {
+	static read (page) {
 		const data = JSON.parse(localStorage.getItem('bella-workers'))
 		// console.log('прочитал', data)
 		return data || []
 	}
 
 	// загрузка недель по имени работника
-	getWorkerWeeks(name) {
-		const dataArray = this.read()
+	static getWorkerWeeks(name) {
+		const dataArray = Storage.read()
 		// console.log(dataArray)
+		// console.log(name)
 		for(let i = 0; i < dataArray.length; i++) {
-			if (dataArray[i].name === name) {
-				console.log( dataArray)
+			if (dataArray[i].workerName === name) {
+				// console.log( dataArray)
 				return dataArray[i] || 'empty'
+			}
+		}
+	}
+
+	static getOneWeek(name, weekNumber) {
+		console.log('static', weekNumber)
+		const dataArray = Storage.read()
+
+		for(let i = 0; i < dataArray.length; i++) {
+			// если имя совпадает
+			if (dataArray[i].workerName === name) {
+				console.log('here', dataArray[i].weeks)
+				for(let j = 0; j < dataArray[i].weeks.length; j++) {
+					// если номер недели совпадает
+					if(dataArray[i].weeks.weekNumber === weekNumber) {
+						// возвращаем елементы внутри недели
+						return dataArray[i].weeks.weekItems || 'empty'
+					}
+				}
 			}
 		}
 	}

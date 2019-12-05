@@ -9,8 +9,8 @@ export default class Item {
 	}
 
 	create(args) {
-		let classNameView
-		let classNameType
+		// let classNameView
+		// let classNameType
 
 		// if (args.type === 'add') {
 		// 	classNameView = 'item_warning'
@@ -21,11 +21,12 @@ export default class Item {
 		const parentElement = args.field
 		const newElement = document.createElement('div')
 		newElement.classList.add('item')
-		newElement.setAttribute('data-next', 'weeks')
 		// newElement.classList.add(className)
-
+		newElement.setAttribute('data-worker', args.workerName)
+		
 		// если тип - работник
 		if (args.type === 'single') {
+			newElement.setAttribute('data-next', 'weeksList')
 			newElement.innerHTML = 
 			`<div class="item__header">
 				<div class="item__header-text" data-item-name>${args.text || 'у девочки нет имени'}</div>
@@ -36,6 +37,9 @@ export default class Item {
 		}
 		// если тип - неделя
 		else if (args.type === 'week') {
+			newElement.setAttribute('data-next', 'weekItems')
+			newElement.setAttribute('data-week-number', args.text)
+			
 			newElement.innerHTML =
 			`<div class="item__header">
 			<div class="item__header-text">Неделя <span>${args.text || 'не установлена'}</span></div>
