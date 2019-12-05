@@ -1,0 +1,68 @@
+.metall {
+	display: flex;
+	flex-direction: column;
+	background-color: $default-color;
+	margin: 24px 0;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.metall__icon {
+	flex-shrink: 0;
+	display: flex;
+	width: 100%;
+	height: 2.25em;
+	justify-content: center;
+	align-items: center;
+	font-size: 36px;
+	font-weight: bold;
+	line-height: 1;
+	color: $default-color;
+	background-color: #80AECD;
+
+	&_color_gold {
+		background-color: #E8AA00;
+	}
+}
+.metall__type {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 24px;
+}
+.metall__string {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	letter-spacing: .7px;
+}
+.metall__string:first-child {
+	border-bottom: 1px solid $border-base;
+	padding-bottom: .625em;
+}
+
+.metall__string:last-child {
+	padding-top: .625em;
+}
+.metall__string-text {
+	min-width: 125px;
+	flex: 1;
+}
+.metall__nominal {
+	margin-left: 5px;
+	letter-spacing: 1px;
+	flex-shrink: 0;
+}
+.metall__change {
+	width: 0;
+	height: 0;
+	margin-left: .3125em;
+	border-left: .5em solid transparent;
+	border-right: .5em solid transparent;
+	&_increase {
+		border-bottom: .625em solid $success-color;
+	}
+	&_decrease {
+		border-top: .625em solid $danger-color;
+	}
+}
