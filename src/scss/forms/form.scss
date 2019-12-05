@@ -4,17 +4,20 @@
 	height: 100vh;
 	z-index: 20;
 	background-color: $mainColorOpacity;
+	transition: all .4s ease;
+
 }
+
 
 .active-form {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%,-50%);
+	transition: all .4s ease;
 }
 
 .form {
-	// padding: 21px 24px;
 	border-radius: 10px;
 	border: 1px solid $border-secondary;
 	color: $mainFontColor;

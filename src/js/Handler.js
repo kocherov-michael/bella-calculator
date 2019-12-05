@@ -39,11 +39,19 @@ export default class Handler {
 
 		// вешаем обработчик на кнопку Сохранить формы добавления сотрудника
 		const addFormElement =  document.querySelector(`[data-add-form=${page}]`)
+		const activeFormElement =  addFormElement.querySelector(`[data-active-form]`)
 		this.formHandler(addFormElement)
+		this.activeFormElement = activeFormElement
+		this.addFormElement = addFormElement
 
 		addNewElement.addEventListener('click', () => {
 			addFormElement.classList.remove('hide')
-
+			setTimeout( () => {
+				addFormElement.classList.remove('opacity')
+			}, 0)
+			setTimeout( () => {
+				activeFormElement.classList.remove('opacity')
+			}, 200)
 		})
 	}
 
@@ -62,7 +70,11 @@ export default class Handler {
 
 	// закрываем форму
 	closeForm () {
-		this.formElement.classList.add('hide')
+		this.activeFormElement.classList.add('opacity')
+		this.addFormElement.classList.add('opacity')
+		setTimeout( () => {
+			this.formElement.classList.add('hide')
+		}, 400)
 	}
 
 	// Сохраняем введённые значения формы
