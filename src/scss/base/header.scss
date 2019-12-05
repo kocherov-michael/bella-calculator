@@ -36,18 +36,59 @@
 	background-color: #fff;
 }
 .menu-icon {
+	position: relative;
 	height: 16px;
 	width: 24px;
-	border-top: 2px solid $border-menu;
-	border-bottom: 2px solid $border-menu;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+	overflow: hidden;
 
 	&__line {
 		width: 14px;
-		border: inherit;
-		border-top-width: 1px;
-		border-bottom-width: 1px;
+		border-top: 1px solid $border-menu;
+		border-bottom: 1px solid $border-menu;
+		transition: all .4s ease;
+	}
+	&:before {
+		content: '';
+		height: 2px; 
+		background-color: $border-menu;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		transition: all .4s ease;
+	}
+	
+	&:after {
+		content: '';
+		height: 2px; 
+		background-color: $border-menu;
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+		transition: all .4s ease;
+	}
+}
+
+
+.cross .menu-icon {
+
+	margin-right: 5px;
+	
+	&__line {
+		margin-right: 24px;
+		width: 100%;
+	}
+	&:before {
+		top: 50%;
+		transform: rotate(45deg);
+		left: 5px;
+	}
+
+	&:after {
+		bottom: 50%;
+		transform: rotate(-45deg);
+		left: 5px;
 	}
 }

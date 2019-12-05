@@ -25,7 +25,7 @@ export default class Handler {
 		const headerMenuListElement = sectionElement.querySelector('[data-menu-list]')
 
 		headerMenuElement.addEventListener('click', () => {
-			
+			headerMenuElement.classList.toggle('cross')
 			headerMenuListElement.classList.toggle('menu-show')
 		} )
 
