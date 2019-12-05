@@ -97,8 +97,9 @@ export default class Handler {
 		// кнопка Добавить, берём у неё имя работника
 		const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
 		const currentWorker = addButtonElement.getAttribute('data-current-worker')
+		console.log(addButtonElement, this.args.workerName, currentWorker)
 		// если имя работника в объекте и в вёрстке не совпадает, то стоп
-		if (currentWorker !== this.args.workerName) {
+		if (currentWorker !== this.args.workerName && this.args.addItem !== 'start') {
 			return
 		}
 
