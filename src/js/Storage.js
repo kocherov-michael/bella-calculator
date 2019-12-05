@@ -15,11 +15,11 @@ export default class Storage {
 				// если имя работника в массиве из памяти и из формы совпадают
 				if (dataArray[i].workerName === data.workerName) {
 					// проверка на существование номера недели
-					console.log('dataArray[i]', dataArray[i])
-					console.log('data', data)
+					// console.log('dataArray[i]', dataArray[i])
+					// console.log('data', data)
 					for (let j = 0; j < dataArray[i].weeks.length; j++) {
 						if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
-							console.log('exist')
+							console.log('exist week')
 							return false
 						}
 					}

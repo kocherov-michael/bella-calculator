@@ -6,6 +6,7 @@ export default class Handler {
 		this.storage = new Storage()
 		this.page = new Page()
 		this.args = args
+		console.log('handler')
 		
 
 		if (args.menu) {
@@ -38,7 +39,7 @@ export default class Handler {
 	
 	// Обработчик кнопки Добавить сотрудника / неделю
 	addItemHandler (page) {
-		console.log('смотри сюда', this)
+		// console.log('смотри сюда', this)
 		// текущая страница
 		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
 		// кнопка Добавить
@@ -107,7 +108,6 @@ export default class Handler {
 		}
 		// сохраняем имя, если работник уже создан
 		const nameForRender = this.args.workerName
-		console.log(nameForRender)
 
 		const inputsList = this.formElement.querySelectorAll('input')
 
@@ -115,8 +115,6 @@ export default class Handler {
 		for (let i = 0; i < inputsList.length; i++) {
 			// если инпут пустой - отмена
 			if (!inputsList[i].value.trim()) {
-				console.log('пусто')
-				console.log(inputsList[i])
 				inputsList[i].value = ''
 				return inputsList[i]
 			}
@@ -124,12 +122,10 @@ export default class Handler {
 			newItemValues[inputsList[i].name] = inputsList[i].value
 
 		}
-		// console.log(newItemValues)
 		if (newItemValues.inputValue) {
 
 		}
 		const result = this.storage.save(newItemValues)
-		console.log(result)
 		if (!result) return
 		this.closeForm()
 		this.page.addFieldList(this.args.addItem, nameForRender)
@@ -140,7 +136,6 @@ export default class Handler {
 	itemHandler(element) {
 
 		element.addEventListener('click', () => {
-			console.log(element)
 			const name = element.querySelector('[data-item-name]').textContent
 			const attr = element.getAttribute('data-next')
 			// console.log(attr)
@@ -158,7 +153,7 @@ export default class Handler {
 	// обработчик на кноку назад в шапке
 	backButtonHandler (page) {
 		const currentPageElement = document.querySelector(`[data-page=${page}]`)
-		const backButtonElement = currentPageElement.querySelector('[data-header-back]')
+		let backButtonElement = currentPageElement.querySelector('[data-header-back]')
 
 		// если на странице нет стрелки назад - прерываем выполнение
 		if (!backButtonElement) return
@@ -169,6 +164,7 @@ export default class Handler {
 			const targetPageElement = document.querySelector(`[data-page=${targetPageAttr}]`)
 			// console.log(targetPage)
 			this.page.changePreviousPage('', currentPageElement, targetPageElement, '')
+			backButtonElement = null
 		})
 	}
 
