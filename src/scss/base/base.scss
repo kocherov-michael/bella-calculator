@@ -27,6 +27,15 @@ body {
 	transform: translateX(-50%);
 	transition: transform .4s ease;
 }
+
+.fromNextToPrevious {
+	transform: translateX(-50%);
+}
+
+.previousPage {
+	transform: translateX(0);
+	transition: transform .4s ease;
+}
 .page {
 	position: relative;
 	width: 100vw;

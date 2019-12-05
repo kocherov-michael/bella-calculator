@@ -17,6 +17,10 @@ export default class Handler {
 		if (args.itemHandler) {
 			this.itemHandler(args.itemHandler)
 		}
+		// кнопка назад в шапке
+		if (args.backButton) {
+			this.backButtonHandler(args.backButton)
+		}
 		
 	}
 	menuHandler (page) {
@@ -34,12 +38,17 @@ export default class Handler {
 	
 	// Обработчик кнопки Добавить сотрудника / неделю
 	addItemHandler (page) {
+		console.log('смотри сюда', this)
+		// текущая страница
 		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
+		// кнопка Добавить
 		const addNewElement = sectionElement.querySelector(`[data-add=${page}]`)
+		addNewElement.setAttribute('data-current-worker', this.args.workerName)
 
 		// вешаем обработчик на кнопку Сохранить формы добавления сотрудника
 		const addFormElement =  document.querySelector(`[data-add-form=${page}]`)
 		const activeFormElement =  addFormElement.querySelector(`[data-active-form]`)
+
 		this.formHandler(addFormElement)
 		this.activeFormElement = activeFormElement
 		this.addFormElement = addFormElement
@@ -70,6 +79,12 @@ export default class Handler {
 
 	// закрываем форму
 	closeForm () {
+		// очищаем все инпуты при закрытии формы
+		const inputsList = this.formElement.querySelectorAll('input')
+		for (let i = 0; i < inputsList.length; i++) {
+			inputsList[i].value = ''
+		}
+
 		this.activeFormElement.classList.add('opacity')
 		this.addFormElement.classList.add('opacity')
 		setTimeout( () => {
@@ -79,31 +94,56 @@ export default class Handler {
 
 	// Сохраняем введённые значения формы
 	saveFormValues() {
+		// кнопка Добавить, берём у неё имя работника
+		const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
+		const currentWorker = addButtonElement.getAttribute('data-current-worker')
+		// если имя работника в объекте и в вёрстке не совпадает, то стоп
+		if (currentWorker !== this.args.workerName) {
+			return
+		}
+
 		const newItemValues = {
 			workerName: this.args.workerName
 		}
-		// console.log(this.args.workerName)
-		this.formElement.querySelectorAll('input').forEach( (input) => {
-			// console.log(input)
-			// newItemValues.inputValue = input.getAttribute('value')
-			newItemValues.inputValue = input.value
-			newItemValues.inputName = input.name
-			input.value = ''
-		})
-		console.log(newItemValues)
-		this.storage.save(newItemValues)
+		// сохраняем имя, если работник уже создан
+		const nameForRender = this.args.workerName
+		console.log(nameForRender)
+
+		const inputsList = this.formElement.querySelectorAll('input')
+
+		// проходимся по всем инпутам
+		for (let i = 0; i < inputsList.length; i++) {
+			// если инпут пустой - отмена
+			if (!inputsList[i].value.trim()) {
+				console.log('пусто')
+				console.log(inputsList[i])
+				inputsList[i].value = ''
+				return inputsList[i]
+			}
+			// по ключу инпута записываем его значение
+			newItemValues[inputsList[i].name] = inputsList[i].value
+
+		}
+		// console.log(newItemValues)
+		if (newItemValues.inputValue) {
+
+		}
+		const result = this.storage.save(newItemValues)
+		console.log(result)
+		if (!result) return
 		this.closeForm()
-		this.page.addFieldList(this.args.addItem)
+		this.page.addFieldList(this.args.addItem, nameForRender)
 		// this.storage.read()
 	}
 
 	// обработчик нажатия на обычный элемент
 	itemHandler(element) {
+
 		element.addEventListener('click', () => {
-			// console.log(element)
+			console.log(element)
 			const name = element.querySelector('[data-item-name]').textContent
 			const attr = element.getAttribute('data-next')
-			console.log(attr)
+			// console.log(attr)
 			const workerObj = this.storage.getWorkerWeeks(name)
 			
 			// Если next = weeks, то перелистываем на недели
@@ -112,6 +152,23 @@ export default class Handler {
 				const currentPage = document.querySelector('[data-page="start"]')
 				this.page.changeNextPage(workerObj, currentPage, nextPage, name)
 			}
+		})
+	}
+
+	// обработчик на кноку назад в шапке
+	backButtonHandler (page) {
+		const currentPageElement = document.querySelector(`[data-page=${page}]`)
+		const backButtonElement = currentPageElement.querySelector('[data-header-back]')
+
+		// если на странице нет стрелки назад - прерываем выполнение
+		if (!backButtonElement) return
+
+		backButtonElement.addEventListener('click', () => {
+			// backButtonElement
+			const targetPageAttr = backButtonElement.getAttribute('data-header-back')
+			const targetPageElement = document.querySelector(`[data-page=${targetPageAttr}]`)
+			// console.log(targetPage)
+			this.page.changePreviousPage('', currentPageElement, targetPageElement, '')
 		})
 	}
 

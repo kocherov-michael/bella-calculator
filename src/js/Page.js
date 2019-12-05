@@ -13,15 +13,23 @@ export default class Page {
 	addEventListener () {}
 
 	renderPage (page, name = '') {
-		// console.log(start)
 		const handler = new Handler({
 			menu: page,
 			addItem: page,
-			workerName: name
+			workerName: name,
+			backButton: page
 		})
 		
 		this.addFieldList(page, name)
-		
+		this.showHeaderName(page, name)
+
+	}
+
+	showHeaderName (page, name) {
+		const headerTextElement = document.querySelector(`[data-header-text="${page}"]`)
+		if (headerTextElement) {
+			headerTextElement.textContent = name
+		}
 	}
 	
 
@@ -32,9 +40,10 @@ export default class Page {
 	
 		itemFieldElement.innerHTML = ''
 	
+		// получаем данные из памяти
 		const data = this.storage.read()
-		// console.log(data)
 	
+		// если страница стартовая
 		if (page === 'start') {
 
 			data.forEach( (worker) => {
@@ -43,23 +52,24 @@ export default class Page {
 					// родительский элемент
 					field: itemFieldElement,
 					// имя работника
-					text: worker.name,
+					text: worker.workerName,
 					type: 'single'
 				})
 			})
 		}
+		// если страница с неделями
 		else if ( page === 'weeksList') {
 			// console.log(data)
 			for( let i = 0; i < data.length; i++) {
-				if ( data[i].name === name) {
+				if ( data[i].workerName === name) {
 					console.log(data[i].weeks)
 					data[i].weeks.forEach( (week) => {
 				
-						const workerButton = new Item({
+						const weekButton = new Item({
 							// родительский элемент
 							field: itemFieldElement,
 							// номер недели
-							text: week.number,
+							text: week.weekNumber,
 							type: 'week'
 						})
 					})
@@ -86,8 +96,33 @@ export default class Page {
 			currentPage.classList.add('hide')
 			containerElement.classList.remove('nextPage')
 		}, 400)
+		// console.log(this)
+	}
+
+	// перелистываем страницу назад
+	changePreviousPage (workerObj, currentPage, previousPage, name) {
 		
-		// weeksList.classList.add('activePage')
+		const containerElement = document.querySelector('[data-container]')
+
+		previousPage.classList.remove('hide')
+		containerElement.classList.add('fromNextToPrevious')
+		
+		const previousAttr = previousPage.getAttribute('data-page')
+		// отрисовываем предыдущую страницу
+		// this.renderPage(previousAttr, name)
+		this.addFieldList(previousAttr, name)
+		
+		setTimeout( () => {
+			containerElement.classList.add('previousPage')
+		}, 0)
+
+		setTimeout( () => {
+			currentPage.classList.add('hide')
+			containerElement.classList.remove('previousPage')
+			containerElement.classList.remove('fromNextToPrevious')
+		}, 400)
+		// console.log(this)
+		// console.log(this.handler)
 	}
 
 }

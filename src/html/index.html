@@ -27,7 +27,7 @@
 							</div>
 							<div class="form__inputs">
 	
-									<input type="text" class="input" placeholder="Имя" value="" name="newWorkerName">
+									<input type="text" class="input" placeholder="Имя" value="" name="workerName">
 	
 							</div>
 							<div class="form__buttons">
@@ -134,15 +134,15 @@
 
 			<section class="page worker hide" data-page="weeksList">
 
-					<div class="form-container hide"  data-add-form="weeksList">
-						<div class="form active-form">
+					<div class="form-container opacity hide"  data-add-form="weeksList">
+						<div class="form active-form opacity" data-active-form>
 							<div class="form__heading">
 								<div class="form__heading-text">Введите номер недели</div>
 								<div class="form__heading-close" data-close-icon>&#10006;</div>
 							</div>
 							<div class="form__inputs">
 	
-									<input type="text" class="input" placeholder="Номер недели" value="" name="newWeekNumber">
+									<input type="text" class="input" placeholder="Номер недели" value="" name="weekNumber">
 	
 							</div>
 							<div class="form__buttons">
@@ -173,10 +173,10 @@
 					<header class="header">
 		
 						<div class="header__nav">
-							<div class="header__arrow">
+							<div class="header__arrow" data-header-back="start">
 								<img src="assets/img/arrow.svg" alt="назад">
 							</div>
-							<div class="header__text">Максим</div>
+							<div class="header__text" data-header-text="weeksList">Максим</div>
 							<div class="header__menu" data-header-menu="weeksList">
 								<div class="menu-icon">
 									<div class="menu-icon__line"></div>
@@ -190,29 +190,7 @@
 
 							<div class="item-field__items" data-item-field="weeksList"></div>
 
-						<div class="item">
-							<div class="item__header">
-								<div class="item__header-text">Неделя <span>34</span></div>
-								<div class="item__header-arrow">
-									<div class="chevron"></div>
-								</div>
-							</div>
-
-							<div class="item__uppper">
-								<span>Зарплата:</span>
-								<span>8890</span>
-								<span>&nbsp;₽</span>
-							</div>
-
-							<div class="item__lower">
-								<span>Остаток:</span>
-								<span>5678</span>
-								<span>&nbsp;г</span>
-							</div>
-						</div>
-			
-						
-						<div class="item item_warning item_add" data-add="weeksList">
+						<div class="item item_warning item_add" data-add="weeksList" data-current-worker>
 							<div class="item__header">
 								<div class="item__header-text">Добавить неделю</div>
 								<div class="item__header-arrow">
