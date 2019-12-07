@@ -1,5 +1,7 @@
 import Storage from './Storage'
 import Page from './Page'
+// import StartPage from './StartPage'
+// import WeeksListPage from './WeeksListPage'
 
 export default class Handler {
 	constructor (args = {}) {
@@ -11,18 +13,66 @@ export default class Handler {
 		if (args.menu) {
 			this.menuHandler(args.menu)
 		}
+		// кнопка назад в шапке
+		if (args.backButton) {
+			this.backButtonHandler(args.backButton)
+		}
 		if (args.addItem) {
 			this.addItemHandler(args.addItem)
 		}
 		if (args.itemHandler) {
 			this.itemHandler(args.itemHandler)
 		}
-		// кнопка назад в шапке
-		if (args.backButton) {
-			this.backButtonHandler(args.backButton)
+		if (args.addSingleOperation) {
+			this.addSingleOperationFormHandler(args.workerName, args.addSingleOperation)
 		}
 		
 	}
+
+	// форма добавления строки операции
+	addSingleOperationFormHandler (workerName, weekNumber) {
+		const footerElement = document.querySelector(`[data-footer="weekItems"]`)
+		const formSingleOperationElement = footerElement.querySelector(`[data-form-add-operation-worker-name="${workerName}"]`)
+		const inputOperationElement = formSingleOperationElement.querySelector(`[data-input-week-operation="${weekNumber}"]`)
+		const addOperationElement = formSingleOperationElement.querySelector(`[data-addbutton-operation="${weekNumber}"]`)
+		const minusOperationElement = formSingleOperationElement.querySelector(`[data-minusbutton-operation="${weekNumber}"]`)
+
+		// операция Добавить
+		addOperationElement.addEventListener('click', () => {
+			const operationValue = Math.abs(inputOperationElement.value.trim())
+			Handler.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
+		})
+
+		// операция Вычесть
+		minusOperationElement.addEventListener('click', () => {
+			const operationValue = Math.abs(inputOperationElement.value.trim()) * -1
+			Handler.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
+		})
+	}
+
+	// обработка нажатий Прибавить и Вычесть в Операции
+	static addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
+
+		// Если ничего не введено, то предупреждаем пользователя
+		if (!operationValue) {
+			inputOperationElement.classList.add('warning-input')
+			inputOperationElement.placeholder = 'Введите число'
+			inputOperationElement.value = ''
+			setTimeout(() => {
+				inputOperationElement.classList.remove('warning-input')
+			}, 1000)
+			return 
+		}
+		const newItemValues = {
+			workerName,
+			weekNumber,
+			singleOperation: operationValue
+		}
+		Storage.saveOperation(newItemValues)
+	}
+
+
+	// открыть / скрыть меню в шапке 
 	menuHandler (page) {
 		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
 		const headerMenuElement = sectionElement.querySelector('[data-header-menu]')
@@ -148,7 +198,7 @@ export default class Handler {
 			if (currentAttr === 'start') {
 				// загружаем недели для работника
 				dataObj = Storage.getWorkerWeeks(name)
-				console.log(dataObj)
+				// console.log(dataObj)
 			}
 			else if (currentAttr === 'weeksList') {
 				// загружаем элементы для недели

@@ -4,7 +4,6 @@ import Storage from './Storage'
 
 export default class Page {
 	constructor (args = {}) {
-		this.storage = new Storage()
 		this.pages = [
 			'start',
 			'weeksList',
@@ -12,30 +11,17 @@ export default class Page {
 		]
 
 		if (args.start) {
-			// this.renderPage(args.start)
 			this.renderStartPage(args.start)
 		}
 	}
+	
 
-	renderWeekItemsPage (page, name = '', weekNumber = '') {
-		this.addHeader(page, name)
-		// this.addCreateButton(page, name)
-		this.addForm(page, name)
 
-		const handler = new Handler({
-			menu: page,
-			// addItem: page,
-			workerName: name,
-			backButton: page
-		})
-		
-		this.addFieldList(page, name)
-		this.showHeaderName(page, name)
-
-	}
 
 	renderStartPage (page, name = '') {
-		this.addHeader(page)
+		// this.addHeader(page)
+		this.createHeader(page)
+
 		this.addCreateButton(page, name)
 		this.addForm(page, name)
 
@@ -52,7 +38,10 @@ export default class Page {
 	}
 
 	renderWeekListPage (page, name = '') {
-		this.addHeader(page)
+		// this.addHeader(page)
+		this.createHeader(page)
+		this.createHeaderBackArrow(page)
+		
 		this.addCreateButton(page, name)
 		this.addForm(page, name)
 
@@ -68,7 +57,46 @@ export default class Page {
 
 	}
 
+	renderWeekItemsPage (page, name = '', weekNumber = '') {
+		// this.addHeader(page, name)
+		this.createHeader(page, name)
+		this.createHeaderBackArrow(page, name)
+		// this.addCreateButton(page, name)
+		// this.addForm(page, name)
+		this.createFormAddSingleOperation(page, name, weekNumber)
 
+		const handler = new Handler({
+			menu: page,
+			// addItem: page,
+			workerName: name,
+			backButton: page,
+			addSingleOperation: weekNumber
+		})
+		
+		this.addFieldList(page, name)
+		this.showHeaderName(page, name, weekNumber)
+
+	}
+
+
+	// создаём форму добавления простой операции в футере
+	createFormAddSingleOperation (page, name, weekNumber) {
+		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+
+		const footerActionElement = document.createElement('div')
+		footerActionElement.classList.add('footer__actions')
+
+		footerActionElement.innerHTML = 
+		`<div class="week-orepations" data-form-add-operation-worker-name="${name}">
+			<input type="number" class="week-orepations__input input" data-input-week-operation="${weekNumber}">
+			
+			<button class="week-orepations__button item item_warning" data-addbutton-operation="${weekNumber}">Прибавить</button>
+			<button class="week-orepations__button item item_subtract" data-minusbutton-operation="${weekNumber}">Вычесть</button>
+
+		</div>`
+		
+		footerElement.prepend(footerActionElement)
+	}
 
 	// Добавить форму
 	addForm (page, name) {
@@ -153,17 +181,14 @@ export default class Page {
 		</div>`
 	}
 
-	// добавить стрелку назад
-	addHeader(page, name){
+	// создаём шапку
+	// импортируем
+	createHeader (page) {
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
-		
-		// получаем аттрибут предыдущей страницы
-		const previousPage = this.getPreviousPage(page)
-
 		headerElement.innerHTML = ''
 		headerElement.innerHTML = 
-		`<div class="header__nav">
-		<div class="header__arrow" data-header-back="${previousPage}" data-header-back-worker="${name}"></div>
+		`<div class="header__nav" data-header-nav="${page}">
+		
 		<div class="header__text" data-header-text="${page}"></div>
 		<div class="header__menu" data-header-menu="${page}">
 			<div class="menu-icon">
@@ -177,29 +202,82 @@ export default class Page {
 		</div>
 	</div>`
 
-	// если не стартовая страница, то добавляем стрелку
-		if (page !== 'start') {
-			const headerArrowElement = document.querySelector(`[data-header-back="${previousPage}"]`)
-			const imgArrowElement = document.createElement('img')
-			imgArrowElement.setAttribute('src', 'assets/img/arrow.svg')
-			imgArrowElement.setAttribute('alt', 'назад')
-			headerArrowElement.append(imgArrowElement)
-		}
+	}
+
+	// добавляем в шапку стрелку назад
+	// импортируем
+	createHeaderBackArrow (page, name = '') {
+		console.log('стрелку создаем', page)
+		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
+		const previousPage = this.getPreviousPage(page)
+		console.log(headerNavElement)
+
+		// создаём элемент стрелки назад в шапке
+		const arrowBackElement = document.createElement('div')
+		console.log(arrowBackElement)
+		arrowBackElement.classList.add('header__arrow')
+		arrowBackElement.setAttribute('data-header-back', previousPage)
+		arrowBackElement.setAttribute('data-header-back-worker', name)
+		headerNavElement.prepend(arrowBackElement)
+  
+		// создаём img стрелку назад
+		const imgArrowElement = document.createElement('img')
+		imgArrowElement.setAttribute('src', 'assets/img/arrow.svg')
+		imgArrowElement.setAttribute('alt', 'назад')
+		arrowBackElement.append(imgArrowElement)
+		console.log(imgArrowElement)
 
 	}
 
+	// добавить стрелку назад
+	// старый метод
+	// addHeader(page, name = ''){
+	// 	const headerElement = document.querySelector(`[data-header="${page}"]`)
+		
+	// 	// получаем аттрибут предыдущей страницы
+	// 	const previousPage = this.getPreviousPage(page)
+
+	// 	headerElement.innerHTML = ''
+	// 	headerElement.innerHTML = 
+	// 	`<div class="header__nav">
+	// 	<div class="header__arrow" data-header-back="${previousPage}" data-header-back-worker="${name}"></div>
+	// 	<div class="header__text" data-header-text="${page}"></div>
+	// 	<div class="header__menu" data-header-menu="${page}">
+	// 		<div class="menu-icon">
+	// 			<div class="menu-icon__line"></div>
+	// 		</div>
+	// 	</div>
+	// 	<div class="menu" data-menu-list>
+	// 		<button class="menu__item">Котировки</button>
+	// 		<button class="menu__item">Плетения</button>
+	// 		<button class="menu__item">Восстановить удаления</button>
+	// 	</div>
+	// </div>`
+
+	// // если не стартовая страница, то добавляем стрелку
+	// 	if (page !== 'start') {
+	// 		const headerArrowElement = document.querySelector(`[data-header-back="${previousPage}"]`)
+	// 		const imgArrowElement = document.createElement('img')
+	// 		imgArrowElement.setAttribute('src', 'assets/img/arrow.svg')
+	// 		imgArrowElement.setAttribute('alt', 'назад')
+	// 		headerArrowElement.append(imgArrowElement)
+	// 	}
+
+	// }
+
 	// показать текст в шапке
-	showHeaderName (page, name) {
+	showHeaderName (page, name, weekNnumber = '') {
 		const headerTextElement = document.querySelector(`[data-header-text="${page}"]`)
 		if (headerTextElement) {
-			headerTextElement.textContent = name
+			// если есть номер недели, то неделя {номер}, иначе имя
+			headerTextElement.textContent = weekNnumber? `Неделя ${weekNnumber}`: name
 		}
 	}
 	
 
 	// Создаём список элементов из памяти
-	addFieldList (page, name = '') {
-		// console.log(page)
+	addFieldList (page, name = '', weekNumber = '') {
+		console.log(page, name)
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
 	
 		itemFieldElement.innerHTML = ''

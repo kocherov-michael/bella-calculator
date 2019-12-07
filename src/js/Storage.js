@@ -6,17 +6,12 @@ export default class Storage {
 		const dataArray = Storage.read() || []
 		// console.log('прочитали ил памяти', dataArray)
 
-		// if (data.workerName) {
-			console.log('data приходит в сторадж', data)
 		if (data.weekNumber) {
-			// console.log(dataArray)
 			let weeksArray
 			for (let i = 0; i < dataArray.length; i++) {
 				// если имя работника в массиве из памяти и из формы совпадают
 				if (dataArray[i].workerName === data.workerName) {
 					// проверка на существование номера недели
-					// console.log('dataArray[i]', dataArray[i])
-					// console.log('data', data)
 					for (let j = 0; j < dataArray[i].weeks.length; j++) {
 						if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
 							console.log('exist week')
@@ -24,7 +19,6 @@ export default class Storage {
 						}
 					}
 					weeksArray = dataArray[i].weeks
-					// console.log(weeksArray)
 					weeksArray.push({weekNumber: data.weekNumber, weekItems: []})
 					dataArray[i].weeks = weeksArray
 					break
@@ -49,15 +43,50 @@ export default class Storage {
 			})
 		}
 
-		console.log('в память идёт', dataArray)
-		localStorage.setItem('bella-workers', JSON.stringify(dataArray))
+		Storage.save(dataArray)
+		// console.log('в память идёт', dataArray)
+		// localStorage.setItem('bella-workers', JSON.stringify(dataArray))
 		// console.log('сохранено', dataArray)
 		return true
 	}
+
+	// сохранить простую операцию
+	static saveOperation(data) {
+		const dataArray = Storage.read() || []
+		console.log(dataArray)
+		console.log(data)
+
+		for (let i = 0; i < dataArray.length; i++) {
+			// если имя работника в массиве из памяти и из формы совпадают
+			if (dataArray[i].workerName === data.workerName) {
+				// проверка на существование номера недели
+				for (let j = 0; j < dataArray[i].weeks.length; j++) {
+					if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
+						
+						// создаём объект новой операции
+						const newOperation = {
+							value: data.singleOperation,
+							isSingle: true,
+							isPrevious: false
+						}
+						dataArray[i].weeks[j].weekItems.push(newOperation)
+					}
+				}
+				break
+			}
+		}
+		Storage.save(dataArray)
+
+	}
+
 	static read (page) {
 		const data = JSON.parse(localStorage.getItem('bella-workers'))
 		// console.log('прочитал', data)
 		return data || []
+	}
+
+	static save(dataArray) {
+		localStorage.setItem('bella-workers', JSON.stringify(dataArray))
 	}
 
 	// загрузка недель по имени работника

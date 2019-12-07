@@ -60,3 +60,7 @@ body {
 .opacity {
 	opacity: 0;
 }
+
+.input.warning-input {
+	border-color: $danger-color !important;
+}
