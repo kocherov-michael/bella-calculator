@@ -204,6 +204,22 @@ export default class Handler {
 				// загружаем элементы для недели
 				dataObj = Storage.getOneWeek(name, weekNumber)
 			}
+			else if (currentAttr === 'weekItems') {
+				if (nextAttr === 'handOver') {
+					// загружаем элементы для сдачи
+					dataObj = Storage.getHandOverItems(name, weekNumber)
+				} else {
+					if (element.classList.contains ('closed')) {
+						element.classList.remove('closed')
+						setTimeout( () => {element.classList.remove('hidetext')}, 400)
+					} else {
+						element.classList.add('hidetext')
+						setTimeout( () => {element.classList.add('closed')}, 400)
+					}
+					return
+				}
+				
+			}
 			
 			// определяем текущую и следующую страницы
 			const nextPage = document.querySelector(`[data-page="${nextAttr}"]`)

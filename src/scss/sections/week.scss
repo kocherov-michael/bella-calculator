@@ -4,21 +4,35 @@
 	}
 }
 
-.week-item {
+.week-item.closedable {
+	transition: all 0.4s ease;
+	position: relative;
+	// overflow: hidden;
 	.chevron {
-		transform: rotate(45deg);
+		transform: rotate(-135deg) translate(0, -20%);
+		transition: all 0.4s ease;
+	}
+	.item__lower {
+		transition: margin-top 0.4s ease, opacity 0.4s ease ;
+		opacity: 1;
+		margin-top: 0;
 	}
 }
 
 .item__header-text_minus {
 	color: $danger-color;
 }
-.week-item.closed {
+.week-item.closedable.closed {
 	.chevron {
-		transform: rotate(-135deg);
+		transform: rotate(45deg) translate(-30%);
 	}
 	.item__lower {
-		display: none;
+		margin-top: -1.8em;
+	}
+}
+.week-item.closedable.hidetext {
+	.item__lower {
+		opacity: 0;
 	}
 }
 
