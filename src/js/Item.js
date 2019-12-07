@@ -19,7 +19,7 @@ export default class Item {
 
 		// console.log(args)
 		const parentElement = args.field
-		const newElement = document.createElement('div')
+		let newElement = document.createElement('div')
 		newElement.classList.add('item')
 		// newElement.classList.add(className)
 		newElement.setAttribute('data-worker', args.workerName)
@@ -60,6 +60,11 @@ export default class Item {
 			<span>&nbsp;г</span>
 		</div>`
 		}
+
+		// если простая операция
+		else if (args.type === 'weekItem') {
+			newElement = Item.createSingleOperation(newElement, args)
+		}
 		parentElement.appendChild(newElement)
 
 		const handler = new Handler({
@@ -67,5 +72,37 @@ export default class Item {
 		})
 
 		return newElement
+	}
+
+	static createSingleOperation (newElement, args) {
+		newElement.classList.add('week-item', 'closed')
+
+		// преобразуем вид веса + или -
+		let weightValue
+		let weightClass = ''
+		if (args.weight > 0) {
+			weightValue = `+ ${args.weight}`
+		}
+		else {
+			weightValue = `- ${Math.abs(args.weight)}`
+			weightClass = 'item__header-text_minus'
+		}
+
+		newElement.innerHTML =
+		`<div class="item__header">
+		<div class="item__header-text ${weightClass}">${weightValue}</div>
+		<div class="item__header-arrow">
+			<div class="chevron"></div>
+		</div>
+	</div>
+
+	<div class="item__lower">
+		<span>Промежуточный баланс:</span>
+		<span>5678</span>
+		<span>&nbsp;г</span>
+	</div>`
+
+		return newElement
+
 	}
 }

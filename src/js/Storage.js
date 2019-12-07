@@ -14,7 +14,7 @@ export default class Storage {
 					// проверка на существование номера недели
 					for (let j = 0; j < dataArray[i].weeks.length; j++) {
 						if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
-							console.log('exist week')
+							// console.log('exist week')
 							return false
 						}
 					}
@@ -32,7 +32,7 @@ export default class Storage {
 			// проверка на существование имени
 			for (let i = 0; i < dataArray.length; i++) {
 				if (dataArray[i].workerName === data.workerName) {
-					console.log('exist name')
+					// console.log('exist name')
 					return false
 				}
 			}
@@ -53,8 +53,8 @@ export default class Storage {
 	// сохранить простую операцию
 	static saveOperation(data) {
 		const dataArray = Storage.read() || []
-		console.log(dataArray)
-		console.log(data)
+		// console.log(dataArray)
+		// console.log(data)
 
 		for (let i = 0; i < dataArray.length; i++) {
 			// если имя работника в массиве из памяти и из формы совпадают
@@ -103,13 +103,13 @@ export default class Storage {
 	}
 
 	static getOneWeek(name, weekNumber) {
-		console.log('static', weekNumber)
+		// console.log('static', weekNumber)
 		const dataArray = Storage.read()
 
 		for(let i = 0; i < dataArray.length; i++) {
 			// если имя совпадает
 			if (dataArray[i].workerName === name) {
-				console.log('here', dataArray[i].weeks)
+				// console.log('here', dataArray[i].weeks)
 				for(let j = 0; j < dataArray[i].weeks.length; j++) {
 					// если номер недели совпадает
 					if(dataArray[i].weeks.weekNumber === weekNumber) {

@@ -73,7 +73,7 @@ export default class Page {
 			addSingleOperation: weekNumber
 		})
 		
-		this.addFieldList(page, name)
+		this.addFieldList(page, name, weekNumber)
 		this.showHeaderName(page, name, weekNumber)
 
 	}
@@ -82,6 +82,11 @@ export default class Page {
 	// создаём форму добавления простой операции в футере
 	createFormAddSingleOperation (page, name, weekNumber) {
 		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+		// если элемент уже есть, то удаляем его
+		const footerOldActionElement = footerElement.querySelector('.footer__actions')
+		if (footerOldActionElement)  {
+			footerElement.removeChild(footerOldActionElement)
+		}
 
 		const footerActionElement = document.createElement('div')
 		footerActionElement.classList.add('footer__actions')
@@ -207,14 +212,14 @@ export default class Page {
 	// добавляем в шапку стрелку назад
 	// импортируем
 	createHeaderBackArrow (page, name = '') {
-		console.log('стрелку создаем', page)
+		// console.log('стрелку создаем', page)
 		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
 		const previousPage = this.getPreviousPage(page)
-		console.log(headerNavElement)
+		// console.log(headerNavElement)
 
 		// создаём элемент стрелки назад в шапке
 		const arrowBackElement = document.createElement('div')
-		console.log(arrowBackElement)
+		// console.log(arrowBackElement)
 		arrowBackElement.classList.add('header__arrow')
 		arrowBackElement.setAttribute('data-header-back', previousPage)
 		arrowBackElement.setAttribute('data-header-back-worker', name)
@@ -225,7 +230,7 @@ export default class Page {
 		imgArrowElement.setAttribute('src', 'assets/img/arrow.svg')
 		imgArrowElement.setAttribute('alt', 'назад')
 		arrowBackElement.append(imgArrowElement)
-		console.log(imgArrowElement)
+		// console.log(imgArrowElement)
 
 	}
 
@@ -277,7 +282,7 @@ export default class Page {
 
 	// Создаём список элементов из памяти
 	addFieldList (page, name = '', weekNumber = '') {
-		console.log(page, name)
+		// console.log(page, name)
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
 	
 		itemFieldElement.innerHTML = ''
@@ -302,8 +307,6 @@ export default class Page {
 		}
 		// если страница с неделями
 		else if ( page === 'weeksList') {
-			// console.log(data)
-			// console.log('РИСУЕМ', data, name || 'хер')
 			for( let i = 0; i < data.length; i++) {
 				if ( data[i].workerName === name) {
 					// console.log(data[i].weeks)
@@ -322,13 +325,39 @@ export default class Page {
 			}
 		}
 
+		else if ( page === 'weekItems') {
+			for( let i = 0; i < data.length; i++) {
+				if ( data[i].workerName === name) {
+					console.log(data[i].weeks)
+					// проходимся по неделям
+					for( let j = 0; j < data[i].weeks.length; j++) {
+						if ( data[i].weeks[j].weekNumber === weekNumber) {
+
+							data[i].weeks[j].weekItems.forEach( (weekItem) => {
+				
+								const weekItemButton = new Item({
+									// родительский элемент
+									field: itemFieldElement,
+									// вес
+									weight: weekItem.value,
+									type: 'weekItem',
+									workerName: name,
+									previous: weekItem.isPrevious
+								})
+							})
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	// перелистываем страницу вперёд
 	changeNextPage (workerObj, currentPage, nextPage, name, weekNumber) {
 		// console.log(workerObj)
-		console.log(nextPage)
-		console.log(name)
+		// console.log(nextPage)
+		// console.log(name)
 		
 		const containerElement = document.querySelector('[data-container]')
 

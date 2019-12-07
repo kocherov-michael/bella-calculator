@@ -621,7 +621,7 @@ fetch('https://quotes.instaforex.com/api/quotesTick?m=json&q=silver,gold,usdrub'
 }
 
 function dataHandler (data) {
-	console.log(data)
+	// console.log(data)
 	const rubPerUsd = data[2].bid
 	const usdPerSilverUncia = data[0].bid
 	const usdPerGoldUncia = data[1].bid
