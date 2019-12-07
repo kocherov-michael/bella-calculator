@@ -3,25 +3,19 @@ import Handler from './Handler'
 export default class Item {
 	constructor (args = {}) {
 		// this.handler = new Handler()
-		// if (args.start) {
+		if (args.type === 'salary') {
+			Item.createSalaryItem(args)
+		} else {
 			this.create(args)
-		// }
+		}
 	}
 
 	create(args) {
-		// let classNameView
-		// let classNameType
-
-		// if (args.type === 'add') {
-		// 	classNameView = 'item_warning'
-		// 	classNameType = 'item_add'
-		// }
 
 		// console.log(args)
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
-		// newElement.classList.add(className)
 		newElement.setAttribute('data-worker', args.workerName)
 		
 		// если тип - работник
@@ -46,18 +40,6 @@ export default class Item {
 			<div class="item__header-arrow">
 				<div class="chevron"></div>
 			</div>
-		</div>
-
-		<div class="item__uppper">
-			<span>Зарплата:</span>
-			<span>${args.salary || 0}</span>
-			<span>&nbsp;₽</span>
-		</div>
-
-		<div class="item__lower">
-			<span>Остаток:</span>
-			<span>${args.lost || 'неизвестно'}</span>
-			<span>&nbsp;г</span>
 		</div>`
 		}
 
@@ -66,10 +48,13 @@ export default class Item {
 			newElement = Item.createSingleOperation(newElement, args)
 		}
 		parentElement.appendChild(newElement)
-
+		
 		const handler = new Handler({
 			itemHandler: newElement
 		})
+		// прокручиваем до последнего добавленного элемента
+		setTimeout(()=> {newElement.scrollIntoView()},400)
+		
 
 		return newElement
 	}
@@ -103,6 +88,51 @@ export default class Item {
 	</div>`
 
 		return newElement
+
+	}
+	// static createElement(args) {
+	// 	const parentElement = args.field
+	// 	let newElement = document.createElement('div')
+	// 	newElement.classList.add('item')
+	// 	newElement.setAttribute('data-worker', args.workerName)
+
+	// 	return
+	// }
+
+	static createSalaryItem(args) {
+		const parentElement = args.field
+		let newElement = document.createElement('div')
+		newElement.classList.add('item')
+		newElement.classList.add('salary-item')
+		newElement.setAttribute('data-worker', args.workerName)
+		newElement.setAttribute('data-next', 'handOverItems')
+		newElement.setAttribute('data-week-number', args.weekNumber)
+
+		newElement.innerHTML = 
+		`<div class="item__header">
+		<div class="item__header-text">Сдача</div>
+		<div class="item__header-arrow">
+			<div class="chevron"></div>
+		</div>
+	</div>
+
+	<div class="item__uppper">
+		<span>Зарплата:</span>
+		<span data-week-salary>0</span>
+		<span>&nbsp;₽</span>
+	</div>
+
+	<div class="item__lower">
+		<span>Вес:</span>
+		<span data-week-weight>0</span>
+		<span>&nbsp;г</span>
+	</div>`
+		
+		parentElement.prepend(newElement)
+		
+		const handler = new Handler({
+			itemHandler: newElement
+		})
 
 	}
 }

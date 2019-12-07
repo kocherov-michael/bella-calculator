@@ -7,7 +7,8 @@ export default class Page {
 		this.pages = [
 			'start',
 			'weeksList',
-			'weekItems'
+			'weekItems',
+			'handOverItems'
 		]
 
 		if (args.start) {
@@ -75,7 +76,63 @@ export default class Page {
 		
 		this.addFieldList(page, name, weekNumber)
 		this.showHeaderName(page, name, weekNumber)
+		this.createSalaryItem(page, name, weekNumber)
 
+	}
+
+	// генерируем страницу сдачи
+	renderHandOverItemsPage (page, name = '', weekNumber = '') {
+		this.createHeader(page, name)
+		this.createHeaderBackArrow(page, name, weekNumber)
+
+		const handler = new Handler({
+			menu: page,
+			// addItem: page,
+			workerName: name,
+			backButton: page,
+			// addSingleOperation: weekNumber
+		})
+
+		this.showHeaderName(page, name, weekNumber)
+
+	}
+
+
+	// создаём главный элемент сдачи
+	createSalaryItem (page, name, weekNumber) {
+		const salaryFieldElement = document.querySelector(`[data-salary-field="${page}"]`)
+
+		// очищаем поле
+		salaryFieldElement.innerHTML = ''
+
+		// const data = Storage.read()
+
+		// for( let i = 0; i < data.length; i++) {
+		// 	if ( data[i].workerName === name) {
+		// 		console.log(data[i].weeks)
+		// 		// проходимся по неделям
+		// 		for( let j = 0; j < data[i].weeks.length; j++) {
+		// 			if ( data[i].weeks[j].weekNumber === weekNumber) {
+
+		// 				data[i].weeks[j].weekSalary
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		const newElement = new Item({
+			// родительский элемент
+			field: salaryFieldElement,
+			// вес
+			text: 'Сдача',
+			type: 'salary',
+			workerName: name,
+			weekNumber
+		})
+
+		// const salaryItemElement = document.createElement('div')
+		// salaryItemElement.classList.add('')
+		
 	}
 
 
@@ -211,7 +268,7 @@ export default class Page {
 
 	// добавляем в шапку стрелку назад
 	// импортируем
-	createHeaderBackArrow (page, name = '') {
+	createHeaderBackArrow (page, name = '', weekNumber = '') {
 		// console.log('стрелку создаем', page)
 		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
 		const previousPage = this.getPreviousPage(page)
@@ -223,6 +280,10 @@ export default class Page {
 		arrowBackElement.classList.add('header__arrow')
 		arrowBackElement.setAttribute('data-header-back', previousPage)
 		arrowBackElement.setAttribute('data-header-back-worker', name)
+		// если на странице со сдачей, то добавляем номер недели
+		if (weekNumber) {
+			arrowBackElement.setAttribute('data-header-back-week', weekNumber)
+		}
 		headerNavElement.prepend(arrowBackElement)
   
 		// создаём img стрелку назад
@@ -271,11 +332,15 @@ export default class Page {
 	// }
 
 	// показать текст в шапке
-	showHeaderName (page, name, weekNnumber = '') {
+	showHeaderName (page, name, weekNumber = '') {
 		const headerTextElement = document.querySelector(`[data-header-text="${page}"]`)
-		if (headerTextElement) {
+
+		if (page === 'handOverItems') {
+			headerTextElement.textContent = 'Сдача'
+		}
+		else if (headerTextElement) {
 			// если есть номер недели, то неделя {номер}, иначе имя
-			headerTextElement.textContent = weekNnumber? `Неделя ${weekNnumber}`: name
+			headerTextElement.textContent = weekNumber? `Неделя ${weekNumber}`: name
 		}
 	}
 	
@@ -307,48 +372,37 @@ export default class Page {
 		}
 		// если страница с неделями
 		else if ( page === 'weeksList') {
-			for( let i = 0; i < data.length; i++) {
-				if ( data[i].workerName === name) {
-					// console.log(data[i].weeks)
-					data[i].weeks.forEach( (week) => {
+			const workerWeeks = Storage.getWorkerWeeks(name)
+			workerWeeks.weeks.forEach( (week) => {
 				
-						const weekButton = new Item({
-							// родительский элемент
-							field: itemFieldElement,
-							// номер недели
-							text: week.weekNumber,
-							type: 'week',
-							workerName: name
-						})
-					})
-				}
-			}
+				const weekButton = new Item({
+					// родительский элемент
+					field: itemFieldElement,
+					// номер недели
+					text: week.weekNumber,
+					type: 'week',
+					workerName: name
+				})
+			})
+
 		}
 
 		else if ( page === 'weekItems') {
-			for( let i = 0; i < data.length; i++) {
-				if ( data[i].workerName === name) {
-					console.log(data[i].weeks)
-					// проходимся по неделям
-					for( let j = 0; j < data[i].weeks.length; j++) {
-						if ( data[i].weeks[j].weekNumber === weekNumber) {
-
-							data[i].weeks[j].weekItems.forEach( (weekItem) => {
+			console.log(name, weekNumber)
+			const oneWeekObj = Storage.getOneWeek(name, weekNumber)
+			oneWeekObj.weekItems.forEach( (weekItem) => {
 				
-								const weekItemButton = new Item({
-									// родительский элемент
-									field: itemFieldElement,
-									// вес
-									weight: weekItem.value,
-									type: 'weekItem',
-									workerName: name,
-									previous: weekItem.isPrevious
-								})
-							})
-						}
-					}
-				}
-			}
+				const weekItemButton = new Item({
+					// родительский элемент
+					field: itemFieldElement,
+					// вес
+					weight: weekItem.value,
+					type: 'weekItem',
+					workerName: name,
+					previous: weekItem.isPrevious
+				})
+			})
+
 		}
 
 	}
@@ -373,6 +427,9 @@ export default class Page {
 		else if (nextAttr === 'weekItems') {
 			this.renderWeekItemsPage(nextAttr, name, weekNumber)
 		}
+		else if (nextAttr === 'handOverItems') {
+			this.renderHandOverItemsPage(nextAttr, name, weekNumber)
+		}
 		
 		setTimeout( () => {
 			currentPage.classList.add('hide')
@@ -382,7 +439,7 @@ export default class Page {
 	}
 
 	// перелистываем страницу назад
-	changePreviousPage (workerObj, currentPage, previousPage, name) {
+	changePreviousPage (workerObj, currentPage, previousPage, name, weekNumber = '') {
 		
 		const containerElement = document.querySelector('[data-container]')
 
@@ -392,7 +449,7 @@ export default class Page {
 		const previousAttr = previousPage.getAttribute('data-page')
 		// отрисовываем предыдущую страницу
 		// this.renderPage(previousAttr, name)
-		this.addFieldList(previousAttr, name)
+		this.addFieldList(previousAttr, name, weekNumber)
 		
 		
 		setTimeout( () => {

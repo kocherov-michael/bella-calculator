@@ -40,18 +40,18 @@ export default class Handler {
 		// операция Добавить
 		addOperationElement.addEventListener('click', () => {
 			const operationValue = Math.abs(inputOperationElement.value.trim())
-			Handler.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
+			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
 		})
 
 		// операция Вычесть
 		minusOperationElement.addEventListener('click', () => {
 			const operationValue = Math.abs(inputOperationElement.value.trim()) * -1
-			Handler.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
+			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
 		})
 	}
 
 	// обработка нажатий Прибавить и Вычесть в Операции
-	static addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
+	addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
 
 		// Если ничего не введено, то предупреждаем пользователя
 		if (!operationValue) {
@@ -69,6 +69,9 @@ export default class Handler {
 			singleOperation: operationValue
 		}
 		Storage.saveOperation(newItemValues)
+		this.page.addFieldList('weekItems', workerName, weekNumber)
+		// console.log(document.body.scrollHeight)
+		// window.scrollTo(0, 10000)
 	}
 
 
@@ -191,23 +194,25 @@ export default class Handler {
 			const name = element.getAttribute('data-worker')
 			const nextAttr = element.getAttribute('data-next')
 			const currentParentElement = element.closest('[data-item-field]')
-			const currentAttr = currentParentElement.getAttribute('data-item-field')
+			const currentAttr = currentParentElement ? currentParentElement.getAttribute('data-item-field') 
+				: element.closest('[data-field]').getAttribute('data-field')
 			const weekNumber = element.getAttribute('data-week-number')
 
 			let dataObj
 			if (currentAttr === 'start') {
 				// загружаем недели для работника
-				dataObj = Storage.getWorkerWeeks(name)
+				// dataObj = Storage.getWorkerWeeks(name)
 				// console.log(dataObj)
 			}
 			else if (currentAttr === 'weeksList') {
 				// загружаем элементы для недели
-				dataObj = Storage.getOneWeek(name, weekNumber)
+				// dataObj = Storage.getOneWeek(name, weekNumber)
 			}
 			else if (currentAttr === 'weekItems') {
-				if (nextAttr === 'handOver') {
+				if (nextAttr === 'handOverItems') {
 					// загружаем элементы для сдачи
-					dataObj = Storage.getHandOverItems(name, weekNumber)
+					// dataObj = Storage.getHandOverItems(name, weekNumber)
+					// currentAttr = currentParentElement.getAttribute('data-field')
 				} else {
 					if (element.classList.contains ('closed')) {
 						element.classList.remove('closed')
@@ -241,10 +246,11 @@ export default class Handler {
 		backButtonElement.addEventListener('click', () => {
 			// backButtonElement
 			const targetPageAttr = backButtonElement.getAttribute('data-header-back')
+			const targetPageWeekAttr = backButtonElement.getAttribute('data-header-back-week')
 			const targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
 			const targetPageElement = document.querySelector(`[data-page=${targetPageAttr}]`)
 			// console.log(targetPage)
-			this.page.changePreviousPage('', currentPageElement, targetPageElement, targetPageWorkerAttr)
+			this.page.changePreviousPage('', currentPageElement, targetPageElement, targetPageWorkerAttr, targetPageWeekAttr)
 			backButtonElement = null
 		})
 	}

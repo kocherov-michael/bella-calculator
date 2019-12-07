@@ -112,9 +112,9 @@ export default class Storage {
 				// console.log('here', dataArray[i].weeks)
 				for(let j = 0; j < dataArray[i].weeks.length; j++) {
 					// если номер недели совпадает
-					if(dataArray[i].weeks.weekNumber === weekNumber) {
+					if(dataArray[i].weeks[j].weekNumber === weekNumber) {
 						// возвращаем елементы внутри недели
-						return dataArray[i].weeks.weekItems || 'empty'
+						return dataArray[i].weeks[j] || 'empty'
 					}
 				}
 			}
