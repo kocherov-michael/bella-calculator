@@ -84,6 +84,7 @@ export default class Page {
 	renderHandOverItemsPage (page, name = '', weekNumber = '') {
 		this.createHeader(page, name)
 		this.createHeaderBackArrow(page, name, weekNumber)
+		this.createAddHandOverForm(page, name, weekNumber)
 
 		const handler = new Handler({
 			menu: page,
@@ -105,21 +106,6 @@ export default class Page {
 		// очищаем поле
 		salaryFieldElement.innerHTML = ''
 
-		// const data = Storage.read()
-
-		// for( let i = 0; i < data.length; i++) {
-		// 	if ( data[i].workerName === name) {
-		// 		console.log(data[i].weeks)
-		// 		// проходимся по неделям
-		// 		for( let j = 0; j < data[i].weeks.length; j++) {
-		// 			if ( data[i].weeks[j].weekNumber === weekNumber) {
-
-		// 				data[i].weeks[j].weekSalary
-		// 			}
-		// 		}
-		// 	}
-		// }
-
 		const newElement = new Item({
 			// родительский элемент
 			field: salaryFieldElement,
@@ -130,11 +116,51 @@ export default class Page {
 			weekNumber
 		})
 
-		// const salaryItemElement = document.createElement('div')
-		// salaryItemElement.classList.add('')
-		
 	}
 
+	// создаём форму добавления сдачи
+	createAddHandOverForm (page, name, weekNumber) {
+		const footerActionElement = document.querySelector(`[data-footer-action="${page}"]`)
+
+		footerActionElement.innerHTML = ''
+		footerActionElement.innerHTML = 
+		`<div class="hand-over-orepations" data-hand-over-operations>
+		<input type="number" class="hand-over-orepations__input input" placeholder="Вес" data-input-weight>
+		<label class="hand-over-orepations__label">
+			<select type="select" class="hand-over-orepations__input input" size="0" data-select-weaving>
+				<option class="option" value="choose" selected>Плетение</option>
+				<option class="option" value="бсм20">бсм20</option>
+				<option class="option" value="бсм30">бсм30</option>
+				<option class="option" value="бсм40">бсм40</option>
+				<option class="option" value="бсм50">бсм50</option>
+				<option class="option" value="бсм60">бсм60</option>
+				
+			</select>
+			<div class="chevron"></div>
+		</label>
+
+		<input type="number" class="hand-over-orepations__input input" placeholder="Количество" data-input-count>
+
+		<label class="hand-over-orepations__label">
+			<select type="select" class="hand-over-orepations__input input" data-select-type>
+				<option class="option" value="chain">Цепь</option>
+				<option class="option" value="bracelet">Браслет</option>
+			</select>
+			<div class="chevron"></div>
+		</label>
+
+		<button class="item item_warning item_add hand-over-orepations__button">
+			<div class="item__header">
+				<div class="item__header-text">Добавить к сдаче</div>
+				<div class="item__header-arrow">
+					<div class="chevron"></div>
+				</div>
+			</div>
+		</button>
+
+	</div>`
+
+	}
 
 	// создаём форму добавления простой операции в футере
 	createFormAddSingleOperation (page, name, weekNumber) {
