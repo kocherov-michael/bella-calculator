@@ -267,7 +267,7 @@ export default class Handler {
 				return
 			}
 			this.closeForm()
-			// this.page.addFieldList('weavingList')
+			this.page.addFieldList('weavingList')
 		} else {
 
 			const result = Storage.saveWorker(newItemValues)

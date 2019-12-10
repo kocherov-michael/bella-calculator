@@ -16,6 +16,9 @@ export default class Item {
 			this.newElement = Item.createHandOverItem(args)
 
 		}
+		else if (args.type === 'weavingItem') {
+			this.newElement = Item.createWeavingItem(args)
+		}
 		 else {
 			this.create(args)
 		}
@@ -190,11 +193,46 @@ export default class Item {
 
 		// прокручиваем до последнего добавленного элемента
 		setTimeout(()=> {
-			console.log('прокрутка')
+			// console.log('прокрутка')
 			newElement.scrollIntoView()
 		},400)
 	}
 
+	// создаём элемент плетения
+	static createWeavingItem (args) {
+		const parentElement = args.field
+		let newElement = document.createElement('div')
+		newElement.classList.add('item')
+		newElement.classList.add('weaving-item')
+
+		newElement.innerHTML =
+		`<div class="item__header">
+		<div class="item__header-text">${args.weavingName}</div>
+		<div class="item__header-arrow">
+			<div class="weaving-item__percent"><span>${args.percent}</span>%</div>
+		</div>
+	</div>
+
+	<div class="item__uppper">
+		<span>Цепь:</span>
+		<span>${args.chain}</span>
+		<span>&nbsp;₽</span>
+	</div>
+
+	<div class="item__lower">
+		<span>Браслет:</span>
+		<span>${args.bracelet}</span>
+		<span>&nbsp;₽</span>
+	</div>`
+
+		parentElement.append(newElement)
+		setTimeout(()=> {
+			// console.log('прокрутка')
+			newElement.scrollIntoView()
+		},400)
+	}
+
+	// правильно склоняем числительные
 	static makeWordsEnds( number, array) {
     let string = ""
 		const lastNum = String(number)[String(number).length-1]
@@ -210,5 +248,6 @@ export default class Item {
       string = array[2]
     }
     return string
-  }
+	}
+	
 }

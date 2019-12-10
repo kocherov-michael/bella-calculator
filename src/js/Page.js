@@ -130,6 +130,7 @@ export default class Page {
 		})
 
 		this.showHeaderName(page, name, weekNumber)
+		this.addFieldList(page, name, weekNumber)
 	}
 
 
@@ -373,42 +374,6 @@ export default class Page {
 
 	}
 
-	// добавить стрелку назад
-	// старый метод
-	// addHeader(page, name = ''){
-	// 	const headerElement = document.querySelector(`[data-header="${page}"]`)
-		
-	// 	// получаем аттрибут предыдущей страницы
-	// 	const previousPage = this.getPreviousPage(page)
-
-	// 	headerElement.innerHTML = ''
-	// 	headerElement.innerHTML = 
-	// 	`<div class="header__nav">
-	// 	<div class="header__arrow" data-header-back="${previousPage}" data-header-back-worker="${name}"></div>
-	// 	<div class="header__text" data-header-text="${page}"></div>
-	// 	<div class="header__menu" data-header-menu="${page}">
-	// 		<div class="menu-icon">
-	// 			<div class="menu-icon__line"></div>
-	// 		</div>
-	// 	</div>
-	// 	<div class="menu" data-menu-list>
-	// 		<button class="menu__item">Котировки</button>
-	// 		<button class="menu__item">Плетения</button>
-	// 		<button class="menu__item">Восстановить удаления</button>
-	// 	</div>
-	// </div>`
-
-	// // если не стартовая страница, то добавляем стрелку
-	// 	if (page !== 'start') {
-	// 		const headerArrowElement = document.querySelector(`[data-header-back="${previousPage}"]`)
-	// 		const imgArrowElement = document.createElement('img')
-	// 		imgArrowElement.setAttribute('src', 'assets/img/arrow.svg')
-	// 		imgArrowElement.setAttribute('alt', 'назад')
-	// 		headerArrowElement.append(imgArrowElement)
-	// 	}
-
-	// }
-
 	// показать текст в шапке
 	showHeaderName (page, name, weekNumber = '') {
 		const headerTextElement = document.querySelector(`[data-header-text="${page}"]`)
@@ -504,6 +469,23 @@ export default class Page {
 					isChain: handOverItem.isChain,
 					percent: handOverItem.percent,
 					price: handOverItem.price
+				})
+			})
+		}
+
+		else if ( page === 'weavingList') {
+			const weavingArr = Storage.getWeavingArray()
+
+			weavingArr.forEach( (weavingItem) => {
+				
+				const handOverButton = new Item({
+					// родительский элемент
+					field: itemFieldElement,
+					type: 'weavingItem',
+					weavingName: weavingItem.weavingName,
+					percent: weavingItem.percent,
+					chain: weavingItem.chain,
+					bracelet: weavingItem.bracelet,
 				})
 			})
 		}

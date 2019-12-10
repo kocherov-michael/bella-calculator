@@ -194,12 +194,12 @@ export default class Storage {
 	static saveWeavingItem (data) {
 		// получаем весь объект из localStorage
 		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
-		console.log(dataObj)
+
 		// массив с плетениями
 		dataObj.weavings = dataObj.weavings || []
 		for(let i = 0; i < dataObj.weavings.length; i++) {
 			// если такое плетение уже есть, то отмена
-			if (dataArray.weavingArr[i].weavingName === data.weavingName) {
+			if (dataObj.weavings[i].weavingName === data.weavingName) {
 				return false
 			}
 			
@@ -209,6 +209,12 @@ export default class Storage {
 		localStorage.setItem('bella-workers', JSON.stringify(dataObj))
 
 		return true
+	}
+
+	// получаем массив плетений из памяти
+	static getWeavingArray () {
+		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
+		return dataObj.weavings || []
 	}
 }
 // localStorage.setItem('bellaPlus', JSON.stringify(data))
