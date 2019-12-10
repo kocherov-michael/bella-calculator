@@ -110,6 +110,7 @@ export default class Item {
 	// 	return
 	// }
 
+	// создаём блок сдачи на странице недели
 	static createSalaryItem(args) {
 		const parentElement = args.field
 		const newElement = document.createElement('div')

@@ -11,7 +11,7 @@ export default class Handler {
 		
 
 		if (args.menu) {
-			this.menuHandler(args.menu)
+			this.menuHandler(args)
 		}
 		// кнопка назад в шапке
 		if (args.backButton) {
@@ -130,16 +130,29 @@ export default class Handler {
 
 
 	// открыть / скрыть меню в шапке 
-	menuHandler (page) {
-		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
+	menuHandler (args) {
+		const sectionElement =  document.querySelector(`[data-page="${args.page}"]`)
 		const headerMenuElement = sectionElement.querySelector('[data-header-menu]')
 		const headerMenuListElement = sectionElement.querySelector('[data-menu-list]')
+		const weavingLinkElement = sectionElement.querySelector('[data-weaving-link]')
+
 
 		headerMenuElement.addEventListener('click', () => {
 			headerMenuElement.classList.toggle('cross')
 			headerMenuListElement.classList.toggle('menu-show')
 		} )
 
+		weavingLinkElement.addEventListener('click', () => {
+			const nextPageElement = document.querySelector(`[data-page="weavingList"]`)
+			
+			this.page.changeNextPage('', sectionElement, nextPageElement, args.name, args.weekNumber)
+
+			setTimeout(() => {
+				headerMenuElement.classList.toggle('cross')
+				headerMenuListElement.classList.toggle('menu-show')
+			}, 400)
+			
+		})
 		
 	}
 	

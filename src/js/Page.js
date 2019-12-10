@@ -19,7 +19,7 @@ export default class Page {
 
 
 
-	renderStartPage (page, name = '') {
+	renderStartPage (page, name = '', weekNumber = '') {
 		// this.addHeader(page)
 		this.createHeader(page)
 
@@ -27,6 +27,9 @@ export default class Page {
 		this.addForm(page, name)
 
 		const handler = new Handler({
+			page,
+			name,
+			weekNumber,
 			menu: page,
 			addItem: page,
 			// workerName: name,
@@ -38,7 +41,7 @@ export default class Page {
 
 	}
 
-	renderWeekListPage (page, name = '') {
+	renderWeekListPage (page, name = '', weekNumber = '') {
 		// this.addHeader(page)
 		this.createHeader(page)
 		this.createHeaderBackArrow(page)
@@ -47,6 +50,9 @@ export default class Page {
 		this.addForm(page, name)
 
 		const handler = new Handler({
+			page,
+			name,
+			weekNumber,
 			menu: page,
 			addItem: page,
 			workerName: name,
@@ -67,6 +73,9 @@ export default class Page {
 		this.createFormAddSingleOperation(page, name, weekNumber)
 
 		const handler = new Handler({
+			page,
+			name,
+			weekNumber,
 			menu: page,
 			// addItem: page,
 			workerName: name,
@@ -100,6 +109,22 @@ export default class Page {
 		this.showHeaderName(page, name, weekNumber)
 		this.addFieldList(page, name, weekNumber)
 
+	}
+
+	// генерируем страницу со списком плетений
+	renderWeavingListPage(page, name = '', weekNumber = '', previousAttr = 'start') {
+		this.createHeader(page, name)
+		this.createHeaderBackArrow(page, name, weekNumber, previousAttr)
+
+		const handler = new Handler({
+			page,
+			name,
+			weekNumber,
+			menu: page,
+			// addItem: page,
+			// workerName: name,
+			backButton: page
+		})
 	}
 
 
@@ -289,7 +314,8 @@ export default class Page {
 		</div>
 		<div class="menu" data-menu-list>
 			<button class="menu__item">Котировки</button>
-			<button class="menu__item">Плетения</button>
+			<button class="menu__item" data-next="weavingList"
+			data-weaving-link="${page}">Плетения</button>
 			<button class="menu__item">Восстановить удаления</button>
 		</div>
 	</div>`
@@ -298,10 +324,13 @@ export default class Page {
 
 	// добавляем в шапку стрелку назад
 	// импортируем
-	createHeaderBackArrow (page, name = '', weekNumber = '') {
+	createHeaderBackArrow (page, name = '', weekNumber = '', previousPage = '') {
 		// console.log('стрелку создаем', page)
 		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
-		const previousPage = this.getPreviousPage(page)
+		// если предыдущая страница не обозначена, значит она идёт по порядку
+		if(!previousPage) {
+			previousPage = this.getPreviousPage(page)
+		}
 		// console.log(headerNavElement)
 
 		// создаём элемент стрелки назад в шапке
@@ -471,6 +500,7 @@ export default class Page {
 		containerElement.classList.add('nextPage')
 
 		const nextAttr = nextPage.getAttribute('data-page')
+		const previousAttr = currentPage.getAttribute('data-page')
 		// this.addFieldList(nextAttr, name)
 
 		if (nextAttr === 'weeksList') {
@@ -481,6 +511,9 @@ export default class Page {
 		}
 		else if (nextAttr === 'handOverItems') {
 			this.renderHandOverItemsPage(nextAttr, name, weekNumber)
+		}
+		else if (nextAttr === 'weavingList') {
+			this.renderWeavingListPage(nextAttr, name, weekNumber, previousAttr)
 		}
 		
 		setTimeout( () => {
