@@ -146,9 +146,8 @@ export default class Handler {
 		} )
 
 		weavingLinkElement.addEventListener('click', () => {
-			const nextPageElement = document.querySelector(`[data-page="weavingList"]`)
 			
-			this.page.changeNextPage('', sectionElement, nextPageElement, args.name, args.weekNumber)
+			this.page.changeNextPage(args.page, 'weavingList', args.name, args.weekNumber)
 
 			setTimeout(() => {
 				headerMenuElement.classList.toggle('cross')
@@ -222,18 +221,6 @@ export default class Handler {
 	saveFormValues() {
 		// кнопка Добавить, берём у неё имя работника
 		const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
-		const currentWorker = addButtonElement.getAttribute('data-current-worker')
-		// console.log(addButtonElement, this.args.workerName, currentWorker)
-		// console.log(this.args.addItem)
-		// если имя работника в объекте и в вёрстке не совпадает, то стоп
-		// if (this.args.addItem === 'weavingList') {
-		// 	// console.log(currentWorker !== this.args.workerName)
-		// 	// console.log(this.args.addItem !== 'start')
-		// }
-		// else if (currentWorker !== this.args.workerName && this.args.addItem !== 'start') {
-		// 	return
-		// }
-		// console.log('go')
 
 		const newItemValues = {}
 
@@ -256,18 +243,17 @@ export default class Handler {
 			newItemValues[inputsList[i].name] = inputsList[i].value
 			// console.log(inputsList[i].value)
 		}
-		// if (newItemValues.inputValue) {
 
-		// }
-		console.log(newItemValues)
-		console.log(this.args)
+		// если страница добавления плетения
 		if (this.args.page === 'weavingList') {
 			const result = Storage.saveWeavingItem(newItemValues)
-			if (!result) {
-				return
-			}
+
+			// если уже есть такое название плетения, то отмена
+			if (!result) return
+			
 			this.closeForm()
 			this.page.addFieldList('weavingList')
+
 		} else {
 
 			const result = Storage.saveWorker(newItemValues)
@@ -275,15 +261,13 @@ export default class Handler {
 			this.closeForm()
 			this.page.addFieldList(this.args.addItem, nameForRender)
 		}
-		// this.storage.read()
 	}
 
 
 	// обработчик нажатия на обычный элемент
 	itemHandler(element) {
-		// console.log(element)
+
 		element.addEventListener('click', () => {
-			// const name = element.querySelector('[data-item-name]').textContent
 			const name = element.getAttribute('data-worker')
 			const nextAttr = element.getAttribute('data-next')
 			const currentParentElement = element.closest('[data-item-field]')
@@ -291,39 +275,19 @@ export default class Handler {
 				: element.closest('[data-field]').getAttribute('data-field')
 			const weekNumber = element.getAttribute('data-week-number')
 
-			let dataObj
-			if (currentAttr === 'start') {
-				// загружаем недели для работника
-				// dataObj = Storage.getWorkerWeeks(name)
-				// console.log(dataObj)
-			}
-			else if (currentAttr === 'weeksList') {
-				// загружаем элементы для недели
-				// dataObj = Storage.getOneWeek(name, weekNumber)
-			}
-			else if (currentAttr === 'weekItems') {
-				if (nextAttr === 'handOverItems') {
-					// загружаем элементы для сдачи
-					// dataObj = Storage.getHandOverItems(name, weekNumber)
-					// currentAttr = currentParentElement.getAttribute('data-field')
+			// показываем / скрываем промежуточный баланс
+			if (!nextAttr & currentAttr === 'weekItems') {
+				if (element.classList.contains ('closed')) {
+					element.classList.remove('closed')
+					setTimeout( () => {element.classList.remove('hidetext')}, 400)
 				} else {
-					if (element.classList.contains ('closed')) {
-						element.classList.remove('closed')
-						setTimeout( () => {element.classList.remove('hidetext')}, 400)
-					} else {
-						element.classList.add('hidetext')
-						setTimeout( () => {element.classList.add('closed')}, 400)
-					}
-					return
+					element.classList.add('hidetext')
+					setTimeout( () => {element.classList.add('closed')}, 400)
 				}
-				
+				return
 			}
 			
-			// определяем текущую и следующую страницы
-			const nextPage = document.querySelector(`[data-page="${nextAttr}"]`)
-			const currentPage = document.querySelector(`[data-page="${currentAttr}"]`)
-
-			this.page.changeNextPage(dataObj, currentPage, nextPage, name, weekNumber)
+			this.page.changeNextPage(currentAttr, nextAttr, name, weekNumber)
 		})
 	}
 
@@ -341,9 +305,9 @@ export default class Handler {
 			const targetPageAttr = backButtonElement.getAttribute('data-header-back')
 			const targetPageWeekAttr = backButtonElement.getAttribute('data-header-back-week')
 			const targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
-			const targetPageElement = document.querySelector(`[data-page=${targetPageAttr}]`)
+			// const targetPageElement = document.querySelector(`[data-page=${targetPageAttr}]`)
 			// console.log(targetPage)
-			this.page.changePreviousPage('', currentPageElement, targetPageElement, targetPageWorkerAttr, targetPageWeekAttr)
+			this.page.changePreviousPage(page, targetPageAttr, targetPageWorkerAttr, targetPageWeekAttr)
 			backButtonElement = null
 		})
 	}

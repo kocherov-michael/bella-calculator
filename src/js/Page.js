@@ -345,13 +345,12 @@ export default class Page {
 	// добавляем в шапку стрелку назад
 	// импортируем
 	createHeaderBackArrow (page, name = '', weekNumber = '', previousPage = '') {
-		// console.log('стрелку создаем', page)
+
 		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
 		// если предыдущая страница не обозначена, значит она идёт по порядку
 		if(!previousPage) {
 			previousPage = this.getPreviousPage(page)
 		}
-		// console.log(headerNavElement)
 
 		// создаём элемент стрелки назад в шапке
 		const arrowBackElement = document.createElement('div')
@@ -390,10 +389,8 @@ export default class Page {
 		}
 	}
 	
-
 	// Создаём список элементов из памяти
 	addFieldList (page, name = '', weekNumber = '') {
-		// console.log(page, name)
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
 	
 		itemFieldElement.innerHTML = ''
@@ -453,7 +450,6 @@ export default class Page {
 
 		else if ( page === 'handOverItems') {
 			const oneWeekObj = Storage.getOneWeek(name, weekNumber)
-			// console.log(oneWeekObj)
 			oneWeekObj.weekHandOver.forEach( (handOverItem) => {
 				
 				const handOverButton = new Item({
@@ -493,52 +489,50 @@ export default class Page {
 	}
 
 	// перелистываем страницу вперёд
-	changeNextPage (workerObj, currentPage, nextPage, name, weekNumber) {
-		// console.log(workerObj)
-		// console.log(nextPage)
-		// console.log(name)
-		
-		const containerElement = document.querySelector('[data-container]')
+	changeNextPage (currentPageAttr, nextPageAttr, name, weekNumber) {
+		// если следующая страница и текущая - одна и та же, то отмена
+		if (currentPageAttr === nextPageAttr) {
+			return
+		}
 
-		nextPage.classList.remove('hide')
+		const containerElement = document.querySelector('[data-container]')
+		const currentPageElement = document.querySelector(`[data-page="${currentPageAttr}"]`)
+		const nextPageElement = document.querySelector(`[data-page="${nextPageAttr}"]`)
+
+		nextPageElement.classList.remove('hide')
 		containerElement.classList.add('nextPage')
 
-		const nextAttr = nextPage.getAttribute('data-page')
-		const previousAttr = currentPage.getAttribute('data-page')
-		// this.addFieldList(nextAttr, name)
-
-		if (nextAttr === 'weeksList') {
-			this.renderWeekListPage(nextAttr, name)
+		if (nextPageAttr === 'weeksList') {
+			this.renderWeekListPage(nextPageAttr, name)
 		}
-		else if (nextAttr === 'weekItems') {
-			this.renderWeekItemsPage(nextAttr, name, weekNumber)
+		else if (nextPageAttr === 'weekItems') {
+			this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
 		}
-		else if (nextAttr === 'handOverItems') {
-			this.renderHandOverItemsPage(nextAttr, name, weekNumber)
+		else if (nextPageAttr === 'handOverItems') {
+			this.renderHandOverItemsPage(nextPageAttr, name, weekNumber)
 		}
-		else if (nextAttr === 'weavingList') {
-			this.renderWeavingListPage(nextAttr, name, weekNumber, previousAttr)
+		else if (nextPageAttr === 'weavingList') {
+			this.renderWeavingListPage(nextPageAttr, name, weekNumber, currentPageAttr)
 		}
 		
 		setTimeout( () => {
-			currentPage.classList.add('hide')
+			currentPageElement.classList.add('hide')
 			containerElement.classList.remove('nextPage')
 		}, 400)
-		// console.log(this)
 	}
 
 	// перелистываем страницу назад
-	changePreviousPage (workerObj, currentPage, previousPage, name, weekNumber = '') {
+	changePreviousPage (currentPageAttr, previousPageAttr, name, weekNumber = '') {
 		
 		const containerElement = document.querySelector('[data-container]')
+		const currentPageElement = document.querySelector(`[data-page=${currentPageAttr}]`)
+		const previousPageElement = document.querySelector(`[data-page=${previousPageAttr}]`)
 
-		previousPage.classList.remove('hide')
+		previousPageElement.classList.remove('hide')
 		containerElement.classList.add('fromNextToPrevious')
 		
-		const previousAttr = previousPage.getAttribute('data-page')
 		// отрисовываем предыдущую страницу
-		// this.renderPage(previousAttr, name)
-		this.addFieldList(previousAttr, name, weekNumber)
+		this.addFieldList(previousPageAttr, name, weekNumber)
 		
 		
 		setTimeout( () => {
@@ -546,21 +540,13 @@ export default class Page {
 		}, 0)
 
 		setTimeout( () => {
-			currentPage.classList.add('hide')
+			currentPageElement.classList.add('hide')
 			containerElement.classList.remove('previousPage')
 			containerElement.classList.remove('fromNextToPrevious')
 		}, 400)
-		// console.log(this)
-		// console.log(this.handler)
 	}
 
 	getPreviousPage (currentAttr) {
-		// console.log(currentAttr)
-		// console.log(Page.pages)
-		// const pages = [
-		// 	'start',
-		// 	'weeksList'
-		// ]
 		return this.pages[this.pages.indexOf(currentAttr) - 1] || ''
 	}
 
