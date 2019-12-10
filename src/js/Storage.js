@@ -67,15 +67,15 @@ export default class Storage {
 
 	// получаем вес с процентами по весу
 	static getWeightWithPercent (weight, percent) {
-		return (weight * 10000 + weight * percent * 10000 / 100) / 10000
+		return Math.round(weight * 10000 + weight * percent * 10000 / 100) / 10000
 	}
 	
 
 	// сохранить операцию сдачи
 	static saveHandOverOperation (data) {
 		const dataArray = Storage.read() || []
-		console.log(dataArray)
-		console.log(data)
+		// console.log(dataArray)
+		// console.log(data)
 
 		for (let i = 0; i < dataArray.length; i++) {
 			// если имя работника в массиве из памяти и из формы совпадают
@@ -84,24 +84,25 @@ export default class Storage {
 				for (let j = 0; j < dataArray[i].weeks.length; j++) {
 					if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
 						// после релиза удалить следующие 4 строчки
-						if (!dataArray[i].weeks[j].weekHandOver) {
-							console.log('создали массив для сдачи')
-							dataArray[i].weeks[j].weekHandOver = []
-						}
+						// if (!dataArray[i].weeks[j].weekHandOver) {
+						// 	// console.log('создали массив для сдачи')
+						// 	dataArray[i].weeks[j].weekHandOver = []
+						// }
 						
 						const percent = Storage.getWeavingPercent(data.handOverOperation.weight) || 0
-						console.log('исходный вес:', data.handOverOperation.weight)
-						console.log('процент:', percent)
-						console.log('итоговый вес:', Storage.getWeightWithPercent(data.handOverOperation.weight, percent))
+						const count = Math.floor(+data.handOverOperation.count)
+						// console.log('исходный вес:', data.handOverOperation.weight)
+						// console.log('процент:', percent)
+						// console.log('итоговый вес:', Storage.getWeightWithPercent(data.handOverOperation.weight, percent))
 						// создаём операцию сдачи для сохранения
 						const handOverOperation = {
-							weight: +data.handOverOperation.weight,
+							weight: Math.round(+data.handOverOperation.weight * 10000) / 10000,
 							weightWithPercent: Storage.getWeightWithPercent(data.handOverOperation.weight, percent),
 							weaving: data.handOverOperation.weaving,
-							count: +data.handOverOperation.count,
+							count,
 							isChain: data.handOverOperation.isChain,
 							percent: percent,
-							price: Storage.getChainPrice(data.handOverOperation.weaving, data.handOverOperation.isChain) * +data.handOverOperation.count
+							price: Storage.getChainPrice(data.handOverOperation.weaving, data.handOverOperation.isChain) * count
 						}
 
 						// добавляем операцию сдачи в массив сдач
@@ -114,7 +115,7 @@ export default class Storage {
 			break
 		}
 		Storage.save(dataArray)
-		console.log('итог', dataArray)
+		// console.log('итог', dataArray)
 
 	}
 

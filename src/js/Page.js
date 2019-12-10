@@ -418,7 +418,7 @@ export default class Page {
 		}
 
 		else if ( page === 'weekItems') {
-			console.log(name, weekNumber)
+			// console.log(name, weekNumber)
 			const oneWeekObj = Storage.getOneWeek(name, weekNumber)
 			oneWeekObj.weekItems.forEach( (weekItem) => {
 				
@@ -437,7 +437,7 @@ export default class Page {
 
 		else if ( page === 'handOverItems') {
 			const oneWeekObj = Storage.getOneWeek(name, weekNumber)
-			console.log(oneWeekObj)
+			// console.log(oneWeekObj)
 			oneWeekObj.weekHandOver.forEach( (handOverItem) => {
 				
 				const handOverButton = new Item({

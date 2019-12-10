@@ -10,6 +10,7 @@ export default class Item {
 				itemHandler: this.newElement
 			})
 
+
 		}
 		else if (args.type === 'handOverItem') {
 			this.newElement = Item.createHandOverItem(args)
@@ -62,10 +63,10 @@ export default class Item {
 		const handler = new Handler({
 			itemHandler: newElement
 		})
+
 		// прокручиваем до последнего добавленного элемента
 		setTimeout(()=> {newElement.scrollIntoView()},400)
 		
-
 		return newElement
 	}
 
@@ -140,10 +141,6 @@ export default class Item {
 		
 		parentElement.prepend(newElement)
 		
-		// const handler = new Handler({
-		// 	itemHandler: newElement
-		// })
-
 		return newElement
 
 	}
@@ -179,7 +176,7 @@ export default class Item {
 		<div class="item__uppper">
 			<span>${args.weaving}</span>
 			<span>${args.count}</span>&nbsp;
-			<span>цепи</span>
+			<span>${chainText}</span>
 		</div>
 
 		<div class="item__lower">
@@ -189,11 +186,17 @@ export default class Item {
 		</div>`
 
 		parentElement.append(newElement)
+
+		// прокручиваем до последнего добавленного элемента
+		setTimeout(()=> {
+			console.log('прокрутка')
+			newElement.scrollIntoView()
+		},400)
 	}
 
 	static makeWordsEnds( number, array) {
     let string = ""
-    const lastNum = String(number)[String(number).length-1]
+		const lastNum = String(number)[String(number).length-1]
     const previosNum = String(number)[String(number).length-2]
 
     if (lastNum === "1" && previosNum !== "1") {
