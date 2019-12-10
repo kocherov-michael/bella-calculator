@@ -52,7 +52,24 @@ export default class Storage {
 	// Получаем процент угара по названию плетения
 	static getWeavingPercent (weavingName) {
 		console.log('получаем процент угара плетения', weavingName)
+		return 7
 	}
+
+	// получить цену на изделие
+	static getChainPrice (weavingName, isChain) {
+		if (isChain) {
+			return 220
+		}
+		else {
+			return 88
+		}
+	}
+
+	// получаем вес с процентами по весу
+	static getWeightWithPercent (weight, percent) {
+		return (weight * 10000 + weight * percent * 10000 / 100) / 10000
+	}
+	
 
 	// сохранить операцию сдачи
 	static saveHandOverOperation (data) {
@@ -71,13 +88,20 @@ export default class Storage {
 							console.log('создали массив для сдачи')
 							dataArray[i].weeks[j].weekHandOver = []
 						}
+						
+						const percent = Storage.getWeavingPercent(data.handOverOperation.weight) || 0
+						console.log('исходный вес:', data.handOverOperation.weight)
+						console.log('процент:', percent)
+						console.log('итоговый вес:', Storage.getWeightWithPercent(data.handOverOperation.weight, percent))
 						// создаём операцию сдачи для сохранения
 						const handOverOperation = {
-							value: data.handOverOperation.weight,
+							weight: +data.handOverOperation.weight,
+							weightWithPercent: Storage.getWeightWithPercent(data.handOverOperation.weight, percent),
 							weaving: data.handOverOperation.weaving,
-							count: data.handOverOperation.count,
-							type: data.handOverOperation.type,
-							percent: Storage.getWeavingPercent(data.handOverOperation.weaving)
+							count: +data.handOverOperation.count,
+							isChain: data.handOverOperation.isChain,
+							percent: percent,
+							price: Storage.getChainPrice(data.handOverOperation.weaving, data.handOverOperation.isChain) * +data.handOverOperation.count
 						}
 
 						// добавляем операцию сдачи в массив сдач

@@ -98,6 +98,7 @@ export default class Page {
 		})
 
 		this.showHeaderName(page, name, weekNumber)
+		this.addFieldList(page, name, weekNumber)
 
 	}
 
@@ -145,9 +146,9 @@ export default class Page {
 		<input type="number" class="hand-over-orepations__input input" placeholder="Количество" data-input-count="${weekNumber}">
 
 		<label class="hand-over-orepations__label">
-			<select type="select" class="hand-over-orepations__input input" data-select-type="${weekNumber}">
-				<option class="option" value="chain">Цепь</option>
-				<option class="option" value="bracelet">Браслет</option>
+			<select type="select" class="hand-over-orepations__input input" data-select-length="${weekNumber}">
+				<option class="option" value="1">Цепь</option>
+				<option class="option" value="0">Браслет</option>
 			</select>
 			<div class="chevron"></div>
 		</label>
@@ -432,6 +433,28 @@ export default class Page {
 				})
 			})
 
+		}
+
+		else if ( page === 'handOverItems') {
+			const oneWeekObj = Storage.getOneWeek(name, weekNumber)
+			console.log(oneWeekObj)
+			oneWeekObj.weekHandOver.forEach( (handOverItem) => {
+				
+				const handOverButton = new Item({
+					// родительский элемент
+					field: itemFieldElement,
+					type: 'handOverItem',
+					workerName: name,
+					// вес
+					weight: handOverItem.weight,
+					weightWithPercent: handOverItem.weightWithPercent,
+					weaving: handOverItem.weaving,
+					count: handOverItem.count,
+					isChain: handOverItem.isChain,
+					percent: handOverItem.percent,
+					price: handOverItem.price
+				})
+			})
 		}
 
 	}

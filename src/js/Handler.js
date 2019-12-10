@@ -39,7 +39,7 @@ export default class Handler {
 		const weightInputElement = handOverFormElement.querySelector(`[data-input-weight="${weekNumber}"]`)
 		const countInputElement = handOverFormElement.querySelector(`[data-input-count="${weekNumber}"]`)
 		const weavingSelectElement = handOverFormElement.querySelector(`[data-select-weaving="${weekNumber}"]`)
-		const typeSelectElement = handOverFormElement.querySelector(`[data-select-type="${weekNumber}"]`)
+		const lengthSelectElement = handOverFormElement.querySelector(`[data-select-length="${weekNumber}"]`)
 		const handOverButtonElement = handOverFormElement.querySelector(`[data-hand-over-button="${weekNumber}"]`)
 
 		// операция добавить к сдаче
@@ -54,10 +54,10 @@ export default class Handler {
 			
 			// создаём объект для записи в память
 			const handOverObj = {
-				weight: weightInputElement.value,
+				weight: +weightInputElement.value,
 				weaving: weavingSelectElement.value,
-				count: countInputElement.value,
-				type: typeSelectElement.value
+				count: +countInputElement.value,
+				isChain: Boolean(+lengthSelectElement.value)
 			}
 
 			const newHandOverValues = {
@@ -66,9 +66,13 @@ export default class Handler {
 				handOverOperation: handOverObj
 			}
 			
-			console.log(newHandOverValues)
+			// console.log(newHandOverValues)
 			Storage.saveHandOverOperation(newHandOverValues)
+			this.page.addFieldList(page, workerName, weekNumber)
 
+			// после ввода операции сбрасываем вес и количество
+			weightInputElement.value = ''
+			countInputElement.value = ''
 		})
 
 	}

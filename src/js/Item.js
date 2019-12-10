@@ -4,8 +4,18 @@ export default class Item {
 	constructor (args = {}) {
 		// this.handler = new Handler()
 		if (args.type === 'salary') {
-			Item.createSalaryItem(args)
-		} else {
+			this.newElement = Item.createSalaryItem(args)
+
+			const handler = new Handler({
+				itemHandler: this.newElement
+			})
+
+		}
+		else if (args.type === 'handOverItem') {
+			this.newElement = Item.createHandOverItem(args)
+
+		}
+		 else {
 			this.create(args)
 		}
 	}
@@ -101,7 +111,7 @@ export default class Item {
 
 	static createSalaryItem(args) {
 		const parentElement = args.field
-		let newElement = document.createElement('div')
+		const newElement = document.createElement('div')
 		newElement.classList.add('item')
 		newElement.classList.add('salary-item')
 		newElement.setAttribute('data-worker', args.workerName)
@@ -130,9 +140,71 @@ export default class Item {
 		
 		parentElement.prepend(newElement)
 		
-		const handler = new Handler({
-			itemHandler: newElement
-		})
+		// const handler = new Handler({
+		// 	itemHandler: newElement
+		// })
+
+		return newElement
 
 	}
+
+	// создаём элемент операции сдачи
+	static createHandOverItem (args) {
+		const parentElement = args.field
+		let newElement = document.createElement('div')
+		newElement.classList.add('item')
+		newElement.classList.add('salary-item')
+
+		const chainArray = ["цепь", "цепи", "цепей"]
+		const braceletArray = ["браслет", "браслета", "браслетов"]
+
+		let chainText
+		if (args.isChain) {
+			chainText = Item.makeWordsEnds( args.count, chainArray)
+		} else {
+			chainText = Item.makeWordsEnds( args.count, braceletArray)
+		}
+
+		newElement.innerHTML =
+		`<div class="item__header">
+			<div class="item__header-text">
+					-
+					<span>${args.weight}</span> + 
+					<span>${args.percent}</span>% = 
+					<span>${args.weightWithPercent}</span>
+			</div>
+			
+		</div>
+
+		<div class="item__uppper">
+			<span>${args.weaving}</span>
+			<span>${args.count}</span>&nbsp;
+			<span>цепи</span>
+		</div>
+
+		<div class="item__lower">
+			<span>Сумма:</span>
+			<span>${args.price}</span>&nbsp;
+			<span>₽</span>
+		</div>`
+
+		parentElement.append(newElement)
+	}
+
+	static makeWordsEnds( number, array) {
+    let string = ""
+    const lastNum = String(number)[String(number).length-1]
+    const previosNum = String(number)[String(number).length-2]
+
+    if (lastNum === "1" && previosNum !== "1") {
+      string = array[0]
+    } else if ((lastNum === "2" || lastNum === "3" || lastNum === "4") && previosNum !== "1") {
+      string = array[1]
+    } else if (number === 0) {
+      string = ""
+    } else {
+      string = array[2]
+    }
+    return string
+  }
 }
