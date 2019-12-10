@@ -3,24 +3,25 @@ export default class Storage {
 
 	}
 	static saveWorker (data) {
-		const dataArray = Storage.read() || []
+		const dataObj = Storage.read() || {}
 		// console.log('прочитали ил памяти', dataArray)
+		dataObj.workers = dataObj.workers || []
 
 		if (data.weekNumber) {
 			let weeksArray
-			for (let i = 0; i < dataArray.length; i++) {
+			for (let i = 0; i < dataObj.workers.length; i++) {
 				// если имя работника в массиве из памяти и из формы совпадают
-				if (dataArray[i].workerName === data.workerName) {
+				if (dataObj.workers[i].workerName === data.workerName) {
 					// проверка на существование номера недели
-					for (let j = 0; j < dataArray[i].weeks.length; j++) {
-						if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
+					for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
+						if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
 							// console.log('exist week')
 							return false
 						}
 					}
-					weeksArray = dataArray[i].weeks
+					weeksArray = dataObj.workers[i].weeks
 					weeksArray.push({weekNumber: data.weekNumber, weekItems: [], weekHandOver: []})
-					dataArray[i].weeks = weeksArray
+					dataObj.workers[i].weeks = weeksArray
 					break
 				}
 			}
@@ -30,105 +31,61 @@ export default class Storage {
 		else if (data.workerName){
 
 			// проверка на существование имени
-			for (let i = 0; i < dataArray.length; i++) {
-				if (dataArray[i].workerName === data.workerName) {
+			for (let i = 0; i < dataObj.workers.length; i++) {
+				if (dataObj.workers[i].workerName === data.workerName) {
 					// console.log('exist name')
 					return false
 				}
 			}
 
-			dataArray.push({
+			dataObj.workers.push({
 				workerName: data.workerName, 
 				weeks: []
 			})
 		}
 
-		Storage.save(dataArray)
-		// console.log('в память идёт', dataArray)
-		// localStorage.setItem('bella-workers', JSON.stringify(dataArray))
-		// console.log('сохранено', dataArray)
+		Storage.save(dataObj)
 		return true
 	}
-	// Получаем процент угара по названию плетения
-	static getWeavingPercent (weavingName) {
-		console.log('получаем процент угара плетения', weavingName)
-		return 7
-	}
 
-	// получить цену на изделие
-	static getChainPrice (weavingName, isChain) {
-		if (isChain) {
-			return 220
-		}
-		else {
-			return 88
-		}
-	}
-
-	// получаем вес с процентами по весу
-	static getWeightWithPercent (weight, percent) {
-		return Math.round(weight * 10000 + weight * percent * 10000 / 100) / 10000
-	}
-	
 
 	// сохранить операцию сдачи
 	static saveHandOverOperation (data) {
-		const dataArray = Storage.read() || []
+		const dataObj = Storage.read() || {}
 		// console.log(dataArray)
 		// console.log(data)
 
-		for (let i = 0; i < dataArray.length; i++) {
+		for (let i = 0; i < dataObj.workers.length; i++) {
 			// если имя работника в массиве из памяти и из формы совпадают
-			if (dataArray[i].workerName === data.workerName) {
+			if (dataObj.workers[i].workerName === data.workerName) {
 				// проверка на существование номера недели
-				for (let j = 0; j < dataArray[i].weeks.length; j++) {
-					if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
-						// после релиза удалить следующие 4 строчки
-						// if (!dataArray[i].weeks[j].weekHandOver) {
-						// 	// console.log('создали массив для сдачи')
-						// 	dataArray[i].weeks[j].weekHandOver = []
-						// }
-						
-						const percent = Storage.getWeavingPercent(data.handOverOperation.weight) || 0
-						const count = Math.floor(+data.handOverOperation.count)
-						// console.log('исходный вес:', data.handOverOperation.weight)
-						// console.log('процент:', percent)
-						// console.log('итоговый вес:', Storage.getWeightWithPercent(data.handOverOperation.weight, percent))
-						// создаём операцию сдачи для сохранения
-						const handOverOperation = {
-							weight: Math.round(+data.handOverOperation.weight * 10000) / 10000,
-							weightWithPercent: Storage.getWeightWithPercent(data.handOverOperation.weight, percent),
-							weaving: data.handOverOperation.weaving,
-							count,
-							isChain: data.handOverOperation.isChain,
-							percent: percent,
-							price: Storage.getChainPrice(data.handOverOperation.weaving, data.handOverOperation.isChain) * count
-						}
+				for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
+					if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
 
 						// добавляем операцию сдачи в массив сдач
-						dataArray[i].weeks[j].weekHandOver.push(handOverOperation)
+						dataObj.workers[i].weeks[j].weekHandOver.push(data.handOverOperation)
 						break
 					}
 				}
 			}
 		}
-		Storage.save(dataArray)
-		// console.log('итог', dataArray)
+		Storage.save(dataObj)
 
 	}
 
 	// сохранить простую операцию
 	static saveOperation (data) {
-		const dataArray = Storage.read() || []
+		const dataObj = Storage.read() || {}
 		// console.log(dataArray)
 		// console.log(data)
+		dataObj.workers = dataObj.workers || []
 
-		for (let i = 0; i < dataArray.length; i++) {
+		for (let i = 0; i < dataObj.workers.length; i++) {
 			// если имя работника в массиве из памяти и из формы совпадают
-			if (dataArray[i].workerName === data.workerName) {
+			if (dataObj.workers[i].workerName === data.workerName) {
 				// проверка на существование номера недели
-				for (let j = 0; j < dataArray[i].weeks.length; j++) {
-					if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
+				for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
+					if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
 
 						// создаём объект новой операции
 						const newOperation = {
@@ -136,54 +93,56 @@ export default class Storage {
 							isSingle: true,
 							isPrevious: false
 						}
-						dataArray[i].weeks[j].weekItems.push(newOperation)
+						dataObj[i].weeks[j].weekItems.push(newOperation)
 						break
 					}
 				}
 			}
 		}
-		Storage.save(dataArray)
+		Storage.save(dataObj)
 
 	}
 
-	static read (page) {
-		const data = JSON.parse(localStorage.getItem('bella-workers')) || {}
+	static read () {
+		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
 		// console.log('прочитал', data)
 
-		return data.workers || []
+		// return data.workers || []
+		return dataObj || {}
 	}
 
-	static save(dataArray) {
-		const dataObj = {workers: dataArray}
+	static save(dataObj) {
+		// const dataObj = {workers: dataArray}
 		localStorage.setItem('bella-workers', JSON.stringify(dataObj))
 	}
 
 	// загрузка недель по имени работника
 	static getWorkerWeeks(name) {
-		const dataArray = Storage.read()
+		const dataObj = Storage.read()
 		// console.log(dataArray)
 		// console.log(name)
-		for(let i = 0; i < dataArray.length; i++) {
-			if (dataArray[i].workerName === name) {
+		for(let i = 0; i < dataObj.workers.length; i++) {
+			if (dataObj.workers[i].workerName === name) {
 				// console.log( dataArray)
-				return dataArray[i] || 'empty'
+				return dataObj.workers[i] || 'empty'
 			}
 		}
 	}
 
+	// загрузка 1 недели работника
 	static getOneWeek(name, weekNumber) {
 		// console.log('static', weekNumber)
-		const dataArray = Storage.read()
+		const dataObj = Storage.read() || {}
 
-		for(let i = 0; i < dataArray.length; i++) {
+		for(let i = 0; i < dataObj.workers.length; i++) {
 			// если имя совпадает
-			if (dataArray[i].workerName === name) {
+			if (dataObj.workers[i].workerName === name) {
 				// console.log('here', dataArray[i].weeks)
-				for(let j = 0; j < dataArray[i].weeks.length; j++) {
+				for(let j = 0; j < dataObj.workers[i].weeks.length; j++) {
 					// если номер недели совпадает
-					if(dataArray[i].weeks[j].weekNumber === weekNumber) {
+					if(dataObj.workers[i].weeks[j].weekNumber === weekNumber) {
 						// возвращаем елементы внутри недели
-						return dataArray[i].weeks[j] || 'empty'
+						return dataObj.workers[i].weeks[j] || 'empty'
 					}
 				}
 			}
@@ -193,7 +152,7 @@ export default class Storage {
 	// сохраняем плетение в память
 	static saveWeavingItem (data) {
 		// получаем весь объект из localStorage
-		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
+		const dataObj = Storage.read() || {}
 
 		// массив с плетениями
 		dataObj.weavings = dataObj.weavings || []
@@ -206,15 +165,24 @@ export default class Storage {
 		}
 		dataObj.weavings.push(data)
 
-		localStorage.setItem('bella-workers', JSON.stringify(dataObj))
+		Storage.save(dataObj)
 
 		return true
 	}
 
 	// получаем массив плетений из памяти
 	static getWeavingArray () {
-		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
+		const dataObj = Storage.read() || {}
 		return dataObj.weavings || []
+	}
+
+	static getOneWeaving (weavingName) {
+		const dataObj = Storage.read() || {}
+		for ( let i = 0; i < dataObj.weavings.length; i++) {
+			if (dataObj.weavings[i].weavingName === weavingName) {
+				return dataObj.weavings[i]
+			}
+		}
 	}
 }
 // localStorage.setItem('bellaPlus', JSON.stringify(data))

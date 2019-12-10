@@ -104,14 +104,6 @@ export default class Item {
 		return newElement
 
 	}
-	// static createElement(args) {
-	// 	const parentElement = args.field
-	// 	let newElement = document.createElement('div')
-	// 	newElement.classList.add('item')
-	// 	newElement.setAttribute('data-worker', args.workerName)
-
-	// 	return
-	// }
 
 	// создаём блок сдачи на странице недели
 	static createSalaryItem(args) {

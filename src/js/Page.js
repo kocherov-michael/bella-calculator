@@ -157,6 +157,18 @@ export default class Page {
 	createAddHandOverForm (page, name, weekNumber) {
 		const footerActionElement = document.querySelector(`[data-footer-action="${page}"]`)
 
+		let optionTemplate = ''
+		const weavingArr = Storage.getWeavingArray()
+		for ( let i = 0; i < weavingArr.length; i++) {
+			weavingArr[i].weavingName
+			weavingArr[i].percent
+			weavingArr[i].chain
+			weavingArr[i].bracelet
+			const stringTemplate = `<option class="option" value="${weavingArr[i].weavingName}">${weavingArr[i].weavingName}</option>`
+			optionTemplate += stringTemplate
+		}
+		console.log(optionTemplate)
+
 		footerActionElement.innerHTML = ''
 		footerActionElement.innerHTML = 
 		`<form class="hand-over-orepations" data-hand-over-operations="${name}">
@@ -165,11 +177,7 @@ export default class Page {
 			<select type="select" class="hand-over-orepations__input input" size="0" data-select-weaving="${weekNumber}">
 				<option class="option" value="choose" selected>Плетение</option>
 				<option class="option" value="бсм20">бсм20</option>
-				<option class="option" value="бсм30">бсм30</option>
-				<option class="option" value="бсм40">бсм40</option>
-				<option class="option" value="бсм50">бсм50</option>
-				<option class="option" value="бсм60">бсм60</option>
-				
+				${optionTemplate}
 			</select>
 			<div class="chevron"></div>
 		</label>
@@ -246,9 +254,9 @@ export default class Page {
 			placeholder = 'Название'
 			text = 'Введите плетение'
 			inputTemplate = 
-			`<input type="number" class="input" placeholder="Угар %" name="percent" value="7">
-			<input type="number" class="input" placeholder="Цепь ₽" name="chain" value="220">
-			<input type="number" class="input" placeholder="Браслет ₽" name="bracelet" value="88">`
+			`<input type="number" class="input" placeholder="Угар %" name="percent">
+			<input type="number" class="input" placeholder="Цепь ₽" name="chain">
+			<input type="number" class="input" placeholder="Браслет ₽" name="bracelet">`
 		}
 
 		formContainerElement.innerHTML = ''
@@ -396,7 +404,7 @@ export default class Page {
 		itemFieldElement.innerHTML = ''
 	
 		// получаем данные из памяти
-		const data = Storage.read()
+		const data = Storage.read().workers
 	
 		// если страница стартовая
 		if (page === 'start') {

@@ -5,7 +5,6 @@ import Page from './Page'
 
 export default class Handler {
 	constructor (args = {}) {
-		// this.storage = new Storage()
 		this.page = new Page()
 		this.args = args
 		
@@ -51,14 +50,28 @@ export default class Handler {
 			const countIsEmpty = Handler.showError(countInputElement, countInputElement.value, '')
 			const weavingIsEmpty = Handler.showError(weavingSelectElement, weavingSelectElement.value, 'choose')
 			if (weightIsEmpty || countIsEmpty || weavingIsEmpty) return
+
+			// получаем параметры плетения для вычисления сдачи
+			const {weavingName, percent, chain, bracelet} = Storage.getOneWeaving(weavingSelectElement.value)
 			
+			// количество
+			const count = Math.floor(+countInputElement.value)
+			// цепь - правда или браслет - ложь
+			const isChain = Boolean(+lengthSelectElement.value)
+			// цена на цепь либо браслет
+			const price = (isChain ? chain : bracelet) * count
+
 			// создаём объект для записи в память
 			const handOverObj = {
-				weight: +weightInputElement.value,
+				weight: Math.round(+weightInputElement.value * 10000) / 10000,
+				weightWithPercent: Handler.getWeightWithPercent(+weightInputElement.value, percent),
 				weaving: weavingSelectElement.value,
-				count: +countInputElement.value,
-				isChain: Boolean(+lengthSelectElement.value)
+				count,
+				isChain,
+				percent,
+				price
 			}
+			// console.log(handOverObj)
 
 			const newHandOverValues = {
 				workerName,
@@ -111,9 +124,9 @@ export default class Handler {
 			weekNumber,
 			singleOperation: operationValue
 		}
-		console.log(newItemValues)
+		// console.log(newItemValues)
 		Storage.saveOperation(newItemValues)
-		console.log('weekItems', workerName, weekNumber)
+		// console.log('weekItems', workerName, weekNumber)
 		this.page.addFieldList('weekItems', workerName, weekNumber)
 		// console.log(document.body.scrollHeight)
 		// window.scrollTo(0, 10000)
@@ -310,6 +323,11 @@ export default class Handler {
 			this.page.changePreviousPage(page, targetPageAttr, targetPageWorkerAttr, targetPageWeekAttr)
 			backButtonElement = null
 		})
-	}
 
+	}
+	
+	// получаем вес с процентами по весу
+	static getWeightWithPercent (weight, percent) {
+		return Math.round(weight * 10000 + weight * percent * 10000 / 100) / 10000
+	}
 }
