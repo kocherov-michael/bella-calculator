@@ -115,13 +115,16 @@ export default class Page {
 	renderWeavingListPage(page, name = '', weekNumber = '', previousAttr = 'start') {
 		this.createHeader(page, name)
 		this.createHeaderBackArrow(page, name, weekNumber, previousAttr)
+		this.addCreateButton(page, name)
+		this.addForm(page)
+
 
 		const handler = new Handler({
 			page,
 			name,
 			weekNumber,
 			menu: page,
-			// addItem: page,
+			addItem: page,
 			// workerName: name,
 			backButton: page
 		})
@@ -216,7 +219,7 @@ export default class Page {
 	}
 
 	// Добавить форму
-	addForm (page, name) {
+	addForm (page, name = '') {
 		const formContainerElement = document.querySelector(`[data-add-form="${page}"]`)
 		// если на странице нет скрытых форм, то пропускаем
 		if (!formContainerElement) return
@@ -224,6 +227,7 @@ export default class Page {
 		let attr
 		let placeholder
 		let text
+		let inputTemplate = ''
 		if(page === 'start') {
 			attr = 'workerName'
 			placeholder = 'Имя'
@@ -233,6 +237,15 @@ export default class Page {
 			attr = 'weekNumber'
 			placeholder = 'Номер недели'
 			text = 'Введите номер недели'
+		}
+		else if (page === 'weavingList') {
+			attr = 'workerName'
+			placeholder = 'Название'
+			text = 'Введите плетение'
+			inputTemplate = 
+			`<input type="number" class="input" placeholder="Угар %" name="percent">
+			<input type="number" class="input" placeholder="Цепь ₽" name="chain">
+			<input type="number" class="input" placeholder="Браслет ₽" name="bracelet">`
 		}
 
 		formContainerElement.innerHTML = ''
@@ -245,6 +258,7 @@ export default class Page {
 			<div class="form__inputs">
 
 					<input type="text" class="input" placeholder="${placeholder}" value="" name="${attr}">
+					${inputTemplate}
 
 			</div>
 			<div class="form__buttons">
@@ -283,6 +297,9 @@ export default class Page {
 		}
 		else if(page === 'weeksList') {
 			text = 'Добавить неделю'
+		}
+		else if(page === 'weavingList') {
+			text = 'Добавить плетение'
 		}
 
 		fieldElement.innerHTML = ''
