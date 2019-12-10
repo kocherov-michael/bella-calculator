@@ -128,6 +128,8 @@ export default class Page {
 			// workerName: name,
 			backButton: page
 		})
+
+		this.showHeaderName(page, name, weekNumber)
 	}
 
 
@@ -413,6 +415,9 @@ export default class Page {
 
 		if (page === 'handOverItems') {
 			headerTextElement.textContent = 'Сдача'
+		}
+		else if (page === 'weavingList') {
+			headerTextElement.textContent = 'Плетения'
 		}
 		else if (headerTextElement) {
 			// если есть номер недели, то неделя {номер}, иначе имя
