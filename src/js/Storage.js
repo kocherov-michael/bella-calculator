@@ -2,7 +2,7 @@ export default class Storage {
 	constructor (args = {}) {
 
 	}
-	save (data) {
+	static saveWorker (data) {
 		const dataArray = Storage.read() || []
 		// console.log('прочитали ил памяти', dataArray)
 
@@ -107,12 +107,10 @@ export default class Storage {
 
 						// добавляем операцию сдачи в массив сдач
 						dataArray[i].weeks[j].weekHandOver.push(handOverOperation)
-
+						break
 					}
 				}
-				break
 			}
-			break
 		}
 		Storage.save(dataArray)
 		// console.log('итог', dataArray)
@@ -131,7 +129,7 @@ export default class Storage {
 				// проверка на существование номера недели
 				for (let j = 0; j < dataArray[i].weeks.length; j++) {
 					if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
-						
+
 						// создаём объект новой операции
 						const newOperation = {
 							value: data.singleOperation,
@@ -139,24 +137,25 @@ export default class Storage {
 							isPrevious: false
 						}
 						dataArray[i].weeks[j].weekItems.push(newOperation)
+						break
 					}
 				}
-				break
 			}
-			break
 		}
 		Storage.save(dataArray)
 
 	}
 
 	static read (page) {
-		const data = JSON.parse(localStorage.getItem('bella-workers'))
+		const data = JSON.parse(localStorage.getItem('bella-workers')) || {}
 		// console.log('прочитал', data)
-		return data || []
+
+		return data.workers || []
 	}
 
 	static save(dataArray) {
-		localStorage.setItem('bella-workers', JSON.stringify(dataArray))
+		const dataObj = {workers: dataArray}
+		localStorage.setItem('bella-workers', JSON.stringify(dataObj))
 	}
 
 	// загрузка недель по имени работника
@@ -189,6 +188,27 @@ export default class Storage {
 				}
 			}
 		}
+	}
+
+	// сохраняем плетение в память
+	static saveWeavingItem (data) {
+		// получаем весь объект из localStorage
+		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
+		console.log(dataObj)
+		// массив с плетениями
+		dataObj.weavings = dataObj.weavings || []
+		for(let i = 0; i < dataObj.weavings.length; i++) {
+			// если такое плетение уже есть, то отмена
+			if (dataArray.weavingArr[i].weavingName === data.weavingName) {
+				return false
+			}
+			
+		}
+		dataObj.weavings.push(data)
+
+		localStorage.setItem('bella-workers', JSON.stringify(dataObj))
+
+		return true
 	}
 }
 // localStorage.setItem('bellaPlus', JSON.stringify(data))

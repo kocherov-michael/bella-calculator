@@ -5,7 +5,7 @@ import Page from './Page'
 
 export default class Handler {
 	constructor (args = {}) {
-		this.storage = new Storage()
+		// this.storage = new Storage()
 		this.page = new Page()
 		this.args = args
 		
@@ -84,9 +84,10 @@ export default class Handler {
 		const inputOperationElement = formSingleOperationElement.querySelector(`[data-input-week-operation="${weekNumber}"]`)
 		const addOperationElement = formSingleOperationElement.querySelector(`[data-addbutton-operation="${weekNumber}"]`)
 		const minusOperationElement = formSingleOperationElement.querySelector(`[data-minusbutton-operation="${weekNumber}"]`)
-
+		
 		// операция Добавить
 		addOperationElement.addEventListener('click', () => {
+			// console.log('here')
 			const operationValue = Math.abs(inputOperationElement.value.trim())
 			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
 		})
@@ -110,7 +111,9 @@ export default class Handler {
 			weekNumber,
 			singleOperation: operationValue
 		}
+		console.log(newItemValues)
 		Storage.saveOperation(newItemValues)
+		console.log('weekItems', workerName, weekNumber)
 		this.page.addFieldList('weekItems', workerName, weekNumber)
 		// console.log(document.body.scrollHeight)
 		// window.scrollTo(0, 10000)
@@ -162,18 +165,21 @@ export default class Handler {
 		// текущая страница
 		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
 		// кнопка Добавить
-		const addNewElement = sectionElement.querySelector(`[data-add=${page}]`)
-		addNewElement.setAttribute('data-current-worker', this.args.workerName)
+		const addButtonElement = sectionElement.querySelector(`[data-add=${page}]`)
+		addButtonElement.setAttribute('data-current-worker', this.args.workerName)
 
-		// вешаем обработчик на кнопку Сохранить формы добавления сотрудника
+		// Обёртка с затемнением
 		const addFormElement =  document.querySelector(`[data-add-form=${page}]`)
+		// Ищем этот элемент чтобы скрыть раньше обёртки, а показать позже
 		const activeFormElement =  addFormElement.querySelector(`[data-active-form]`)
-
+		
+		// вешаем обработчик на кнопку Сохранить и Отмена формы добавления сотрудника
 		this.formHandler(addFormElement)
 		this.activeFormElement = activeFormElement
 		this.addFormElement = addFormElement
 
-		addNewElement.addEventListener('click', () => {
+		// показваем форму при нажатии Добавить+
+		addButtonElement.addEventListener('click', () => {
 			addFormElement.classList.remove('hide')
 			setTimeout( () => {
 				addFormElement.classList.remove('opacity')
@@ -218,13 +224,21 @@ export default class Handler {
 		const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
 		const currentWorker = addButtonElement.getAttribute('data-current-worker')
 		// console.log(addButtonElement, this.args.workerName, currentWorker)
+		// console.log(this.args.addItem)
 		// если имя работника в объекте и в вёрстке не совпадает, то стоп
-		if (currentWorker !== this.args.workerName && this.args.addItem !== 'start') {
-			return
-		}
+		// if (this.args.addItem === 'weavingList') {
+		// 	// console.log(currentWorker !== this.args.workerName)
+		// 	// console.log(this.args.addItem !== 'start')
+		// }
+		// else if (currentWorker !== this.args.workerName && this.args.addItem !== 'start') {
+		// 	return
+		// }
+		// console.log('go')
 
-		const newItemValues = {
-			workerName: this.args.workerName
+		const newItemValues = {}
+
+		if (this.args.workerName) {
+			newItemValues.workerName = this.args.workerName
 		}
 		// сохраняем имя, если работник уже создан
 		const nameForRender = this.args.workerName
@@ -240,15 +254,27 @@ export default class Handler {
 			}
 			// по ключу инпута записываем его значение
 			newItemValues[inputsList[i].name] = inputsList[i].value
-
+			// console.log(inputsList[i].value)
 		}
-		if (newItemValues.inputValue) {
+		// if (newItemValues.inputValue) {
 
+		// }
+		console.log(newItemValues)
+		console.log(this.args)
+		if (this.args.page === 'weavingList') {
+			const result = Storage.saveWeavingItem(newItemValues)
+			if (!result) {
+				return
+			}
+			this.closeForm()
+			// this.page.addFieldList('weavingList')
+		} else {
+
+			const result = Storage.saveWorker(newItemValues)
+			if (!result) return
+			this.closeForm()
+			this.page.addFieldList(this.args.addItem, nameForRender)
 		}
-		const result = this.storage.save(newItemValues)
-		if (!result) return
-		this.closeForm()
-		this.page.addFieldList(this.args.addItem, nameForRender)
 		// this.storage.read()
 	}
 

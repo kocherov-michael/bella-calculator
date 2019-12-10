@@ -239,13 +239,13 @@ export default class Page {
 			text = 'Введите номер недели'
 		}
 		else if (page === 'weavingList') {
-			attr = 'workerName'
+			attr = 'weavingName'
 			placeholder = 'Название'
 			text = 'Введите плетение'
 			inputTemplate = 
-			`<input type="number" class="input" placeholder="Угар %" name="percent">
-			<input type="number" class="input" placeholder="Цепь ₽" name="chain">
-			<input type="number" class="input" placeholder="Браслет ₽" name="bracelet">`
+			`<input type="number" class="input" placeholder="Угар %" name="percent" value="7">
+			<input type="number" class="input" placeholder="Цепь ₽" name="chain" value="220">
+			<input type="number" class="input" placeholder="Браслет ₽" name="bracelet" value="88">`
 		}
 
 		formContainerElement.innerHTML = ''
