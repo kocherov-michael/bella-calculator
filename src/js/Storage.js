@@ -19,7 +19,7 @@ export default class Storage {
 						}
 					}
 					weeksArray = dataArray[i].weeks
-					weeksArray.push({weekNumber: data.weekNumber, weekItems: []})
+					weeksArray.push({weekNumber: data.weekNumber, weekItems: [], weekHandOver: []})
 					dataArray[i].weeks = weeksArray
 					break
 				}
@@ -49,9 +49,53 @@ export default class Storage {
 		// console.log('сохранено', dataArray)
 		return true
 	}
+	// Получаем процент угара по названию плетения
+	static getWeavingPercent (weavingName) {
+		console.log('получаем процент угара плетения', weavingName)
+	}
+
+	// сохранить операцию сдачи
+	static saveHandOverOperation (data) {
+		const dataArray = Storage.read() || []
+		console.log(dataArray)
+		console.log(data)
+
+		for (let i = 0; i < dataArray.length; i++) {
+			// если имя работника в массиве из памяти и из формы совпадают
+			if (dataArray[i].workerName === data.workerName) {
+				// проверка на существование номера недели
+				for (let j = 0; j < dataArray[i].weeks.length; j++) {
+					if (dataArray[i].weeks[j].weekNumber === data.weekNumber) {
+						// после релиза удалить следующие 4 строчки
+						if (!dataArray[i].weeks[j].weekHandOver) {
+							console.log('создали массив для сдачи')
+							dataArray[i].weeks[j].weekHandOver = []
+						}
+						// создаём операцию сдачи для сохранения
+						const handOverOperation = {
+							value: data.handOverOperation.weight,
+							weaving: data.handOverOperation.weaving,
+							count: data.handOverOperation.count,
+							type: data.handOverOperation.type,
+							percent: Storage.getWeavingPercent(data.handOverOperation.weaving)
+						}
+
+						// добавляем операцию сдачи в массив сдач
+						dataArray[i].weeks[j].weekHandOver.push(handOverOperation)
+
+					}
+				}
+				break
+			}
+			break
+		}
+		Storage.save(dataArray)
+		console.log('итог', dataArray)
+
+	}
 
 	// сохранить простую операцию
-	static saveOperation(data) {
+	static saveOperation (data) {
 		const dataArray = Storage.read() || []
 		// console.log(dataArray)
 		// console.log(data)
@@ -74,6 +118,7 @@ export default class Storage {
 				}
 				break
 			}
+			break
 		}
 		Storage.save(dataArray)
 

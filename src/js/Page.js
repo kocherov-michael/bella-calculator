@@ -87,11 +87,14 @@ export default class Page {
 		this.createAddHandOverForm(page, name, weekNumber)
 
 		const handler = new Handler({
+			page,
+			name,
+			weekNumber,
 			menu: page,
 			// addItem: page,
 			workerName: name,
 			backButton: page,
-			// addSingleOperation: weekNumber
+			addHandOverOperation: true
 		})
 
 		this.showHeaderName(page, name, weekNumber)
@@ -124,10 +127,10 @@ export default class Page {
 
 		footerActionElement.innerHTML = ''
 		footerActionElement.innerHTML = 
-		`<div class="hand-over-orepations" data-hand-over-operations>
-		<input type="number" class="hand-over-orepations__input input" placeholder="Вес" data-input-weight>
+		`<form class="hand-over-orepations" data-hand-over-operations="${name}">
+		<input type="number" class="hand-over-orepations__input input" placeholder="Вес" data-input-weight="${weekNumber}">
 		<label class="hand-over-orepations__label">
-			<select type="select" class="hand-over-orepations__input input" size="0" data-select-weaving>
+			<select type="select" class="hand-over-orepations__input input" size="0" data-select-weaving="${weekNumber}">
 				<option class="option" value="choose" selected>Плетение</option>
 				<option class="option" value="бсм20">бсм20</option>
 				<option class="option" value="бсм30">бсм30</option>
@@ -139,17 +142,17 @@ export default class Page {
 			<div class="chevron"></div>
 		</label>
 
-		<input type="number" class="hand-over-orepations__input input" placeholder="Количество" data-input-count>
+		<input type="number" class="hand-over-orepations__input input" placeholder="Количество" data-input-count="${weekNumber}">
 
 		<label class="hand-over-orepations__label">
-			<select type="select" class="hand-over-orepations__input input" data-select-type>
+			<select type="select" class="hand-over-orepations__input input" data-select-type="${weekNumber}">
 				<option class="option" value="chain">Цепь</option>
 				<option class="option" value="bracelet">Браслет</option>
 			</select>
 			<div class="chevron"></div>
 		</label>
 
-		<button class="item item_warning item_add hand-over-orepations__button">
+		<button class="item item_warning item_add hand-over-orepations__button" data-hand-over-button="${weekNumber}">
 			<div class="item__header">
 				<div class="item__header-text">Добавить к сдаче</div>
 				<div class="item__header-arrow">
@@ -158,7 +161,7 @@ export default class Page {
 			</div>
 		</button>
 
-	</div>`
+	</form>`
 
 	}
 
@@ -176,7 +179,7 @@ export default class Page {
 
 		footerActionElement.innerHTML = 
 		`<div class="week-orepations" data-form-add-operation-worker-name="${name}">
-			<input type="number" class="week-orepations__input input" data-input-week-operation="${weekNumber}">
+			<input type="number" class="week-orepations__input input" placeholder="Введите вес" data-input-week-operation="${weekNumber}">
 			
 			<button class="week-orepations__button item item_warning" data-addbutton-operation="${weekNumber}">Прибавить</button>
 			<button class="week-orepations__button item item_subtract" data-minusbutton-operation="${weekNumber}">Вычесть</button>

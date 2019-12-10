@@ -26,7 +26,51 @@ export default class Handler {
 		if (args.addSingleOperation) {
 			this.addSingleOperationFormHandler(args.workerName, args.addSingleOperation)
 		}
+		if (args.addHandOverOperation) {
+			this.addHandOverOperation(args.page, args.name, args.weekNumber)
+		}
 		
+	}
+
+	// форма добавления строки сдачи
+	addHandOverOperation (page, workerName, weekNumber) {
+		const footerActionElement = document.querySelector(`[data-footer-action="${page}"]`)
+		const handOverFormElement = footerActionElement.querySelector(`[data-hand-over-operations="${workerName}"]`)
+		const weightInputElement = handOverFormElement.querySelector(`[data-input-weight="${weekNumber}"]`)
+		const countInputElement = handOverFormElement.querySelector(`[data-input-count="${weekNumber}"]`)
+		const weavingSelectElement = handOverFormElement.querySelector(`[data-select-weaving="${weekNumber}"]`)
+		const typeSelectElement = handOverFormElement.querySelector(`[data-select-type="${weekNumber}"]`)
+		const handOverButtonElement = handOverFormElement.querySelector(`[data-hand-over-button="${weekNumber}"]`)
+
+		// операция добавить к сдаче
+		handOverButtonElement.addEventListener('click', (event) => {
+			event.preventDefault()
+
+			// если какое-то полу не заполнено, то предупреждаем пользователя
+			const weightIsEmpty = Handler.showError(weightInputElement, weightInputElement.value, '')
+			const countIsEmpty = Handler.showError(countInputElement, countInputElement.value, '')
+			const weavingIsEmpty = Handler.showError(weavingSelectElement, weavingSelectElement.value, 'choose')
+			if (weightIsEmpty || countIsEmpty || weavingIsEmpty) return
+			
+			// создаём объект для записи в память
+			const handOverObj = {
+				weight: weightInputElement.value,
+				weaving: weavingSelectElement.value,
+				count: countInputElement.value,
+				type: typeSelectElement.value
+			}
+
+			const newHandOverValues = {
+				workerName,
+				weekNumber,
+				handOverOperation: handOverObj
+			}
+			
+			console.log(newHandOverValues)
+			Storage.saveHandOverOperation(newHandOverValues)
+
+		})
+
 	}
 
 	// форма добавления строки операции
@@ -54,15 +98,9 @@ export default class Handler {
 	addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
 
 		// Если ничего не введено, то предупреждаем пользователя
-		if (!operationValue) {
-			inputOperationElement.classList.add('warning-input')
-			inputOperationElement.placeholder = 'Введите число'
-			inputOperationElement.value = ''
-			setTimeout(() => {
-				inputOperationElement.classList.remove('warning-input')
-			}, 1000)
-			return 
-		}
+		const ifEmpty = Handler.showError(inputOperationElement, operationValue, '')
+		if (ifEmpty) return
+		
 		const newItemValues = {
 			workerName,
 			weekNumber,
@@ -72,6 +110,18 @@ export default class Handler {
 		this.page.addFieldList('weekItems', workerName, weekNumber)
 		// console.log(document.body.scrollHeight)
 		// window.scrollTo(0, 10000)
+	}
+
+	// показать, что инпут пустой
+	static showError (element, currentValue, falseValue) {
+		// console.log('error', currentValue == falseValue  )
+		if (currentValue == falseValue) {
+			element.classList.add('warning-input')
+			setTimeout(() => {
+				element.classList.remove('warning-input')
+			}, 2000)
+			return true
+		}
 	}
 
 
