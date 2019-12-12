@@ -7,30 +7,6 @@ export default class Storage {
 		// console.log('прочитали ил памяти', dataArray)
 		dataObj.workers = dataObj.workers || []
 
-		// if (data.weekNumber) {
-		// 	let weeksArray
-		// 	for (let i = 0; i < dataObj.workers.length; i++) {
-		// 		// если имя работника в массиве из памяти и из формы совпадают
-		// 		if (dataObj.workers[i].workerName === data.workerName) {
-		// 			// проверка на существование номера недели
-		// 			for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
-		// 				if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
-		// 					// console.log('exist week')
-		// 					return false
-		// 				}
-		// 			}
-		// 			weeksArray = dataObj.workers[i].weeks
-		// 			weeksArray.push({weekNumber: data.weekNumber, weekItems: [], weekHandOver: []})
-		// 			dataObj.workers[i].weeks = weeksArray
-		// 			break
-		// 		}
-		// 	}
-			
-
-		// } 
-		// else 
-		// if (data.workerName){
-
 		// проверка на существование имени
 		for (let i = 0; i < dataObj.workers.length; i++) {
 			if (dataObj.workers[i].workerName === data.workerName) {
