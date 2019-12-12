@@ -7,42 +7,46 @@ export default class Storage {
 		// console.log('прочитали ил памяти', dataArray)
 		dataObj.workers = dataObj.workers || []
 
-		if (data.weekNumber) {
-			let weeksArray
-			for (let i = 0; i < dataObj.workers.length; i++) {
-				// если имя работника в массиве из памяти и из формы совпадают
-				if (dataObj.workers[i].workerName === data.workerName) {
-					// проверка на существование номера недели
-					for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
-						if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
-							// console.log('exist week')
-							return false
-						}
-					}
-					weeksArray = dataObj.workers[i].weeks
-					weeksArray.push({weekNumber: data.weekNumber, weekItems: [], weekHandOver: []})
-					dataObj.workers[i].weeks = weeksArray
-					break
-				}
-			}
+		// if (data.weekNumber) {
+		// 	let weeksArray
+		// 	for (let i = 0; i < dataObj.workers.length; i++) {
+		// 		// если имя работника в массиве из памяти и из формы совпадают
+		// 		if (dataObj.workers[i].workerName === data.workerName) {
+		// 			// проверка на существование номера недели
+		// 			for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
+		// 				if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
+		// 					// console.log('exist week')
+		// 					return false
+		// 				}
+		// 			}
+		// 			weeksArray = dataObj.workers[i].weeks
+		// 			weeksArray.push({weekNumber: data.weekNumber, weekItems: [], weekHandOver: []})
+		// 			dataObj.workers[i].weeks = weeksArray
+		// 			break
+		// 		}
+		// 	}
 			
 
-		} 
-		else if (data.workerName){
+		// } 
+		// else 
+		// if (data.workerName){
 
-			// проверка на существование имени
-			for (let i = 0; i < dataObj.workers.length; i++) {
-				if (dataObj.workers[i].workerName === data.workerName) {
-					// console.log('exist name')
-					return false
-				}
+		// проверка на существование имени
+		for (let i = 0; i < dataObj.workers.length; i++) {
+			if (dataObj.workers[i].workerName === data.workerName) {
+				// console.log('exist name')
+				return false
 			}
-
-			dataObj.workers.push({
-				workerName: data.workerName, 
-				weeks: []
-			})
 		}
+
+		dataObj.workersId = dataObj.workersId || 0
+
+		dataObj.workers.push({
+			workerName: data.workerName,
+			id: ++dataObj.workersId,
+			weeks: []
+		})
+		// }
 
 		Storage.save(dataObj)
 		return true
@@ -64,13 +68,15 @@ export default class Storage {
 						return false
 					}
 				}
+				dataObj.workers[i].weeksId = dataObj.workers[i].weeksId || 0
 				const weeksArray = dataObj.workers[i].weeks
 				weeksArray.push({
 					weekNumber: data.weekNumber,
 					weekItems: [], 
 					weekHandOver: [],
 					weekWeight: 0,
-					weekSalary: 0
+					weekSalary: 0,
+					id: ++dataObj.workers[i].weeksId
 				})
 				dataObj.workers[i].weeks = weeksArray
 				break
@@ -127,6 +133,10 @@ export default class Storage {
 						// учитываем операцию сдачи в общем весе недели
 						dataObj.workers[i].weeks[j].weekWeight -= +data.handOverOperation.weightWithPercent
 
+						// добавляем id
+						dataObj.workers[i].weeks[j].handOverId = dataObj.workers[i].weeks[j].handOverId || 0
+						data.handOverOperation.id = ++dataObj.workers[i].weeks[j].handOverId
+
 						// добавляем операцию сдачи в массив сдач
 						dataObj.workers[i].weeks[j].weekHandOver.push(data.handOverOperation)
 						break
@@ -152,11 +162,13 @@ export default class Storage {
 				for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
 					if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
 
+						// добавляем id
+						dataObj.workers[i].weeks[j].operationId = dataObj.workers[i].weeks[j].operationId || 0
+
 						// создаём объект новой операции
 						const newOperation = {
 							value: data.singleOperation,
-							// isSingle: true,
-							// isPrevious: false
+							id: ++dataObj.workers[i].weeks[j].operationId
 						}
 						// учитываем операцию в общем весе недели
 						dataObj.workers[i].weeks[j].weekWeight += +data.singleOperation
@@ -231,6 +243,10 @@ export default class Storage {
 			}
 			
 		}
+		// добавляем id
+		dataObj.weavingsId = dataObj.weavingsId || 0
+		data.id = ++dataObj.weavingsId
+
 		dataObj.weavings.push(data)
 
 		Storage.save(dataObj)

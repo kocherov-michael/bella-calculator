@@ -21,6 +21,7 @@ export default class Handler {
 		}
 		if (args.itemHandler) {
 			this.itemHandler(args.itemHandler)
+			this.itemTouchHandler(args.itemHandler)
 		}
 		if (args.addSingleOperation) {
 			this.addSingleOperationFormHandler(args.workerName, args.addSingleOperation)
@@ -354,4 +355,148 @@ export default class Handler {
 	static getWeightWithPercent (weight, percent) {
 		return Math.round(weight * 10000 + weight * percent * 10000 / 100) / 10000
 	}
+
+	// обработчик перетаскивания обычного элемента
+	itemTouchHandler (element) {
+		const touchArray = []
+		let firstTapPosition = null
+
+		element.addEventListener("touchmove", function (event) {
+			
+			let touchPoint = event.changedTouches[0].pageX
+			if (!firstTapPosition) {
+				firstTapPosition = touchPoint
+			}
+			touchArray.push(touchPoint)
+			
+			let difference = touchPoint - firstTapPosition
+			// console.log(difference)
+			// const innerDiv = this.querySelector('[data-string]')
+			// const buttonEditElement = this.querySelector('[data-change-operation]')
+			// const operationId = parseInt(buttonEditElement.getAttribute('data-change-operation'))
+			// console.log(operationId)
+
+			
+			if ( difference > 0) {
+				// console.log(this)
+				// поле, в котором находится элемент
+				const fieldElement = this.closest('[data-field]')
+				// элемент не виден, когда выходит за границы поля
+				fieldElement.style.overflow = 'hidden'
+				// перемещаем элемент в горизонтальной плоскости
+				this.style.marginLeft = `${difference}px`
+				this.style.marginRight = `-${difference}px`
+				// this.style.overflow = 'hidden'
+			// 	innerDiv.style.marginLeft = (String(difference) + 'px')
+			// 	innerDiv.style.marginRight = ('-' + String(difference) + 'px')
+			// 	let diff = String(difference)
+
+				// Удаляем элемент операции
+				if ( difference > 200 ) {
+					const pageAttr = fieldElement.getAttribute('data-field')
+					
+					console.log('pageAttr', pageAttr)
+			// 		innerDiv.style.opacity = '0'
+			// 		let elemHeight = parseFloat(getComputedStyle(this, null).height.replace("px", ""))
+			// 		this.style.height = `${elemHeight}px`
+
+			// 		const hideOperation = setInterval( () => {
+			// 			let height = parseInt(this.style.height.replace("px", ""))
+			// 			height -= 1
+			// 					this.style.height = `${height}px`
+
+			// 					if (height <=0) {
+			// 						clearInterval(hideOperation)
+			// 						for(let i=0; i <operationsArray.length; i++) {
+			// 					if (operationsArray[i].id === operationId) {
+			// 						operationsArray.splice(i, 1)
+
+			// 						addToDB(operationsArray, loggedUser)
+			// 						renderFromDB ()
+			// 					}
+			// 				}
+			// 					}
+			// 		}, 10)
+				}
+			}
+
+			// если отпускаем палец, то элемент возвращается обратно
+			this.addEventListener('touchend', () => {
+				touchArray.length = 0
+				firstTapPosition = null
+				this.style.transition = 'all 0.4s ease'
+				this.style.marginLeft = ''
+				this.style.marginRight = ''
+				// после возвращения элемента на место плавность отключаем
+				setTimeout( () => {
+					this.style.transition = ''
+				}, 400)
+			})
+			// operationElement.addEventListener("touchend", () => {
+			// 	touchArray.length = 0
+			// 	firstTapPosition = null
+			// 	innerDiv.style.marginLeft = ''
+			// 	innerDiv.style.marginRight = ''
+			// })
+			
+		} )
+	}
+
+// 		operationElement.addEventListener("touchmove", handleMove )
+		
+// 		const touchArray = []
+// 		let firstTapPosition = null
+
+// 		function handleMove (event) {
+// 			let touchPoint = event.changedTouches[0].pageX
+// 			if (!firstTapPosition) {
+// 				firstTapPosition = touchPoint
+// 			}
+// 			touchArray.push(touchPoint)
+
+// 			let difference = touchPoint - firstTapPosition
+// 			const innerDiv = this.querySelector('[data-string]')
+// 			const buttonEditElement = this.querySelector('[data-change-operation]')
+// 			const operationId = parseInt(buttonEditElement.getAttribute('data-change-operation'))
+// 			console.log(operationId)
+
+// 			if ( difference > 20) {
+// 				this.style.overflow = 'hidden'
+// 				innerDiv.style.marginLeft = (String(difference) + 'px')
+// 				innerDiv.style.marginRight = ('-' + String(difference) + 'px')
+// 				let diff = String(difference)
+
+// 				// Удаляем элемент операции
+// 				if ( difference > 200 ) {
+// 					innerDiv.style.opacity = '0'
+// 					let elemHeight = parseFloat(getComputedStyle(this, null).height.replace("px", ""))
+// 					this.style.height = `${elemHeight}px`
+
+// 					const hideOperation = setInterval( () => {
+// 						let height = parseInt(this.style.height.replace("px", ""))
+// 						height -= 1
+// 				        this.style.height = `${height}px`
+
+// 				        if (height <=0) {
+// 				        	clearInterval(hideOperation)
+// 				        	for(let i=0; i <operationsArray.length; i++) {
+// 								if (operationsArray[i].id === operationId) {
+// 									operationsArray.splice(i, 1)
+
+// 									addToDB(operationsArray, loggedUser)
+// 									renderFromDB ()
+// 								}
+// 							}
+// 				        }
+// 					}, 10)
+// 				}
+// 			}
+
+// 			operationElement.addEventListener("touchend", () => {
+// 				touchArray.length = 0
+// 				firstTapPosition = null
+// 				innerDiv.style.marginLeft = ''
+// 				innerDiv.style.marginRight = ''
+// 			})
+// 		}
 }

@@ -5,12 +5,12 @@
 }
 
 .week-item.closedable {
-	transition: all 0.4s ease;
+	// transition: all 0.4s ease;
 	position: relative;
 	// overflow: hidden;
 	.chevron {
 		transform: rotate(-135deg) translate(0, -20%);
-		transition: all 0.4s ease;
+		transition: transform 0.4s ease;
 	}
 	.item__lower {
 		transition: margin-top 0.4s ease, opacity 0.4s ease ;
