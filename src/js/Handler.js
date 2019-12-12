@@ -153,6 +153,7 @@ export default class Handler {
 		const headerMenuElement = sectionElement.querySelector('[data-header-menu]')
 		const headerMenuListElement = sectionElement.querySelector('[data-menu-list]')
 		const weavingLinkElement = sectionElement.querySelector('[data-weaving-link]')
+		const quotationLinkElement = sectionElement.querySelector('[data-quotation-link]')
 
 
 		headerMenuElement.addEventListener('click', () => {
@@ -170,12 +171,22 @@ export default class Handler {
 			}, 400)
 			
 		})
+
+		quotationLinkElement.addEventListener('click', () => {
+			
+			this.page.changeNextPage(args.page, 'quotation', args.name, args.weekNumber)
+
+			setTimeout(() => {
+				headerMenuElement.classList.toggle('cross')
+				headerMenuListElement.classList.toggle('menu-show')
+			}, 400)
+			
+		})
 		
 	}
 	
 	// Обработчик кнопки Добавить сотрудника / неделю / плетение
 	addItemHandler (page) {
-		// console.log('смотри сюда', this)
 		// текущая страница
 		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
 		// кнопка Добавить

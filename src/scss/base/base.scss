@@ -65,3 +65,6 @@ body {
 	border-color: $danger-color !important;
 	background-color: $danger-color-opacity;
 }
+.order-previous {
+	order: -1;
+}

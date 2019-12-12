@@ -4,12 +4,12 @@ import Storage from './Storage'
 
 export default class Page {
 	constructor (args = {}) {
-		this.pages = [
-			'start',
-			'weeksList',
-			'weekItems',
-			'handOverItems'
-		]
+		// this.pages = [
+		// 	'start',
+		// 	'weeksList',
+		// 	'weekItems',
+		// 	'handOverItems'
+		// ]
 
 		if (args.start) {
 			this.renderStartPage(args.start)
@@ -119,6 +119,11 @@ export default class Page {
 
 	// генерируем страницу со списком плетений
 	renderWeavingListPage(page, name = '', weekNumber = '', previousAttr = 'start') {
+		// если переходим на страницу с плетениями со страницы с котировками,
+		// то стрелка назад возвращает на стартовую страницу
+		if (previousAttr === 'quotation') {
+			previousAttr = 'start'
+		}
 		this.createHeader(page, name)
 		this.createHeaderBackArrow(page, name, weekNumber, previousAttr)
 		this.addCreateButton(page, name)
@@ -131,12 +136,32 @@ export default class Page {
 			weekNumber,
 			menu: page,
 			addItem: page,
-			// workerName: name,
 			backButton: page
 		})
 
 		this.showHeaderName(page, name, weekNumber)
 		this.addFieldList(page, name, weekNumber)
+	}
+
+	// генерируем страницу котировок
+	renderQuotationPage(page, name = '', weekNumber = '', previousAttr = 'start') {
+		// если переходим на страницу с котировками со страницы с плетениями,
+		// то стрелка назад возвращает на стартовую страницу
+		if (previousAttr === 'weavingList') {
+			previousAttr = 'start'
+		}
+		this.createHeader(page, name)
+		this.createHeaderBackArrow(page, name, weekNumber, previousAttr)
+
+		const handler = new Handler({
+			page,
+			name,
+			weekNumber,
+			menu: page,
+			backButton: page
+		})
+
+		this.showHeaderName(page, name, weekNumber)
 	}
 
 
@@ -437,7 +462,7 @@ export default class Page {
 			</div>
 		</div>
 		<div class="menu" data-menu-list>
-			<button class="menu__item">Котировки</button>
+			<button class="menu__item" data-next="quotation" data-quotation-link="${page}">Котировки</button>
 			<button class="menu__item" data-next="weavingList"
 			data-weaving-link="${page}">Плетения</button>
 			<button class="menu__item">Восстановить удаления</button>
@@ -473,7 +498,6 @@ export default class Page {
 		imgArrowElement.setAttribute('src', 'assets/img/arrow.svg')
 		imgArrowElement.setAttribute('alt', 'назад')
 		arrowBackElement.append(imgArrowElement)
-		// console.log(imgArrowElement)
 
 	}
 
@@ -486,6 +510,9 @@ export default class Page {
 		}
 		else if (page === 'weavingList') {
 			headerTextElement.textContent = 'Плетения'
+		}
+		else if (page === 'quotation') {
+			headerTextElement.textContent = 'Котировки'
 		}
 		else if (headerTextElement) {
 			// если есть номер недели, то неделя {номер}, иначе имя
@@ -604,8 +631,12 @@ export default class Page {
 		const currentPageElement = document.querySelector(`[data-page="${currentPageAttr}"]`)
 		const nextPageElement = document.querySelector(`[data-page="${nextPageAttr}"]`)
 
+		if (currentPageAttr === 'quotation' && nextPageAttr === 'weavingList') {
+			currentPageElement.classList.add('order-previous')
+		}
 		nextPageElement.classList.remove('hide')
 		containerElement.classList.add('nextPage')
+
 
 		if (nextPageAttr === 'weeksList') {
 			this.renderWeekListPage(nextPageAttr, name)
@@ -619,10 +650,14 @@ export default class Page {
 		else if (nextPageAttr === 'weavingList') {
 			this.renderWeavingListPage(nextPageAttr, name, weekNumber, currentPageAttr)
 		}
+		else if (nextPageAttr === 'quotation') {
+			this.renderQuotationPage(nextPageAttr, name, weekNumber, currentPageAttr)
+		}
 		
 		setTimeout( () => {
 			currentPageElement.classList.add('hide')
 			containerElement.classList.remove('nextPage')
+			currentPageElement.classList.remove('order-previous')
 		}, 400)
 	}
 
@@ -664,7 +699,13 @@ export default class Page {
 	}
 
 	getPreviousPage (currentAttr) {
-		return this.pages[this.pages.indexOf(currentAttr) - 1] || ''
+		const pages = [
+			'start',
+			'weeksList',
+			'weekItems',
+			'handOverItems'
+		]
+		return pages[pages.indexOf(currentAttr) - 1] || ''
 	}
 
 }
