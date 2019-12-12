@@ -93,7 +93,7 @@ export default class Storage {
 							isSingle: true,
 							isPrevious: false
 						}
-						dataObj[i].weeks[j].weekItems.push(newOperation)
+						dataObj.workers[i].weeks[j].weekItems.push(newOperation)
 						break
 					}
 				}
@@ -105,10 +105,10 @@ export default class Storage {
 
 	static read () {
 		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
-		// console.log('прочитал', data)
+		// console.log('прочитал', dataObj)
 
 		// return data.workers || []
-		return dataObj || {}
+		return dataObj
 	}
 
 	static save(dataObj) {

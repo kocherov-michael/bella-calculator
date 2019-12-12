@@ -404,10 +404,11 @@ export default class Page {
 		itemFieldElement.innerHTML = ''
 	
 		// получаем данные из памяти
-		const data = Storage.read().workers
+		const data = Storage.read().workers || []
 	
 		// если страница стартовая
 		if (page === 'start') {
+			console.log(data)
 
 			data.forEach( (worker) => {
 				
