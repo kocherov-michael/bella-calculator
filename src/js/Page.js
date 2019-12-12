@@ -64,6 +64,7 @@ export default class Page {
 
 	}
 
+	// страница недели
 	renderWeekItemsPage (page, name = '', weekNumber = '') {
 		// this.addHeader(page, name)
 		this.createHeader(page, name)
@@ -88,6 +89,7 @@ export default class Page {
 		this.showHeaderName(page, name, weekNumber)
 		this.createSalaryItem(page, name, weekNumber)
 		this.showSalaryValues(page, name, weekNumber)
+		this.showFooterValues(page, name, weekNumber)
 
 	}
 
@@ -155,10 +157,12 @@ export default class Page {
 		const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
 		const footerWeightElement = footerElement.querySelector('[data-week-weight]')
 		const footerWeekWeightElement = footerElement.querySelector('[data-week-total]')
+		console.log(footerWeekWeightElement)
 
-		const {price, weight} = Page.getWeekBalance(name, weekNumber)
+		const {price, weight, weekTotalWeight} = Page.getWeekBalance(name, weekNumber)
 		if (footerSalaryElement) footerSalaryElement.textContent = price
 		if (footerWeightElement) footerWeightElement.textContent = weight
+		if (footerWeekWeightElement) footerWeekWeightElement.textContent = weekTotalWeight
 
 	}
 
@@ -183,6 +187,7 @@ export default class Page {
 		
 	}
 	
+	// показываем значения в элементе сдачи на странице недели
 	showSalaryValues(page, name, weekNumber) {
 		const salaryFieldElement = document.querySelector(`[data-salary-field="${page}"]`)
 		
@@ -209,8 +214,9 @@ export default class Page {
 		const previousWeekWeight = Storage.getWeightPreviousWeekItems(name, weekNumber)
 		// Общий баланс к концу недели
 		const weekTotalWeight = previousWeekWeight + weekWeight
+		console.log(weekTotalWeight)
 
-		return {price, weight}
+		return {price, weight, weekTotalWeight}
 	}
 
 

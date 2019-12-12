@@ -118,11 +118,7 @@ export default class Storage {
 					if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
 
 						// учитываем операцию сдачи в общем весе недели
-						// console.log(data)
-						// console.log(data.handOverOperation.weightWithPercent)
-						// console.log(dataObj.workers[i].weeks[j].weekWeight)
 						dataObj.workers[i].weeks[j].weekWeight -= +data.handOverOperation.weightWithPercent
-						// console.log(dataObj.workers[i].weeks[j].weekWeight)
 
 						// добавляем операцию сдачи в массив сдач
 						dataObj.workers[i].weeks[j].weekHandOver.push(data.handOverOperation)
@@ -155,7 +151,9 @@ export default class Storage {
 							// isSingle: true,
 							// isPrevious: false
 						}
+						// учитываем операцию в общем весе недели
 						dataObj.workers[i].weeks[j].weekWeight += +data.singleOperation
+
 						dataObj.workers[i].weeks[j].weekItems.push(newOperation)
 						break
 					}
