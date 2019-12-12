@@ -86,6 +86,7 @@ export default class Page {
 		this.addFieldList(page, name, weekNumber)
 		this.showHeaderName(page, name, weekNumber)
 		this.createSalaryItem(page, name, weekNumber)
+		this.showSalaryValues(page, name, weekNumber)
 
 	}
 
@@ -134,6 +135,13 @@ export default class Page {
 	}
 
 
+
+
+
+
+
+
+
 	// создаём главный элемент сдачи
 	createSalaryItem (page, name, weekNumber) {
 		const salaryFieldElement = document.querySelector(`[data-salary-field="${page}"]`)
@@ -141,7 +149,7 @@ export default class Page {
 		// очищаем поле
 		salaryFieldElement.innerHTML = ''
 
-		const newElement = new Item({
+		const {newElement} = new Item({
 			// родительский элемент
 			field: salaryFieldElement,
 			// вес
@@ -151,7 +159,41 @@ export default class Page {
 			weekNumber
 		})
 
+		
 	}
+	
+	showSalaryValues(page, name, weekNumber) {
+		const salaryFieldElement = document.querySelector(`[data-salary-field="${page}"]`)
+		
+		// показываем зарплату и сдачу за неделю
+		const weekSalaryElement = salaryFieldElement.querySelector('[data-week-salary]')
+		const weekWeightElement = salaryFieldElement.querySelector('[data-week-weight]')
+		const {price, weight} = Page.getWeekSalary(name, weekNumber)
+		weekSalaryElement.textContent = price
+		weekWeightElement.textContent = weight
+	}
+
+	// получаем зарплату и сдачу за неделю
+	static getWeekSalary(name, weekNumber) {
+		const {weekHandOver} = Storage.getOneWeek(name, weekNumber)
+		
+		const price = weekHandOver.reduce((accum,curr) => {
+			return Math.round((accum + curr.price) * 10000) / 10000
+		}, 0)
+		const weight = weekHandOver.reduce((accum,curr) => {
+			return Math.round((accum + curr.weightWithPercent) * 10000) / 10000
+		}, 0)
+
+		return {price, weight}
+	}
+
+
+
+
+
+
+
+
 
 	// создаём форму добавления сдачи
 	createAddHandOverForm (page, name, weekNumber) {
@@ -408,7 +450,7 @@ export default class Page {
 	
 		// если страница стартовая
 		if (page === 'start') {
-			console.log(data)
+			// console.log(data)
 
 			data.forEach( (worker) => {
 				
@@ -546,6 +588,12 @@ export default class Page {
 		} else {
 			
 			this.addFieldList(previousPageAttr, name, weekNumber)
+			// если страница добавили сдачу, то при возвращении назад показываем актуальную сдачу
+			if (previousPageAttr === 'weekItems') {
+
+				this.showSalaryValues(previousPageAttr, name, weekNumber)
+			}
+
 		}
 		
 		
