@@ -85,7 +85,9 @@ export default class Item {
 	}
 
 	static createSingleOperation (newElement, args) {
+		console.log(args)
 		newElement.classList.add('week-item', 'closedable', 'closed', 'hidetext')
+		newElement.setAttribute('data-week-number', args.weekNumber)
 
 		// преобразуем вид веса + или -
 		let weightValue

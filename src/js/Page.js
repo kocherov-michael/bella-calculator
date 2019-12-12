@@ -578,6 +578,7 @@ export default class Page {
 					weight: weekItem.value,
 					type: 'weekItem',
 					workerName: name,
+					weekNumber,
 					previous: weekItem.isPrevious,
 					id: weekItem.id
 				})

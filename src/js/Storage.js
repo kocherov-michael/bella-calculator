@@ -284,7 +284,6 @@ export default class Storage {
 
 	// удаление работника
 	static deleteWorker(elementId) {
-		console.log(elementId)
 		const dataObj = Storage.read()
 		// находим индекс удаляемого элемента
 		const index = dataObj.workers.findIndex( (worker) => {
@@ -292,16 +291,105 @@ export default class Storage {
 			return worker.id === +elementId
 		})
 		if (index < 0) return true
-		console.log('index', index)
 
-		// console.log(dataObj.workers)
-		const removedElement = dataObj.workers.splice(index, 1)
-		// console.log(dataObj.workers)
-		// console.log('removed', removed)
+		// сохраняем удалённый злемент
+		const removedElement = dataObj.workers.splice(index, 1)[0]
 		dataObj.removedElements = dataObj.removedElements || []
 		const removedObj = {
 			element: removedElement,
 			parent: dataObj.workers,
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		Storage.save(dataObj)
+
+		return true
+	}
+
+	// удаление недели
+	static deleteWeek(elementId, workerName) {
+		// console.log(elementId)
+		const dataObj = Storage.read()
+		// находим индекс удаляемого элемента
+		for( let i =0; i < dataObj.workers; i++) {
+
+		}
+		const workersIndex = dataObj.workers.findIndex( (worker) => worker.workerName === workerName)
+		console.log(workersIndex)
+
+		const index = dataObj.workers[workersIndex].weeks.findIndex( (week) => {
+
+			return week.id === +elementId
+		})
+		if (index < 0) return true
+		console.log('index', index)
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj.workers[workersIndex].weeks.splice(index, 1)[0]
+		dataObj.removedElements = dataObj.removedElements || []
+		const removedObj = {
+			element: removedElement,
+			parent: dataObj.workers[workersIndex].weeks,
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		Storage.save(dataObj)
+
+		return true
+	}
+
+	
+	// удаление операции недели
+	static deleteWeekItem(elementId, workerName, weekNumber) {
+		// console.log(elementId)
+		const dataObj = Storage.read()
+		// находим индекс удаляемого элемента
+		for( let i =0; i < dataObj.workers; i++) {
+
+		}
+		const workersIndex = dataObj
+			.workers
+			.findIndex( (worker) => worker.workerName === workerName)
+
+		const weekIndex = dataObj
+			.workers[workersIndex]
+			.weeks
+			.findIndex( (week) => week.weekNumber == weekNumber)
+
+		const index = dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekItems
+			.findIndex( (item) => item.id == elementId)
+
+
+		if (index < 0) return true
+		console.log('index', index)
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekItems
+			.splice(index, 1)[0]
+		
+		// учитываем удаление элемента в общем весе недели
+		dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekWeight -= removedElement.value
+
+		dataObj.removedElements = dataObj.removedElements || []
+		const removedObj = {
+			element: removedElement,
+			parent: dataObj
+				.workers[workersIndex]
+				.weeks[weekIndex]
+				.weekItems,
 			index
 		}
 

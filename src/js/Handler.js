@@ -360,9 +360,15 @@ export default class Handler {
 	}
 
 	// удаление элемента
-	static deleteElement(elementId, pageAttr) {
+	static deleteElement(elementId, pageAttr, elementWorker, weekNumber) {
 		if ( pageAttr === 'start') {
 			Storage.deleteWorker(elementId)
+		}
+		else if (pageAttr === 'weeksList') {
+			Storage.deleteWeek(elementId, elementWorker)
+		}
+		else if (pageAttr === 'weekItems') {
+			Storage.deleteWeekItem(elementId, elementWorker, weekNumber)
 		}
 	}
 
@@ -409,10 +415,12 @@ export default class Handler {
 					// console.log(this)
 
 					const elementId = this.getAttribute('data-id')
+					const elementWorker = this.getAttribute('data-worker')
+					const weekNumber = this.getAttribute('data-week-number')
 					console.log(elementId)
 
 					// удаляем элемент из памяти
-					Handler.deleteElement(elementId, pageAttr)
+					Handler.deleteElement(elementId, pageAttr, elementWorker, weekNumber)
 					this.classList.add('deleted')
 
 					setTimeout( () => {
