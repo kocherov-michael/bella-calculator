@@ -281,4 +281,34 @@ export default class Storage {
 				return summ + Storage.getWeightPreviousWeekItems(worker.workerName)
 			}, 0)
 	}
+
+	// удаление работника
+	static deleteWorker(elementId) {
+		console.log(elementId)
+		const dataObj = Storage.read()
+		// находим индекс удаляемого элемента
+		const index = dataObj.workers.findIndex( (worker) => {
+
+			return worker.id === +elementId
+		})
+		if (index < 0) return true
+		console.log('index', index)
+
+		// console.log(dataObj.workers)
+		const removedElement = dataObj.workers.splice(index, 1)
+		// console.log(dataObj.workers)
+		// console.log('removed', removed)
+		dataObj.removedElements = dataObj.removedElements || []
+		const removedObj = {
+			element: removedElement,
+			parent: dataObj.workers,
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		Storage.save(dataObj)
+
+		return true
+	}
 }

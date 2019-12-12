@@ -21,13 +21,16 @@ export default class Handler {
 		}
 		if (args.itemHandler) {
 			this.itemHandler(args.itemHandler)
-			this.itemTouchHandler(args.itemHandler)
+			// this.itemTouchHandler(args.itemHandler)
 		}
 		if (args.addSingleOperation) {
 			this.addSingleOperationFormHandler(args.workerName, args.addSingleOperation)
 		}
 		if (args.addHandOverOperation) {
 			this.addHandOverOperation(args.page, args.name, args.weekNumber)
+		}
+		if (args.deleteable) {
+			this.itemTouchHandler(args.deleteable)
 		}
 		
 	}
@@ -356,6 +359,13 @@ export default class Handler {
 		return Math.round(weight * 10000 + weight * percent * 10000 / 100) / 10000
 	}
 
+	// удаление элемента
+	static deleteElement(elementId, pageAttr) {
+		if ( pageAttr === 'start') {
+			Storage.deleteWorker(elementId)
+		}
+	}
+
 	// обработчик перетаскивания обычного элемента
 	itemTouchHandler (element) {
 		const touchArray = []
@@ -369,23 +379,23 @@ export default class Handler {
 			}
 			touchArray.push(touchPoint)
 			
-			let difference = touchPoint - firstTapPosition
+			let difference = firstTapPosition - touchPoint
 			// console.log(difference)
 			// const innerDiv = this.querySelector('[data-string]')
 			// const buttonEditElement = this.querySelector('[data-change-operation]')
 			// const operationId = parseInt(buttonEditElement.getAttribute('data-change-operation'))
 			// console.log(operationId)
-
+			
+			// поле, в котором находится элемент
+			const fieldElement = this.closest('[data-field]')
 			
 			if ( difference > 0) {
 				// console.log(this)
-				// поле, в котором находится элемент
-				const fieldElement = this.closest('[data-field]')
 				// элемент не виден, когда выходит за границы поля
 				fieldElement.style.overflow = 'hidden'
 				// перемещаем элемент в горизонтальной плоскости
-				this.style.marginLeft = `${difference}px`
-				this.style.marginRight = `-${difference}px`
+				this.style.marginLeft = `-${difference}px`
+				this.style.marginRight = `${difference}px`
 				// this.style.overflow = 'hidden'
 			// 	innerDiv.style.marginLeft = (String(difference) + 'px')
 			// 	innerDiv.style.marginRight = ('-' + String(difference) + 'px')
@@ -394,8 +404,24 @@ export default class Handler {
 				// Удаляем элемент операции
 				if ( difference > 200 ) {
 					const pageAttr = fieldElement.getAttribute('data-field')
-					
-					console.log('pageAttr', pageAttr)
+
+					// console.log('pageAttr', pageAttr)
+					// console.log(this)
+
+					const elementId = this.getAttribute('data-id')
+					console.log(elementId)
+
+					// удаляем элемент из памяти
+					Handler.deleteElement(elementId, pageAttr)
+					this.classList.add('deleted')
+
+					setTimeout( () => {
+
+						this.style.display = 'none'
+					}, 200)
+
+
+
 			// 		innerDiv.style.opacity = '0'
 			// 		let elemHeight = parseFloat(getComputedStyle(this, null).height.replace("px", ""))
 			// 		this.style.height = `${elemHeight}px`
@@ -429,6 +455,7 @@ export default class Handler {
 				this.style.marginRight = ''
 				// после возвращения элемента на место плавность отключаем
 				setTimeout( () => {
+					fieldElement.style.overflow = 'auto'
 					this.style.transition = ''
 				}, 400)
 			})

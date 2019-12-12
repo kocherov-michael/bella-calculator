@@ -542,7 +542,8 @@ export default class Page {
 					// имя работника
 					text: worker.workerName,
 					type: 'single',
-					workerName: worker.workerName
+					workerName: worker.workerName,
+					id: worker.id
 				})
 			})
 		}
@@ -557,12 +558,14 @@ export default class Page {
 					// номер недели
 					text: week.weekNumber,
 					type: 'week',
-					workerName: name
+					workerName: name,
+					id: week.id
 				})
 			})
 
 		}
 
+		// операции в неделе
 		else if ( page === 'weekItems') {
 			// console.log(name, weekNumber)
 			const oneWeekObj = Storage.getOneWeek(name, weekNumber)
@@ -575,12 +578,14 @@ export default class Page {
 					weight: weekItem.value,
 					type: 'weekItem',
 					workerName: name,
-					previous: weekItem.isPrevious
+					previous: weekItem.isPrevious,
+					id: weekItem.id
 				})
 			})
 
 		}
 
+		// операция сдачи
 		else if ( page === 'handOverItems') {
 			const oneWeekObj = Storage.getOneWeek(name, weekNumber)
 			oneWeekObj.weekHandOver.forEach( (handOverItem) => {
@@ -597,11 +602,13 @@ export default class Page {
 					count: handOverItem.count,
 					isChain: handOverItem.isChain,
 					percent: handOverItem.percent,
-					price: handOverItem.price
+					price: handOverItem.price,
+					id: handOverItem.id
 				})
 			})
 		}
 
+		// плетения
 		else if ( page === 'weavingList') {
 			const weavingArr = Storage.getWeavingArray()
 
@@ -615,6 +622,7 @@ export default class Page {
 					percent: weavingItem.percent,
 					chain: weavingItem.chain,
 					bracelet: weavingItem.bracelet,
+					id: weavingItem.id
 				})
 			})
 		}

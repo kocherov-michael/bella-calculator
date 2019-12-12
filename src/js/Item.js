@@ -7,7 +7,8 @@ export default class Item {
 			this.newElement = Item.createSalaryItem(args)
 
 			const handler = new Handler({
-				itemHandler: this.newElement
+				itemHandler: this.newElement,
+				// deleteable: this.newElement
 			})
 
 
@@ -15,9 +16,17 @@ export default class Item {
 		else if (args.type === 'handOverItem') {
 			this.newElement = Item.createHandOverItem(args)
 
+			const handler = new Handler({
+				deleteable: this.newElement
+			})
+
 		}
 		else if (args.type === 'weavingItem') {
 			this.newElement = Item.createWeavingItem(args)
+
+			const handler = new Handler({
+				deleteable: this.newElement
+			})
 		}
 		 else {
 			this.create(args)
@@ -31,6 +40,7 @@ export default class Item {
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
 		newElement.setAttribute('data-worker', args.workerName)
+		newElement.setAttribute('data-id', args.id)
 		
 		// если тип - работник
 		if (args.type === 'single') {
@@ -64,7 +74,8 @@ export default class Item {
 		parentElement.appendChild(newElement)
 		
 		const handler = new Handler({
-			itemHandler: newElement
+			itemHandler: newElement,
+			deleteable: newElement
 		})
 
 		// прокручиваем до последнего добавленного элемента
@@ -147,6 +158,7 @@ export default class Item {
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
 		newElement.classList.add('salary-item')
+		newElement.setAttribute('data-id', args.id)
 
 		const chainArray = ["цепь", "цепи", "цепей"]
 		const braceletArray = ["браслет", "браслета", "браслетов"]
@@ -185,7 +197,6 @@ export default class Item {
 
 		// прокручиваем до последнего добавленного элемента
 		setTimeout(()=> {
-			// console.log('прокрутка')
 			newElement.scrollIntoView()
 		},400)
 	}
@@ -196,6 +207,7 @@ export default class Item {
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
 		newElement.classList.add('weaving-item')
+		newElement.setAttribute('data-id', args.id)
 
 		newElement.innerHTML =
 		`<div class="item__header">
@@ -222,6 +234,8 @@ export default class Item {
 			// console.log('прокрутка')
 			newElement.scrollIntoView()
 		},400)
+
+		return newElement
 	}
 
 	// правильно склоняем числительные
