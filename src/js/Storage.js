@@ -104,7 +104,7 @@ export default class Storage {
 				for (let i = 0; i < indexCurrentWeek; i++) {
 					summWeight += weeksArray[i].weekWeight
 				}
-				
+
 				return summWeight
 			}
 		}
@@ -253,6 +253,16 @@ export default class Storage {
 			}
 		}
 	}
+
+	// получить общий вес со всех работников
+	static getAbsolutelyTotalWeight () {
+		const dataObj = Storage.read() || {}
+		dataObj.workers = dataObj.workers || []
+		
+		// для каждого работника считаем его остаток и складываем
+		// если ещё нет работников, то остаток 0
+		return dataObj.workers.reduce( (summ, worker) => {
+				return summ + Storage.getWeightPreviousWeekItems(worker.workerName)
+			}, 0)
+	}
 }
-// localStorage.setItem('bellaPlus', JSON.stringify(data))
-// JSON.parse(localStorage.getItem('bellaPlus'))

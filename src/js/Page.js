@@ -37,6 +37,7 @@ export default class Page {
 		})
 		
 		this.addFieldList(page, name)
+		this.showFooterValues(page, name)
 		// this.showHeaderName(page, name)
 
 	}
@@ -154,6 +155,15 @@ export default class Page {
 	// показываем значения в подвале
 	showFooterValues(page, name, weekNumber = '') {
 		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+
+		// все работники
+		if (page === 'start') {
+			// let totalCommonWeight
+			
+			// console.log(Storage.getAbsolutelyTotalWeight())
+			const footerAllWorkersElement = footerElement.querySelector('[data-all-workers-total]')
+			footerAllWorkersElement.textContent = Storage.getAbsolutelyTotalWeight()
+		}
 
 		// все недели
 		const allWeeksWeight = Storage.getWeightPreviousWeekItems(name)
