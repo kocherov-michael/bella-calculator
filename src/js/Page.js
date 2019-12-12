@@ -167,7 +167,7 @@ export default class Page {
 			const stringTemplate = `<option class="option" value="${weavingArr[i].weavingName}">${weavingArr[i].weavingName}</option>`
 			optionTemplate += stringTemplate
 		}
-		console.log(optionTemplate)
+		// console.log(optionTemplate)
 
 		footerActionElement.innerHTML = ''
 		footerActionElement.innerHTML = 
@@ -541,7 +541,12 @@ export default class Page {
 		containerElement.classList.add('fromNextToPrevious')
 		
 		// отрисовываем предыдущую страницу
-		this.addFieldList(previousPageAttr, name, weekNumber)
+		if (currentPageAttr === 'weavingList' && previousPageAttr === 'handOverItems') {
+			this.renderHandOverItemsPage(previousPageAttr, name, weekNumber)
+		} else {
+			
+			this.addFieldList(previousPageAttr, name, weekNumber)
+		}
 		
 		
 		setTimeout( () => {
