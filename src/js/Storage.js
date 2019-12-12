@@ -48,6 +48,61 @@ export default class Storage {
 		return true
 	}
 
+	// сохранить одну неделю
+	static saveOneWeek (data) {
+		const dataObj = Storage.read() || {}
+		dataObj.workers = dataObj.workers || []
+
+		// let weeksArray
+		for (let i = 0; i < dataObj.workers.length; i++) {
+			// если имя работника в массиве из памяти и из формы совпадают
+			if (dataObj.workers[i].workerName === data.workerName) {
+				// проверка на существование номера недели
+				for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
+					if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
+						// console.log('exist week')
+						return false
+					}
+				}
+				const weeksArray = dataObj.workers[i].weeks
+				weeksArray.push({
+					weekNumber: data.weekNumber,
+					weekItems: [], 
+					weekHandOver: [],
+					weekWeight: 10,
+					weekSalary: 3000
+				})
+				dataObj.workers[i].weeks = weeksArray
+				break
+			}
+		}
+		Storage.save(dataObj)
+		return true
+	}
+
+	// получить вес всех предыдущих недель работника
+	static getWeightPreviousWeekItems(workerName, weekNumber) {
+		const dataObj = Storage.read() || {}
+		
+		for (let i = 0; i < dataObj.workers.length; i++) {
+			// находим работника, у которого будем считать
+			if (dataObj.workers[i].workerName === workerName) {
+				const weeksArray = dataObj.workers[i].weeks
+				// обозначаем аккумулирующую переменную для веса
+				let summWeight = 0
+				// находим индекс текушей недели в массиве
+				const indexCurrentWeek = weeksArray.findIndex( (week) => {
+					return week.weekNumber === weekNumber
+				})
+				// обходим недели до текущей недели
+				for (let i = 0; i < indexCurrentWeek; i++) {
+					summWeight += weeksArray[i].weekWeight
+				}
+				return summWeight
+			}
+		}
+	}
+
 
 	// сохранить операцию сдачи
 	static saveHandOverOperation (data) {
@@ -176,6 +231,7 @@ export default class Storage {
 		return dataObj.weavings || []
 	}
 
+	// получить одно плетение
 	static getOneWeaving (weavingName) {
 		const dataObj = Storage.read() || {}
 		for ( let i = 0; i < dataObj.weavings.length; i++) {

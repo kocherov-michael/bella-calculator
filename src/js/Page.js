@@ -83,6 +83,7 @@ export default class Page {
 			addSingleOperation: weekNumber
 		})
 		
+		this.showPreviousWeight(page, name, weekNumber)
 		this.addFieldList(page, name, weekNumber)
 		this.showHeaderName(page, name, weekNumber)
 		this.createSalaryItem(page, name, weekNumber)
@@ -138,7 +139,15 @@ export default class Page {
 
 
 
-
+	// показываем вес с предыдущей недели
+	showPreviousWeight(page, name, weekNumber) {
+		const fieldElement = document.querySelector(`[data-field="${page}"]`)
+		const previousWeekWeightElement = fieldElement.querySelector(`[data-previous-weight]`)
+		const weight = Storage.getWeightPreviousWeekItems(name, weekNumber)
+		
+		// отображаем остаток с предыдущей недели: если 0, то без знака, иначе со знаком
+		previousWeekWeightElement.textContent = weight == 0 ? '0' : (weight > 0 ? `+ ${weight}`: `- ${Math.abs(weight)}`)
+	}
 
 	// показываем значения в подвале
 	showFooterValues(page, name, weekNumber) {

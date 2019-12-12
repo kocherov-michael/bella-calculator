@@ -267,12 +267,23 @@ export default class Handler {
 			this.closeForm()
 			this.page.addFieldList('weavingList')
 
-		} else {
+		} else if (this.args.page === 'start') {
 
 			const result = Storage.saveWorker(newItemValues)
 			if (!result) return
 			this.closeForm()
 			this.page.addFieldList(this.args.addItem, nameForRender)
+		}
+		else if (this.args.page === 'weeksList') {
+			// если сохраняем неделю
+			console.log('сохраняем неделю')
+			const result = Storage.saveOneWeek(newItemValues)
+			if (!result) return
+			this.closeForm()
+			this.page.addFieldList(this.args.addItem, nameForRender)
+		}
+		else {
+			console.log('ошибка в обработчике')
 		}
 	}
 
