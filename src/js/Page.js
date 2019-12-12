@@ -109,6 +109,7 @@ export default class Page {
 
 		this.showHeaderName(page, name, weekNumber)
 		this.addFieldList(page, name, weekNumber)
+		this.showFooterValues(page, name, weekNumber)
 
 	}
 
@@ -139,7 +140,17 @@ export default class Page {
 
 
 
+	// показываем значения в подвале
+	showFooterValues(page, name, weekNumber) {
+		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+		const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
+		const footerWeightElement = footerElement.querySelector('[data-week-weight]')
 
+		const {price, weight} = Page.getWeekSalary(name, weekNumber)
+		footerSalaryElement.textContent = price
+		footerWeightElement.textContent = weight
+
+	}
 
 
 	// создаём главный элемент сдачи
@@ -178,7 +189,7 @@ export default class Page {
 		const {weekHandOver} = Storage.getOneWeek(name, weekNumber)
 		
 		const price = weekHandOver.reduce((accum,curr) => {
-			return Math.round((accum + curr.price) * 10000) / 10000
+			return Math.round((accum + curr.price) * 10) / 10
 		}, 0)
 		const weight = weekHandOver.reduce((accum,curr) => {
 			return Math.round((accum + curr.weightWithPercent) * 10000) / 10000
