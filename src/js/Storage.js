@@ -69,8 +69,8 @@ export default class Storage {
 					weekNumber: data.weekNumber,
 					weekItems: [], 
 					weekHandOver: [],
-					weekWeight: 10,
-					weekSalary: 3000
+					weekWeight: 0,
+					weekSalary: 0
 				})
 				dataObj.workers[i].weeks = weeksArray
 				break
@@ -117,6 +117,13 @@ export default class Storage {
 				for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
 					if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
 
+						// учитываем операцию сдачи в общем весе недели
+						// console.log(data)
+						// console.log(data.handOverOperation.weightWithPercent)
+						// console.log(dataObj.workers[i].weeks[j].weekWeight)
+						dataObj.workers[i].weeks[j].weekWeight -= +data.handOverOperation.weightWithPercent
+						// console.log(dataObj.workers[i].weeks[j].weekWeight)
+
 						// добавляем операцию сдачи в массив сдач
 						dataObj.workers[i].weeks[j].weekHandOver.push(data.handOverOperation)
 						break
@@ -145,9 +152,10 @@ export default class Storage {
 						// создаём объект новой операции
 						const newOperation = {
 							value: data.singleOperation,
-							isSingle: true,
-							isPrevious: false
+							// isSingle: true,
+							// isPrevious: false
 						}
+						dataObj.workers[i].weeks[j].weekWeight += +data.singleOperation
 						dataObj.workers[i].weeks[j].weekItems.push(newOperation)
 						break
 					}

@@ -61,7 +61,7 @@ export default class Handler {
 			// цена на цепь либо браслет
 			const price = (isChain ? chain : bracelet) * count
 
-			// создаём объект для записи в память
+			// создаём объект для записи в память сдачи
 			const handOverObj = {
 				weight: Math.round(+weightInputElement.value * 10000) / 10000,
 				weightWithPercent: Handler.getWeightWithPercent(+weightInputElement.value, percent),
@@ -82,6 +82,7 @@ export default class Handler {
 			// console.log(newHandOverValues)
 			Storage.saveHandOverOperation(newHandOverValues)
 			this.page.addFieldList(page, workerName, weekNumber)
+			this.page.showFooterValues(page, workerName, weekNumber)
 
 			// после ввода операции сбрасываем вес и количество
 			weightInputElement.value = ''
@@ -128,6 +129,7 @@ export default class Handler {
 		Storage.saveOperation(newItemValues)
 		// console.log('weekItems', workerName, weekNumber)
 		this.page.addFieldList('weekItems', workerName, weekNumber)
+		this.page.showFooterValues('weekItems', workerName, weekNumber)
 		// console.log(document.body.scrollHeight)
 		// window.scrollTo(0, 10000)
 	}

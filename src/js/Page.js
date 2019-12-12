@@ -154,10 +154,11 @@ export default class Page {
 		const footerElement = document.querySelector(`[data-footer="${page}"]`)
 		const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
 		const footerWeightElement = footerElement.querySelector('[data-week-weight]')
+		const footerWeekWeightElement = footerElement.querySelector('[data-week-total]')
 
-		const {price, weight} = Page.getWeekSalary(name, weekNumber)
-		footerSalaryElement.textContent = price
-		footerWeightElement.textContent = weight
+		const {price, weight} = Page.getWeekBalance(name, weekNumber)
+		if (footerSalaryElement) footerSalaryElement.textContent = price
+		if (footerWeightElement) footerWeightElement.textContent = weight
 
 	}
 
@@ -188,14 +189,14 @@ export default class Page {
 		// показываем зарплату и сдачу за неделю
 		const weekSalaryElement = salaryFieldElement.querySelector('[data-week-salary]')
 		const weekWeightElement = salaryFieldElement.querySelector('[data-week-weight]')
-		const {price, weight} = Page.getWeekSalary(name, weekNumber)
+		const {price, weight} = Page.getWeekBalance(name, weekNumber)
 		weekSalaryElement.textContent = price
 		weekWeightElement.textContent = weight
 	}
 
 	// получаем зарплату и сдачу за неделю
-	static getWeekSalary(name, weekNumber) {
-		const {weekHandOver} = Storage.getOneWeek(name, weekNumber)
+	static getWeekBalance(name, weekNumber) {
+		const {weekHandOver, weekWeight} = Storage.getOneWeek(name, weekNumber)
 		
 		const price = weekHandOver.reduce((accum,curr) => {
 			return Math.round((accum + curr.price) * 10) / 10
@@ -203,6 +204,11 @@ export default class Page {
 		const weight = weekHandOver.reduce((accum,curr) => {
 			return Math.round((accum + curr.weightWithPercent) * 10000) / 10000
 		}, 0)
+
+		// вес с предыдущих недель
+		const previousWeekWeight = Storage.getWeightPreviousWeekItems(name, weekNumber)
+		// Общий баланс к концу недели
+		const weekTotalWeight = previousWeekWeight + weekWeight
 
 		return {price, weight}
 	}
@@ -238,7 +244,6 @@ export default class Page {
 		<label class="hand-over-orepations__label">
 			<select type="select" class="hand-over-orepations__input input" size="0" data-select-weaving="${weekNumber}">
 				<option class="option" value="choose" selected>Плетение</option>
-				<option class="option" value="бсм20">бсм20</option>
 				${optionTemplate}
 			</select>
 			<div class="chevron"></div>
