@@ -61,7 +61,7 @@ export default class Page {
 		
 		this.addFieldList(page, name)
 		this.showHeaderName(page, name)
-
+		this.showFooterValues(page, name)
 	}
 
 	// страница недели
@@ -152,17 +152,29 @@ export default class Page {
 	}
 
 	// показываем значения в подвале
-	showFooterValues(page, name, weekNumber) {
+	showFooterValues(page, name, weekNumber = '') {
 		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+
+		// все недели
+		const allWeeksWeight = Storage.getWeightPreviousWeekItems(name)
+		const footerAllWeeksWeightElement = footerElement.querySelector('[data-all-weeks-total]')
+		if (footerAllWeeksWeightElement) footerAllWeeksWeightElement.textContent = allWeeksWeight
+
+		// если загружаем список недель, то дальше не идём
+		if (!weekNumber) return
+		const {price, weight, weekTotalWeight} = Page.getWeekBalance(name, weekNumber)
+
+		// сдача
 		const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
 		const footerWeightElement = footerElement.querySelector('[data-week-weight]')
-		const footerWeekWeightElement = footerElement.querySelector('[data-week-total]')
-		console.log(footerWeekWeightElement)
-
-		const {price, weight, weekTotalWeight} = Page.getWeekBalance(name, weekNumber)
 		if (footerSalaryElement) footerSalaryElement.textContent = price
 		if (footerWeightElement) footerWeightElement.textContent = weight
+
+		// 1 неделя
+		const footerWeekWeightElement = footerElement.querySelector('[data-week-total]')
 		if (footerWeekWeightElement) footerWeekWeightElement.textContent = weekTotalWeight
+
+		
 
 	}
 
@@ -214,8 +226,9 @@ export default class Page {
 		const previousWeekWeight = Storage.getWeightPreviousWeekItems(name, weekNumber)
 		// Общий баланс к концу недели
 		const weekTotalWeight = previousWeekWeight + weekWeight
-		console.log(weekTotalWeight)
-
+		// console.log(weekTotalWeight)
+		// const allWeeksWeight = Storage.getWeightPreviousWeekItems(name)
+		
 		return {price, weight, weekTotalWeight}
 	}
 
@@ -619,6 +632,7 @@ export default class Page {
 		} else {
 			
 			this.addFieldList(previousPageAttr, name, weekNumber)
+			this.showFooterValues(previousPageAttr, name, weekNumber)
 			// если страница добавили сдачу, то при возвращении назад показываем актуальную сдачу
 			if (previousPageAttr === 'weekItems') {
 

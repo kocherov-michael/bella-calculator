@@ -81,7 +81,8 @@ export default class Storage {
 	}
 
 	// получить вес всех предыдущих недель работника
-	static getWeightPreviousWeekItems(workerName, weekNumber) {
+	// или вес всех недель, если конкретная неделя не указана
+	static getWeightPreviousWeekItems(workerName, weekNumber = '') {
 		const dataObj = Storage.read() || {}
 		
 		for (let i = 0; i < dataObj.workers.length; i++) {
@@ -90,14 +91,20 @@ export default class Storage {
 				const weeksArray = dataObj.workers[i].weeks
 				// обозначаем аккумулирующую переменную для веса
 				let summWeight = 0
-				// находим индекс текушей недели в массиве
-				const indexCurrentWeek = weeksArray.findIndex( (week) => {
-					return week.weekNumber === weekNumber
-				})
+				// находим индекс текушей недели в массиве, либо длинну массива, если номер не задан
+				let indexCurrentWeek = weeksArray.findIndex( (week) => {
+					return week.weekNumber === weekNumber 
+				}) 
+				// если индекс не указана, то обходим все недели
+				if (indexCurrentWeek === -1) {
+					indexCurrentWeek = weeksArray.length
+				}
+
 				// обходим недели до текущей недели
 				for (let i = 0; i < indexCurrentWeek; i++) {
 					summWeight += weeksArray[i].weekWeight
 				}
+				
 				return summWeight
 			}
 		}
