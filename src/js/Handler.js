@@ -129,13 +129,14 @@ export default class Handler {
 			weekNumber,
 			singleOperation: operationValue
 		}
-		// console.log(newItemValues)
+		
 		Storage.saveOperation(newItemValues)
-		// console.log('weekItems', workerName, weekNumber)
+		// добавляем элемент на страницу
 		this.page.addFieldList('weekItems', workerName, weekNumber)
+		// обновляем показания в футуре
 		this.page.showFooterValues('weekItems', workerName, weekNumber)
-		// console.log(document.body.scrollHeight)
-		// window.scrollTo(0, 10000)
+		// очищаем инпут после ввода цифры
+		inputOperationElement.value = ''
 	}
 
 	// показать, что инпут пустой
@@ -377,7 +378,10 @@ export default class Handler {
 		const touchArray = []
 		let firstTapPosition = null
 
-		element.addEventListener("touchmove", function (event) {
+		element.addEventListener("touchmove", (event) => {
+			event.stopPropagation()
+			// обозначаем перетаскиваемый элемент
+			const draggedElement = event.currentTarget
 			
 			let touchPoint = event.changedTouches[0].pageX
 			if (!firstTapPosition) {
@@ -386,26 +390,16 @@ export default class Handler {
 			touchArray.push(touchPoint)
 			
 			let difference = firstTapPosition - touchPoint
-			// console.log(difference)
-			// const innerDiv = this.querySelector('[data-string]')
-			// const buttonEditElement = this.querySelector('[data-change-operation]')
-			// const operationId = parseInt(buttonEditElement.getAttribute('data-change-operation'))
-			// console.log(operationId)
 			
 			// поле, в котором находится элемент
-			const fieldElement = this.closest('[data-field]')
+			const fieldElement = draggedElement.closest('[data-field]')
 			
 			if ( difference > 0) {
-				// console.log(this)
 				// элемент не виден, когда выходит за границы поля
 				fieldElement.style.overflow = 'hidden'
 				// перемещаем элемент в горизонтальной плоскости
-				this.style.marginLeft = `-${difference}px`
-				this.style.marginRight = `${difference}px`
-				// this.style.overflow = 'hidden'
-			// 	innerDiv.style.marginLeft = (String(difference) + 'px')
-			// 	innerDiv.style.marginRight = ('-' + String(difference) + 'px')
-			// 	let diff = String(difference)
+				draggedElement.style.marginLeft = `-${difference}px`
+				draggedElement.style.marginRight = `${difference}px`
 
 				// Удаляем элемент операции
 				if ( difference > 200 ) {
@@ -414,35 +408,40 @@ export default class Handler {
 					// console.log('pageAttr', pageAttr)
 					// console.log(this)
 
-					const elementId = this.getAttribute('data-id')
-					const elementWorker = this.getAttribute('data-worker')
-					const weekNumber = this.getAttribute('data-week-number')
-					console.log(elementId)
+					const elementId = draggedElement.getAttribute('data-id')
+					const elementWorker = draggedElement.getAttribute('data-worker')
+					const weekNumber = draggedElement.getAttribute('data-week-number')
+					// console.log(elementId)
 
 					// удаляем элемент из памяти
 					Handler.deleteElement(elementId, pageAttr, elementWorker, weekNumber)
-					this.classList.add('deleted')
+					draggedElement.classList.add('deleted')
+					
+					this.page.showFooterValues(pageAttr, elementWorker, weekNumber)
 
 					setTimeout( () => {
 
-						this.style.display = 'none'
+						draggedElement.style.display = 'none'
 					}, 200)
+
+					// console.log(fieldElement)
 
 
 				}
 			}
 
 			// если отпускаем палец, то элемент возвращается обратно
-			this.addEventListener('touchend', () => {
+			draggedElement.addEventListener('touchend', (event) => {
+				event.stopPropagation()
 				touchArray.length = 0
 				firstTapPosition = null
-				this.style.transition = 'all 0.4s ease'
-				this.style.marginLeft = ''
-				this.style.marginRight = ''
+				draggedElement.style.transition = 'all 0.4s ease'
+				draggedElement.style.marginLeft = ''
+				draggedElement.style.marginRight = ''
 				// после возвращения элемента на место плавность отключаем
 				setTimeout( () => {
 					fieldElement.style.overflow = 'auto'
-					this.style.transition = ''
+					draggedElement.style.transition = ''
 				}, 400)
 			})
 			
