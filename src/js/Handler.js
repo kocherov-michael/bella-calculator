@@ -429,7 +429,7 @@ export default class Handler {
 		})
 	}
 
-	// Обработчик кнопок Сохранить и Отмена
+	// Обработчик кнопок Восстановить и Отмена
 	formRestoreHandler (addFormElement, args) {
 		// console.log('addFormElement', addFormElement)
 		console.log(args)
@@ -443,7 +443,10 @@ export default class Handler {
 		restoreButtonElement.addEventListener('click', () => {
 			console.log('click')
 			Storage.restoreElement(args.id)
-
+			// закрываем форму
+			this.closeForm()
+			// обновляем список на странице
+			this.page.addFieldList('garbageList')
 		})
 
 		cancelButtonElement.addEventListener('click', this.closeForm.bind(this))
