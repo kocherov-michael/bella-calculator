@@ -235,7 +235,36 @@ export default class Storage {
 	// получаем массив плетений из памяти
 	static getWeavingArray () {
 		const dataObj = Storage.read() || {}
-		return dataObj.weavings || []
+		
+		// создаём плетения по умолчанию
+		const weavingsDefaultArray = [
+			{weavingName: "БСМ 20", percent: "7", chain: "242", bracelet: "99", id: 1},
+			{weavingName: "БСМ 30", percent: "7", chain: "231", bracelet: "88", id: 2},
+			{weavingName: "БСМ 40", percent: "7", chain: "220", bracelet: "88", id: 3},
+			{weavingName: "БСМ 50", percent: "7", chain: "220", bracelet: "88", id: 4},
+			{weavingName: "Фараон 30", percent: "7", chain: "385", bracelet: "154", id: 5},
+			{weavingName: "Фараон 50", percent: "7", chain: "357.5", bracelet: "143", id: 6},
+			{weavingName: "Фараон 80", percent: "7", chain: "500.5", bracelet: "198", id: 7},
+			{weavingName: "КАРД витой", percent: "4", chain: "605", bracelet: "242", id: 8},
+			{weavingName: "КАРД гладкий", percent: "7", chain: "810", bracelet: "324", id: 9},
+			{weavingName: "КАРД плоский", percent: "4", chain: "671", bracelet: "269.5", id: 10},
+			{weavingName: "КАРД узкий", percent: "4", chain: "786.5", bracelet: "313.5", id: 11},
+			{weavingName: "КАРД ришелье", percent: "4", chain: "412.5", bracelet: "187", id: 12},
+			{weavingName: "КАРД круглый", percent: "7", chain: "850", bracelet: "340", id: 13},
+			{weavingName: "Роза 40", percent: "4", chain: "242", bracelet: "99", id: 14},
+			{weavingName: "Роза 60", percent: "4", chain: "220", bracelet: "88", id: 15}
+		]
+
+		// если массив с плетениями ещё пуст, то записываем плетения по умолчанию
+		dataObj.weavings = dataObj.weavings || weavingsDefaultArray
+
+		// если Id плетений ещё не существует, то создаёт равным колличеству плетений в массиве
+		if (!dataObj.weavingsId) {
+			dataObj.weavingsId = dataObj.weavings.length
+			Storage.save(dataObj)
+		}
+
+		return dataObj.weavings
 	}
 
 	// получить одно плетение
