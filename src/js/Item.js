@@ -30,6 +30,7 @@ export default class Item {
 			})
 		}
 		else if (args.type === 'removedItem') {
+			console.log(args)
 			this.newElement = Item.createRemovedItem(args)
 
 			const handler = new Handler({

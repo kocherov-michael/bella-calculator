@@ -6,7 +6,7 @@
 	<title>Balance calculator</title>
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=cyrillic-ext" rel="stylesheet">
 	<link rel="shortcut icon" type="image/png" href="favicon.png" sizes="16x16">
-<link href="assets/css/app.v1.css" rel="stylesheet"></head>
+<link href="assets/css/app.v3.css" rel="stylesheet"></head>
 <body>
 	<div class="wrapper">
 		<div class="container" data-container>
@@ -127,7 +127,7 @@
 			<section class="page hand-over hide" data-page="handOverItems">
 					<header class="header" data-header="handOverItems"></header>
 		
-					<div class="item-field">
+					<div class="item-field" data-field="handOverItems">
 
 						<div class="item-field__items" data-item-field="handOverItems"></div>
 
@@ -197,7 +197,7 @@
 
 			<section class="page weaving hide" data-page="weavingList">
 				<div class="form-container opacity hide" data-add-form="weavingList">
-					<div class="form active-form">
+					<!-- <div class="form active-form">
 						<div class="form__heading">
 							<div class="form__heading-text">Введите название</div>
 							<div class="form__heading-close">&#10006;</div>
@@ -216,7 +216,6 @@
 									<div class="item__header">
 										<div class="item__header-text">Сохранить</div>
 										<div class="item__header-arrow">
-											<!-- <div class="chevron"></div> -->
 											<div class="symbol"></div>
 										</div>
 									</div>
@@ -227,20 +226,21 @@
 									<div class="item__header">
 										<div class="item__header-text">Отменить</div>
 										<div class="item__header-arrow">
-											<!-- <div class="chevron"></div> -->
 											<div class="cross">&#10006;</div>
 										</div>
 									</div>
 								</button>
 							</div>
 						</div>
-					</div>	
+					</div>	 -->
 				</div>
 				<header class="header" data-header="weavingList"></header>
 
 				<div class="item-field" data-field="weavingList">
 
-					<div class="item weaving-item">
+					<div class="item-field__items" data-item-field="weavingList"></div>
+
+					<!-- <div class="item weaving-item">
 
 						<div class="item__header">
 							<div class="item__header-text">БСМ30</div>
@@ -284,11 +284,11 @@
 							<span>&nbsp;₽</span>
 						</div>
 
-					</div>
+					</div> -->
 
-					<div class="weaving-item__button">
+					<!-- <div class="weaving-item__button">
 
-						<button class="item item_warning item_add">
+						<button class="item item_warning item_add" data-add="weavingList">
 							<div class="item__header">
 								<div class="item__header-text">Добавить плетение</div>
 								<div class="item__header-arrow">
@@ -296,7 +296,7 @@
 								</div>
 							</div>
 						</button>
-					</div>
+					</div> -->
 
 				</div>
 
@@ -352,9 +352,20 @@
 
 		<!-- ============================================================================= -->
 
+			<section class="page garbage hide" data-page="garbageList">
+				<div class="form-container opacity hide" data-add-form="garbageList"></div>
+
+				<header class="header" data-header="garbageList"></header>
+
+				<div class="item-field" data-field="garbageList">
+					<div class="item-field__items" data-item-field="garbageList"></div>
+				</div>
+
+			</section>
+
 		</div>
 
 	</div>
 	
-<script type="text/javascript" src="assets/js/app.v1.js"></script></body>
+<script type="text/javascript" src="assets/js/app.v3.js"></script></body>
 </html>

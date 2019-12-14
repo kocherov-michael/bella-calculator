@@ -692,14 +692,28 @@ export default class Page {
 			const removedArr = Storage.getRemovedItems()
 
 			for (let i = 0; i < removedArr.length; i++) {
+				const place = (removedArr[i].way[removedArr[i].way.length - 1])
+				let text
+				// console.log(place)
+				console.log(removedArr[i])
+				if (place === 'weeks') {
+					text = 'Неделя ' + removedArr[i].element.weekNumber
+				}
+				else if (place === 'workers') {
+					text = removedArr[i].element.workerName
+				}
+				else if (place === 'weekHandOver') {
+					text = `${removedArr[i].element.weightWithPercent} ${removedArr[i].element.weaving} ${removedArr[i].element.count}шт.`
+				}
 				const removedItemButton = new Item({
 					// родительский элемент
 					field: itemFieldElement,
 					type: 'removedItem',
-					removedItemName: removedArr[i].element.value || 'не определено',
+					removedItemName: 
+						removedArr[i].element.value 
+						|| removedArr[i].element.weavingName 
+						|| text ,
 					id: removedArr[i].id,
-					// way: removedArr[i].element.way,
-					// index: removedArr[i].index,
 					time: removedArr[i].time
 				})
 			}

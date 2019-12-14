@@ -511,6 +511,38 @@ export default class Storage {
 		return true
 	}
 
+	// удаление плетения
+	static deleteWeaving(elementId) {
+		const dataObj = Storage.read()
+		// находим индекс удаляемого элемента
+		const index = dataObj.weavings.findIndex( (weaving) => {
+
+			return weaving.id === +elementId
+		})
+		if (index < 0) return true
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj.weavings.splice(index, 1)[0]
+
+		dataObj.removedElements = dataObj.removedElements || []
+
+		dataObj.removedId = dataObj.removedId || 0
+
+		const removedObj = {
+			element: removedElement,
+			time: Storage.getTime(),
+			id: ++dataObj.removedId,
+			way: ['weavings'],
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		Storage.save(dataObj)
+
+		return true
+	}
+
 	// получить сегодняшнюю дату
 	static getTime () {
 		const monthsArray = ['января', 'февраля', 'марта', 'апреля', 'мая','июня','июля','августа','сентября','октября','ноября','декабря']
@@ -519,7 +551,8 @@ export default class Storage {
 		const month = monthsArray[date.getMonth()]
 		const day = date.getDate()
 		const hour = date.getHours()
-		const minutes = date.getMinutes()
+		// если минут до 10, то добавляем нолик вперёд
+		const minutes = date.getMinutes().toString().length === 2 ? date.getMinutes() : `0${date.getMinutes()}`
 
 		return `${day} ${month} в ${hour}:${minutes}`
 	}

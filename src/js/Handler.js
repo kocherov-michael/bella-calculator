@@ -499,6 +499,9 @@ export default class Handler {
 		else if (pageAttr === 'handOverItems') {
 			Storage.deleteHandOverItems(elementId, elementWorker, weekNumber)
 		}
+		else if (pageAttr === 'weavingList') {
+			Storage.deleteWeaving(elementId)
+		}
 	}
 
 	// обработчик перетаскивания обычного элемента
