@@ -125,9 +125,10 @@ export default class Page {
 	renderWeavingListPage(page, name = '', weekNumber = '', previousAttr = 'start') {
 		// если переходим на страницу с плетениями со страницы с котировками,
 		// то стрелка назад возвращает на стартовую страницу
-		if (previousAttr === 'quotation') {
+		if (previousAttr === 'quotation' || previousAttr === 'garbageList') {
 			previousAttr = 'start'
 		}
+		console.log('начало рендера плетений')
 		this.createHeader(page, name)
 		this.createHeaderBackArrow(page, name, weekNumber, previousAttr)
 		this.addCreateButton(page, name)
@@ -151,7 +152,7 @@ export default class Page {
 	renderQuotationPage(page, name = '', weekNumber = '', previousAttr = 'start') {
 		// если переходим на страницу с котировками со страницы с плетениями,
 		// то стрелка назад возвращает на стартовую страницу
-		if (previousAttr === 'weavingList') {
+		if (previousAttr === 'weavingList' || previousAttr === 'garbageList') {
 			previousAttr = 'start'
 		}
 		this.createHeader(page, name)
@@ -167,6 +168,31 @@ export default class Page {
 
 		this.showHeaderName(page, name, weekNumber)
 		Page.getCurrency(Page.dataHandler)
+	}
+
+	// генерируем страницу корзины
+	renderGarbageListPage(page, name = '', weekNumber = '', previousAttr = 'start') {
+		// если переходим на страницу корзины со страницы с котировками,
+		// то стрелка назад возвращает на стартовую страницу
+		if (previousAttr === 'quotation' || previousAttr === 'weavingList') {
+			previousAttr = 'start'
+		}
+		this.createHeader(page, name)
+		this.createHeaderBackArrow(page, name, weekNumber, previousAttr)
+		this.addForm(page, name)
+
+		const handler = new Handler({
+			page,
+			name,
+			weekNumber,
+			menu: page,
+			// вешаем этот обработчик чтобы показывать форму восстановления элемента
+			// addItem: page,
+			backButton: page
+		})
+
+		this.showHeaderName('garbageList', 'Корзина')
+		this.addFieldList(page, name, weekNumber)
 	}
 
 
@@ -364,25 +390,45 @@ export default class Page {
 		let attr
 		let placeholder
 		let text
-		let inputTemplate = ''
+		let saveButtonText = 'Сохранить'
+		let inputFormsTemplate = ''
+		
+
 		if(page === 'start') {
 			attr = 'workerName'
 			placeholder = 'Имя'
 			text = 'Введите имя сотрудника'
+			inputFormsTemplate = 
+		`<div class="form__inputs">
+		<input type="text" class="input" placeholder="${placeholder}" value="" name="${attr}">
+		</div>`
 		}
 		else if(page === 'weeksList') {
 			attr = 'weekNumber'
 			placeholder = 'Номер недели'
 			text = 'Введите номер недели'
+			inputFormsTemplate = 
+		`<div class="form__inputs">
+		<input type="text" class="input" placeholder="${placeholder}" value="" name="${attr}">
+		</div>`
 		}
 		else if (page === 'weavingList') {
 			attr = 'weavingName'
 			placeholder = 'Название'
 			text = 'Введите плетение'
-			inputTemplate = 
-			`<input type="number" class="input" placeholder="Угар %" name="percent">
-			<input type="number" class="input" placeholder="Цепь ₽" name="chain">
-			<input type="number" class="input" placeholder="Браслет ₽" name="bracelet">`
+			
+			inputFormsTemplate = 
+		`<div class="form__inputs">
+		<input type="text" class="input" placeholder="${placeholder}" value="" name="${attr}">
+		<input type="number" class="input" placeholder="Угар %" name="percent">
+		<input type="number" class="input" placeholder="Цепь ₽" name="chain">
+		<input type="number" class="input" placeholder="Браслет ₽" name="bracelet">
+		</div>`
+		}
+		else if (page === 'garbageList') {
+			attr = 'garbageList'
+			text = 'Восстановить элемент?'
+			saveButtonText = 'Восстановить'
 		}
 
 		formContainerElement.innerHTML = ''
@@ -392,17 +438,12 @@ export default class Page {
 				<div class="form__heading-text">${text}</div>
 				<div class="form__heading-close" data-close-icon>&#10006;</div>
 			</div>
-			<div class="form__inputs">
-
-					<input type="text" class="input" placeholder="${placeholder}" value="" name="${attr}">
-					${inputTemplate}
-
-			</div>
+			${inputFormsTemplate}
 			<div class="form__buttons">
 				<div class="form__buttons-save">
 					<button class="item item_warning" data-save-button>
 						<div class="item__header">
-							<div class="item__header-text">Сохранить</div>
+							<div class="item__header-text">${saveButtonText}</div>
 							<div class="item__header-arrow">
 								<div class="symbol"></div>
 							</div>
@@ -471,7 +512,7 @@ export default class Page {
 			<button class="menu__item" data-next="quotation" data-quotation-link="${page}">Котировки</button>
 			<button class="menu__item" data-next="weavingList"
 			data-weaving-link="${page}">Плетения</button>
-			<button class="menu__item">Восстановить удаления</button>
+			<button class="menu__item" data-garbage-link="${page}">Восстановить удаления</button>
 			<label class="menu__item check">
 				<input class="check__input" type="checkbox" data-check-brigadier ${checked}>
 				<div class="check__box">
@@ -533,6 +574,7 @@ export default class Page {
 	
 	// Создаём список элементов из памяти
 	addFieldList (page, name = '', weekNumber = '') {
+		// console.log(page)
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
 	
 		itemFieldElement.innerHTML = ''
@@ -639,6 +681,25 @@ export default class Page {
 			})
 		}
 
+		// корзина
+		else if ( page === 'garbageList') {
+			const removedArr = Storage.getRemovedItems()
+
+			for (let i = 0; i < removedArr.length; i++) {
+				const removedItemButton = new Item({
+					// родительский элемент
+					field: itemFieldElement,
+					type: 'removedItem',
+					removedItemName: removedArr[i].element.value || 'не определено',
+					id: removedArr[i].id,
+					// way: removedArr[i].element.way,
+					// index: removedArr[i].index,
+					time: removedArr[i].time
+				})
+			}
+
+		}
+
 	}
 
 	// перелистываем страницу вперёд
@@ -677,6 +738,9 @@ export default class Page {
 		}
 		else if (nextPageAttr === 'quotation') {
 			this.renderQuotationPage(nextPageAttr, name, weekNumber, currentPageAttr)
+		}
+		else if (nextPageAttr === 'garbageList') {
+			this.renderGarbageListPage(nextPageAttr, name, weekNumber, currentPageAttr)
 		}
 
 		// устанавливаем задержку для плавной прокрутки страниц

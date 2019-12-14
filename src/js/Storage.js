@@ -14,10 +14,10 @@ export default class Storage {
 	static isBrigadier() {
 		const dataObj = Storage.read() || {}
 
+		Storage.saveWorker({workerName: 'Я'})
 		// если бригадир никогда не устанавливался, то задаём ему false
 		// и создаём работника "Я"
 		if (dataObj.isBrigadier === undefined) {
-			Storage.saveWorker({workerName: 'Я'})
 			Storage.setBrigadier(false)
 		}
 		return dataObj.isBrigadier = dataObj.isBrigadier || false
@@ -41,7 +41,8 @@ export default class Storage {
 		dataObj.workers.push({
 			workerName: data.workerName,
 			id: ++dataObj.workersId,
-			weeks: []
+			weeks: [],
+			way: ['workers']
 		})
 		// }
 
@@ -73,7 +74,8 @@ export default class Storage {
 					weekHandOver: [],
 					weekWeight: 0,
 					weekSalary: 0,
-					id: ++dataObj.workers[i].weeksId
+					id: ++dataObj.workers[i].weeksId,
+					way: [ 'workers', i, 'weeks']
 				})
 				dataObj.workers[i].weeks = weeksArray
 				break
@@ -138,6 +140,8 @@ export default class Storage {
 						// добавляем id
 						dataObj.workers[i].weeks[j].handOverId = dataObj.workers[i].weeks[j].handOverId || 0
 						data.handOverOperation.id = ++dataObj.workers[i].weeks[j].handOverId
+						//добавляем путь на случай удаления
+						data.handOverOperation.way = [ 'workers', i, 'weeks', j, 'handOverId']
 
 						// добавляем операцию сдачи в массив сдач
 						dataObj.workers[i].weeks[j].weekHandOver.push(data.handOverOperation)
@@ -170,7 +174,9 @@ export default class Storage {
 						// создаём объект новой операции
 						const newOperation = {
 							value: data.singleOperation,
-							id: ++dataObj.workers[i].weeks[j].operationId
+							id: ++dataObj.workers[i].weeks[j].operationId,
+							// создаём путь до массива, в который записываем элемент
+							way: [ 'workers', i, 'weeks', j, 'weekItems']
 						}
 						// учитываем операцию в общем весе недели
 						dataObj.workers[i].weeks[j].weekWeight += +data.singleOperation
@@ -215,6 +221,8 @@ export default class Storage {
 	static getOneWeek(name, weekNumber) {
 		// console.log('static', weekNumber)
 		const dataObj = Storage.read() || {}
+		// const myWay = dataObj.removedElements[0].element.way
+		// console.log(dataObj.removedElements[6].element.way)
 
 		for(let i = 0; i < dataObj.workers.length; i++) {
 			// если имя совпадает
@@ -249,6 +257,9 @@ export default class Storage {
 		dataObj.weavingsId = dataObj.weavingsId || 0
 		data.id = ++dataObj.weavingsId
 
+		//сохраняем путь на случай удаления
+		data.way = ['weavings']
+
 		dataObj.weavings.push(data)
 
 		Storage.save(dataObj)
@@ -262,21 +273,21 @@ export default class Storage {
 		
 		// создаём плетения по умолчанию
 		const weavingsDefaultArray = [
-			{weavingName: "БСМ 20", percent: "7", chain: "242", bracelet: "99", id: 1},
-			{weavingName: "БСМ 30", percent: "7", chain: "231", bracelet: "88", id: 2},
-			{weavingName: "БСМ 40", percent: "7", chain: "220", bracelet: "88", id: 3},
-			{weavingName: "БСМ 50", percent: "7", chain: "220", bracelet: "88", id: 4},
-			{weavingName: "Фараон 30", percent: "7", chain: "385", bracelet: "154", id: 5},
-			{weavingName: "Фараон 50", percent: "7", chain: "357.5", bracelet: "143", id: 6},
-			{weavingName: "Фараон 80", percent: "7", chain: "500.5", bracelet: "198", id: 7},
-			{weavingName: "КАРД витой", percent: "4", chain: "605", bracelet: "242", id: 8},
-			{weavingName: "КАРД гладкий", percent: "7", chain: "810", bracelet: "324", id: 9},
-			{weavingName: "КАРД плоский", percent: "4", chain: "671", bracelet: "269.5", id: 10},
-			{weavingName: "КАРД узкий", percent: "4", chain: "786.5", bracelet: "313.5", id: 11},
-			{weavingName: "КАРД ришелье", percent: "4", chain: "412.5", bracelet: "187", id: 12},
-			{weavingName: "КАРД круглый", percent: "7", chain: "850", bracelet: "340", id: 13},
-			{weavingName: "Роза 40", percent: "4", chain: "242", bracelet: "99", id: 14},
-			{weavingName: "Роза 60", percent: "4", chain: "220", bracelet: "88", id: 15}
+			{weavingName: "БСМ 20", percent: "7", chain: "242", bracelet: "99", id: 1, way: ['weavings']},
+			{weavingName: "БСМ 30", percent: "7", chain: "231", bracelet: "88", id: 2, way: ['weavings']},
+			{weavingName: "БСМ 40", percent: "7", chain: "220", bracelet: "88", id: 3, way: ['weavings']},
+			{weavingName: "БСМ 50", percent: "7", chain: "220", bracelet: "88", id: 4, way: ['weavings']},
+			{weavingName: "Фараон 30", percent: "7", chain: "385", bracelet: "154", id: 5, way: ['weavings']},
+			{weavingName: "Фараон 50", percent: "7", chain: "357.5", bracelet: "143", id: 6, way: ['weavings']},
+			{weavingName: "Фараон 80", percent: "7", chain: "500.5", bracelet: "198", id: 7, way: ['weavings']},
+			{weavingName: "КАРД витой", percent: "4", chain: "605", bracelet: "242", id: 8, way: ['weavings']},
+			{weavingName: "КАРД гладкий", percent: "7", chain: "810", bracelet: "324", id: 9, way: ['weavings']},
+			{weavingName: "КАРД плоский", percent: "4", chain: "671", bracelet: "269.5", id: 10, way: ['weavings']},
+			{weavingName: "КАРД узкий", percent: "4", chain: "786.5", bracelet: "313.5", id: 11, way: ['weavings']},
+			{weavingName: "КАРД ришелье", percent: "4", chain: "412.5", bracelet: "187", id: 12, way: ['weavings']},
+			{weavingName: "КАРД круглый", percent: "7", chain: "850", bracelet: "340", id: 13, way: ['weavings']},
+			{weavingName: "Роза 40", percent: "4", chain: "242", bracelet: "99", id: 14, way: ['weavings']},
+			{weavingName: "Роза 60", percent: "4", chain: "220", bracelet: "88", id: 15, way: ['weavings']}
 		]
 
 		// если массив с плетениями ещё пуст, то записываем плетения по умолчанию
@@ -399,7 +410,7 @@ export default class Storage {
 
 
 		if (index < 0) return true
-		console.log('index', index)
+		// console.log('index', index)
 
 		// сохраняем удалённый злемент
 		const removedElement = dataObj
@@ -415,12 +426,24 @@ export default class Storage {
 			.weekWeight -= removedElement.value
 
 		dataObj.removedElements = dataObj.removedElements || []
+		const monthsArray = ['января', 'февраля', 'марта', 'апреля', 'мая','июня','июля','августа','сентября','октября','ноября','декабря']
+
+		const date = new Date()
+		const month = monthsArray[date.getMonth()]
+		const day = date.getDate()
+		const hour = date.getHours()
+		const minutes = date.getMinutes()
+
+		dataObj.removedId = dataObj.removedId || 0
+		
 		const removedObj = {
 			element: removedElement,
-			parent: dataObj
-				.workers[workersIndex]
-				.weeks[weekIndex]
-				.weekItems,
+			time: `${day} ${month} в ${hour}:${minutes}`,
+			id: ++dataObj.removedId,
+			// parent: dataObj
+			// 	.workers[workersIndex]
+			// 	.weeks[weekIndex]
+			// 	.weekItems,
 			index
 		}
 
@@ -492,5 +515,48 @@ export default class Storage {
 		Storage.save(dataObj)
 
 		return true
+	}
+
+	// получаем удалённые элементы
+	static getRemovedItems() {
+		const dataObj = Storage.read() || {}
+		return dataObj.removedElements = dataObj.removedElements || []
+	}
+
+	// восстановить удалённый элемент
+	static restoreElement(id) {
+		
+		const dataObj = Storage.read() || {}
+		const removedArray = dataObj.removedElements || []
+
+		// console.log(removedArray)
+		for (let i = 0; i < removedArray.length; i++) {
+			if (removedArray[i].id === id) {
+				// читаем сохранённый путь в элементе
+				const wayArr = removedArray[i].element.way
+
+				// получаем путь до массива, из которого удаляли
+				let restoreWay = dataObj
+
+				for (let j = 0; j < wayArr.length; j+=2) {
+					if (wayArr[j+1] === undefined) {
+						restoreWay = restoreWay[`${wayArr[j]}`]
+					} else {
+						restoreWay = restoreWay[`${wayArr[j]}`][`${wayArr[j+1]}`]
+					}
+				}
+				const index = restoreWay.findIndex( (elem) => {
+					console.log(elem.id, '>', removedArray[i].element.id)
+					return elem.id > removedArray[i].element.id
+				})
+				// удаляем элемент из корзины
+				const restoredElement = removedArray.splice(i, 1)[0].element
+				// вставляем элемент обратно в используемую часть БД
+				restoreWay.splice(index, 0, restoredElement)
+
+				Storage.save(dataObj)
+
+			}
+		}
 	}
 }

@@ -29,6 +29,15 @@ export default class Item {
 				deleteable: this.newElement
 			})
 		}
+		else if (args.type === 'removedItem') {
+			this.newElement = Item.createRemovedItem(args)
+
+			const handler = new Handler({
+				args,
+				itemHandler: this.newElement,
+				deleteable: this.newElement
+			})
+		}
 		 else {
 			this.create(args)
 		}
@@ -232,6 +241,37 @@ export default class Item {
 		<span>Браслет:</span>
 		<span>${args.bracelet}</span>
 		<span>&nbsp;₽</span>
+	</div>`
+
+		parentElement.append(newElement)
+		setTimeout(()=> {
+			// console.log('прокрутка')
+			newElement.scrollIntoView()
+		},400)
+
+		return newElement
+	}
+
+	// создаём удалённый элемент
+	static createRemovedItem (args) {
+		const parentElement = args.field
+		let newElement = document.createElement('div')
+		newElement.classList.add('item')
+		newElement.classList.add('weaving-item')
+		newElement.setAttribute('data-id', args.id)
+
+		newElement.innerHTML =
+		`<div class="item__header">
+		<div class="item__header-text">${args.removedItemName}</div>
+		<div class="item__header-arrow">
+			<div class="weaving-item__percent"></div>
+		</div>
+	</div>
+
+	<div class="item__lower">
+		<span>Удалено:</span>
+		<span>${args.time}</span>
+		
 	</div>`
 
 		parentElement.append(newElement)

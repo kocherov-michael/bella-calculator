@@ -159,6 +159,7 @@ export default class Handler {
 		const headerMenuListElement = sectionElement.querySelector('[data-menu-list]')
 		const weavingLinkElement = sectionElement.querySelector('[data-weaving-link]')
 		const quotationLinkElement = sectionElement.querySelector('[data-quotation-link]')
+		const garbageLinkElement = sectionElement.querySelector('[data-garbage-link]')
 		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
 
 
@@ -169,7 +170,6 @@ export default class Handler {
 
 		// обработчик кнопки плетений
 		weavingLinkElement.addEventListener('click', () => {
-			
 			this.page.changeNextPage(args.page, 'weavingList', args.name, args.weekNumber)
 
 			setTimeout(() => {
@@ -183,6 +183,17 @@ export default class Handler {
 		quotationLinkElement.addEventListener('click', () => {
 			
 			this.page.changeNextPage(args.page, 'quotation', args.name, args.weekNumber)
+
+			setTimeout(() => {
+				headerMenuElement.classList.toggle('cross')
+				headerMenuListElement.classList.toggle('menu-show')
+			}, 400)
+			
+		})
+		// обработчик кнопки корзины
+		garbageLinkElement.addEventListener('click', () => {
+			
+			this.page.changeNextPage(args.page, 'garbageList', args.name, args.weekNumber)
 
 			setTimeout(() => {
 				headerMenuElement.classList.toggle('cross')
@@ -204,11 +215,11 @@ export default class Handler {
 		// текущая страница
 		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
 		// кнопка Добавить
-		const addButtonElement = sectionElement.querySelector(`[data-add=${page}]`)
+		const addButtonElement = sectionElement.querySelector(`[data-add="${page}"]`)
 		addButtonElement.setAttribute('data-current-worker', this.args.workerName)
 
 		// Обёртка с затемнением
-		const addFormElement =  document.querySelector(`[data-add-form=${page}]`)
+		const addFormElement =  document.querySelector(`[data-add-form="${page}"]`)
 		// Ищем этот элемент чтобы скрыть раньше обёртки, а показать позже
 		const activeFormElement =  addFormElement.querySelector(`[data-active-form]`)
 		
@@ -219,6 +230,7 @@ export default class Handler {
 
 		// показваем форму при нажатии Добавить+
 		addButtonElement.addEventListener('click', () => {
+			console.log('click')
 			addFormElement.classList.remove('hide')
 			setTimeout( () => {
 				addFormElement.classList.remove('opacity')
@@ -229,8 +241,48 @@ export default class Handler {
 		})
 	}
 
+	// 
+	// addItemHandler99999999 (page) {
+	// 	// текущая страница
+	// 	const sectionElement =  document.querySelector(`[data-page="${page}"]`)
+	// 	// кнопка Добавить
+	// 	const addButtonElement = sectionElement.querySelector(`[data-add=${page}]`)
+	// 	addButtonElement.setAttribute('data-current-worker', this.args.workerName)
+
+	// 	// Обёртка с затемнением
+	// 	const addFormElement =  document.querySelector(`[data-add-form=${page}]`)
+	// 	// Ищем этот элемент чтобы скрыть раньше обёртки, а показать позже
+	// 	const activeFormElement =  addFormElement.querySelector(`[data-active-form]`)
+		
+	// 	// вешаем обработчик на кнопку Сохранить и Отмена формы добавления сотрудника
+	// 	this.formHandler(addFormElement)
+	// 	this.activeFormElement = activeFormElement
+	// 	this.addFormElement = addFormElement
+
+	// 	// показваем форму при нажатии Добавить+
+	// 	addButtonElement.addEventListener('click', () => {
+	// 		console.log('click')
+	// 		addFormElement.classList.remove('hide')
+	// 		setTimeout( () => {
+	// 			addFormElement.classList.remove('opacity')
+	// 		}, 0)
+	// 		setTimeout( () => {
+	// 			activeFormElement.classList.remove('opacity')
+	// 		}, 200)
+	// 	})
+	// }
+
 	// Обработчик кнопок Сохранить и Отмена
 	formHandler (addFormElement) {
+		// console.log('addFormElement', addFormElement)
+		// console.log(this.args)
+		
+		const pageAttr = addFormElement.getAttribute('data-add-form')
+		// если страница - восстановления элементов
+		if (pageAttr === 'garbageList') {
+			// console.log('bungo')
+			this.restoreItem()
+		}
 		this.formElement = addFormElement
 		const saveButtonElement = addFormElement.querySelector('[data-save-button]')
 		const cancelButtonElement = addFormElement.querySelector('[data-cancel-button]')
@@ -259,6 +311,11 @@ export default class Handler {
 
 	// Сохраняем введённые значения формы
 	saveFormValues() {
+		console.log('восстанавливаем')
+
+		if (this.args.type === 'removedItem') {
+			console.log('removedItem')
+		}
 		// кнопка Добавить, берём у неё имя работника
 		const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
 
@@ -309,15 +366,17 @@ export default class Handler {
 			this.page.addFieldList(this.args.addItem, nameForRender)
 		}
 		else {
+
 			console.log('ошибка в обработчике')
 		}
 	}
-
+ 
 
 	// обработчик нажатия на обычный элемент
 	itemHandler(element) {
 
 		element.addEventListener('click', () => {
+			
 			const name = element.getAttribute('data-worker')
 			const nextAttr = element.getAttribute('data-next')
 			const currentParentElement = element.closest('[data-item-field]')
@@ -336,9 +395,59 @@ export default class Handler {
 				}
 				return
 			}
+			// если нажимаем на удалённый элемент чтобы восстановить
+			else if (!nextAttr & currentAttr === 'garbageList') {
+				// console.log('restore')
+				// console.log(args)
+				// console.log(this.args)
+				// текущая страница
+				const sectionElement =  document.querySelector(`[data-page="garbageList"]`)
+
+				// Обёртка с затемнением
+				const addFormElement =  document.querySelector(`[data-add-form="garbageList"]`)
+				// Ищем этот элемент чтобы скрыть раньше обёртки, а показать позже
+				const activeFormElement =  addFormElement.querySelector(`[data-active-form]`)
+
+				// вешаем обработчик на кнопку Восстановить и Отмена формы
+				this.formRestoreHandler(addFormElement, this.args.args)
+				this.activeFormElement = activeFormElement
+				this.addFormElement = addFormElement
+
+				// показваем форму при нажатии Добавить+
+				addFormElement.classList.remove('hide')
+				setTimeout( () => {
+					addFormElement.classList.remove('opacity')
+				}, 0)
+				setTimeout( () => {
+					activeFormElement.classList.remove('opacity')
+				}, 200)
+
+				return
+			}
 			
 			this.page.changeNextPage(currentAttr, nextAttr, name, weekNumber)
 		})
+	}
+
+	// Обработчик кнопок Сохранить и Отмена
+	formRestoreHandler (addFormElement, args) {
+		// console.log('addFormElement', addFormElement)
+		console.log(args)
+		
+		// const pageAttr = addFormElement.getAttribute('data-add-form')
+		this.formElement = addFormElement
+		const restoreButtonElement = addFormElement.querySelector('[data-save-button]')
+		const cancelButtonElement = addFormElement.querySelector('[data-cancel-button]')
+		const closeIconElement = addFormElement.querySelector('[data-close-icon]')
+
+		restoreButtonElement.addEventListener('click', () => {
+			console.log('click')
+			Storage.restoreElement(args.id)
+
+		})
+
+		cancelButtonElement.addEventListener('click', this.closeForm.bind(this))
+		closeIconElement.addEventListener('click', this.closeForm.bind(this))
 	}
 
 
@@ -352,8 +461,7 @@ export default class Handler {
 		if (!backButtonElement) return
 
 		backButtonElement.addEventListener('click', () => {
-			// backButtonElement
-			console.log(backButtonElement)
+
 			let targetPageAttr = backButtonElement.getAttribute('data-header-back')
 			const targetPageWeekAttr = backButtonElement.getAttribute('data-header-back-week')
 			let targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
@@ -362,8 +470,7 @@ export default class Handler {
 				targetPageAttr = 'weeksList'
 				targetPageWorkerAttr = 'Я'
 			}
-			// const targetPageElement = document.querySelector(`[data-page=${targetPageAttr}]`)
-			// console.log(targetPage)
+
 			this.page.changePreviousPage(page, targetPageAttr, targetPageWorkerAttr, targetPageWeekAttr)
 			// backButtonElement = null
 		})
