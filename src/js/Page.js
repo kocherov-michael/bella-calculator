@@ -4,15 +4,10 @@ import Storage from './Storage'
 
 export default class Page {
 	constructor (args = {}) {
-		// this.pages = [
-		// 	'start',
-		// 	'weeksList',
-		// 	'weekItems',
-		// 	'handOverItems'
-		// ]
 
 		if (args.start) {
-			this.renderStartPage(args.start)
+				
+				this.renderStartPage(args.start)
 		}
 	}
 	
@@ -20,32 +15,42 @@ export default class Page {
 
 
 	renderStartPage (page, name = '', weekNumber = '') {
-		// this.addHeader(page)
-		this.createHeader(page)
+		// если бригадир
+		if (Storage.isBrigadier()) {
 
-		this.addCreateButton(page, name)
-		this.addForm(page, name)
-
-		const handler = new Handler({
-			page,
-			name,
-			weekNumber,
-			menu: page,
-			addItem: page,
-			// workerName: name,
-			// backButton: page
-		})
-		
-		this.addFieldList(page, name)
-		this.showFooterValues(page, name)
-		// this.showHeaderName(page, name)
+			this.createHeader(page)
+	
+			this.addCreateButton(page, name)
+			this.addForm(page, name)
+	
+			const handler = new Handler({
+				page,
+				name,
+				weekNumber,
+				menu: page,
+				addItem: page,
+				// workerName: name,
+				// backButton: page
+			})
+			
+			this.addFieldList(page, name)
+			this.showFooterValues(page, name)
+		}
+		// если не бригадир, то сразу вторую страницу
+		else {
+			this.changeNextPage ('start', 'weeksList', 'Я')
+		}
 
 	}
 
 	renderWeekListPage (page, name = '', weekNumber = '') {
-		// this.addHeader(page)
+
 		this.createHeader(page)
-		this.createHeaderBackArrow(page)
+		// если бригадир, то стрелка назад и имя работника видны
+		if (Storage.isBrigadier()) {
+			this.createHeaderBackArrow(page)
+			this.showHeaderName(page, name)
+		}
 		
 		this.addCreateButton(page, name)
 		this.addForm(page, name)
@@ -61,7 +66,6 @@ export default class Page {
 		})
 		
 		this.addFieldList(page, name)
-		this.showHeaderName(page, name)
 		this.showFooterValues(page, name)
 	}
 
@@ -452,6 +456,7 @@ export default class Page {
 	// импортируем
 	createHeader (page) {
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
+		const checked = Storage.isBrigadier() ? 'checked' : ''
 		headerElement.innerHTML = ''
 		headerElement.innerHTML = 
 		`<div class="header__nav" data-header-nav="${page}">
@@ -468,7 +473,7 @@ export default class Page {
 			data-weaving-link="${page}">Плетения</button>
 			<button class="menu__item">Восстановить удаления</button>
 			<label class="menu__item check">
-				<input class="check__input" type="checkbox">
+				<input class="check__input" type="checkbox" data-check-brigadier ${checked}>
 				<div class="check__box">
 					<div class="check__box-item"></div>
 				</div>Я бригадир</label>
@@ -637,7 +642,7 @@ export default class Page {
 	}
 
 	// перелистываем страницу вперёд
-	changeNextPage (currentPageAttr, nextPageAttr, name, weekNumber) {
+	changeNextPage (currentPageAttr, nextPageAttr, name, weekNumber = '') {
 		// если следующая страница и текущая - одна и та же, то отмена
 		if (currentPageAttr === nextPageAttr) {
 			return
@@ -653,9 +658,13 @@ export default class Page {
 		nextPageElement.classList.remove('hide')
 		containerElement.classList.add('nextPage')
 
+		let timeout = 400
 
 		if (nextPageAttr === 'weeksList') {
 			this.renderWeekListPage(nextPageAttr, name)
+
+			// если не бригадир, то загружаем вторую страницу без задержки
+			timeout = Storage.isBrigadier() ? 400 : 0
 		}
 		else if (nextPageAttr === 'weekItems') {
 			this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
@@ -669,16 +678,22 @@ export default class Page {
 		else if (nextPageAttr === 'quotation') {
 			this.renderQuotationPage(nextPageAttr, name, weekNumber, currentPageAttr)
 		}
-		
+
+		// устанавливаем задержку для плавной прокрутки страниц
 		setTimeout( () => {
 			currentPageElement.classList.add('hide')
 			containerElement.classList.remove('nextPage')
 			currentPageElement.classList.remove('order-previous')
-		}, 400)
+		}, timeout)
 	}
 
 	// перелистываем страницу назад
 	changePreviousPage (currentPageAttr, previousPageAttr, name, weekNumber = '') {
+
+		// если предыдущая страница и текущая - одна и та же, то отмена
+		if (currentPageAttr === previousPageAttr) {
+			return
+		}
 		
 		const containerElement = document.querySelector('[data-container]')
 		const currentPageElement = document.querySelector(`[data-page=${currentPageAttr}]`)
@@ -690,10 +705,27 @@ export default class Page {
 		// отрисовываем предыдущую страницу
 		if (currentPageAttr === 'weavingList' && previousPageAttr === 'handOverItems') {
 			this.renderHandOverItemsPage(previousPageAttr, name, weekNumber)
-		} else {
+
+		} else if (previousPageAttr === 'start') {
+			this.renderStartPage('start')
+
+		}
+		else if (previousPageAttr === 'weeksList') {
+			this.renderWeekListPage(previousPageAttr, name)
+			
+		}
+		else if (previousPageAttr === 'weekItems') {
+			this.renderWeekItemsPage(previousPageAttr, name, weekNumber)
+			
+		}
+		else if (previousPageAttr === 'handOverItems') {
+			this.renderHandOverItemsPage(previousPageAttr, name, weekNumber)
+			
+		}
+		 else {
 			
 			this.addFieldList(previousPageAttr, name, weekNumber)
-			this.showFooterValues(previousPageAttr, name, weekNumber)
+			// this.showFooterValues(previousPageAttr, name, weekNumber)
 			// если страница добавили сдачу, то при возвращении назад показываем актуальную сдачу
 			if (previousPageAttr === 'weekItems') {
 

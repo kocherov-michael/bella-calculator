@@ -159,6 +159,7 @@ export default class Handler {
 		const headerMenuListElement = sectionElement.querySelector('[data-menu-list]')
 		const weavingLinkElement = sectionElement.querySelector('[data-weaving-link]')
 		const quotationLinkElement = sectionElement.querySelector('[data-quotation-link]')
+		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
 
 
 		headerMenuElement.addEventListener('click', () => {
@@ -166,6 +167,7 @@ export default class Handler {
 			headerMenuListElement.classList.toggle('menu-show')
 		} )
 
+		// обработчик кнопки плетений
 		weavingLinkElement.addEventListener('click', () => {
 			
 			this.page.changeNextPage(args.page, 'weavingList', args.name, args.weekNumber)
@@ -177,6 +179,7 @@ export default class Handler {
 			
 		})
 
+		// обработчик кнопки котировок
 		quotationLinkElement.addEventListener('click', () => {
 			
 			this.page.changeNextPage(args.page, 'quotation', args.name, args.weekNumber)
@@ -186,6 +189,12 @@ export default class Handler {
 				headerMenuListElement.classList.toggle('menu-show')
 			}, 400)
 			
+		})
+
+		// чекбокс бригадир
+		brigadierCheckBoxElement.addEventListener('click', () => {
+			// изменяем статус бригадир / не бригадир
+			Storage.setBrigadier(brigadierCheckBoxElement.checked)
 		})
 		
 	}
@@ -294,7 +303,6 @@ export default class Handler {
 		}
 		else if (this.args.page === 'weeksList') {
 			// если сохраняем неделю
-			console.log('сохраняем неделю')
 			const result = Storage.saveOneWeek(newItemValues)
 			if (!result) return
 			this.closeForm()
@@ -336,6 +344,7 @@ export default class Handler {
 
 	// обработчик на кноку назад в шапке
 	backButtonHandler (page) {
+		
 		const currentPageElement = document.querySelector(`[data-page=${page}]`)
 		let backButtonElement = currentPageElement.querySelector('[data-header-back]')
 
@@ -344,13 +353,19 @@ export default class Handler {
 
 		backButtonElement.addEventListener('click', () => {
 			// backButtonElement
-			const targetPageAttr = backButtonElement.getAttribute('data-header-back')
+			console.log(backButtonElement)
+			let targetPageAttr = backButtonElement.getAttribute('data-header-back')
 			const targetPageWeekAttr = backButtonElement.getAttribute('data-header-back-week')
-			const targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
+			let targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
+
+			if (targetPageAttr === 'start' && !Storage.isBrigadier()) {
+				targetPageAttr = 'weeksList'
+				targetPageWorkerAttr = 'Я'
+			}
 			// const targetPageElement = document.querySelector(`[data-page=${targetPageAttr}]`)
 			// console.log(targetPage)
 			this.page.changePreviousPage(page, targetPageAttr, targetPageWorkerAttr, targetPageWeekAttr)
-			backButtonElement = null
+			// backButtonElement = null
 		})
 
 	}
@@ -409,15 +424,9 @@ export default class Handler {
 				if ( difference > 200 ) {
 					const pageAttr = fieldElement.getAttribute('data-field')
 
-					// console.log('pageAttr', pageAttr)
-					// console.log(this)
-
 					const elementId = draggedElement.getAttribute('data-id')
 					const elementWorker = draggedElement.getAttribute('data-worker')
 					const weekNumber = draggedElement.getAttribute('data-week-number')
-					console.log(elementId)
-					console.log(elementWorker)
-					console.log(weekNumber)
 
 					// удаляем элемент из памяти
 					Handler.deleteElement(elementId, pageAttr, elementWorker, weekNumber)
@@ -431,9 +440,6 @@ export default class Handler {
 
 						draggedElement.style.display = 'none'
 					}, 200)
-
-					// console.log(fieldElement)
-
 
 				}
 			}

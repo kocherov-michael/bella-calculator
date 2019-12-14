@@ -2,6 +2,27 @@ export default class Storage {
 	constructor (args = {}) {
 
 	}
+
+	// изменяем статус пользователя бригадиром 
+	static setBrigadier(isBrigadier) {
+		const dataObj = Storage.read() || {}
+		dataObj.isBrigadier = isBrigadier
+		Storage.save(dataObj)
+	}
+
+	// узнаём бригадир ли пользователь
+	static isBrigadier() {
+		const dataObj = Storage.read() || {}
+
+		// если бригадир никогда не устанавливался, то задаём ему false
+		// и создаём работника "Я"
+		if (dataObj.isBrigadier === undefined) {
+			Storage.saveWorker({workerName: 'Я'})
+			Storage.setBrigadier(false)
+		}
+		return dataObj.isBrigadier = dataObj.isBrigadier || false
+	}
+	
 	static saveWorker (data) {
 		const dataObj = Storage.read() || {}
 		// console.log('прочитали ил памяти', dataArray)
