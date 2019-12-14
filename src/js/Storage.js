@@ -111,6 +111,9 @@ export default class Storage {
 						// учитываем операцию сдачи в общем весе недели
 						dataObj.workers[i].weeks[j].weekWeight -= +data.handOverOperation.weightWithPercent
 
+						// учитываем операцию сдачи в общей сдаче недели
+						dataObj.workers[i].weeks[j].weekSalary += +data.handOverOperation.price
+
 						// добавляем id
 						dataObj.workers[i].weeks[j].handOverId = dataObj.workers[i].weeks[j].handOverId || 0
 						data.handOverOperation.id = ++dataObj.workers[i].weeks[j].handOverId
@@ -389,6 +392,69 @@ export default class Storage {
 			.workers[workersIndex]
 			.weeks[weekIndex]
 			.weekWeight -= removedElement.value
+
+		dataObj.removedElements = dataObj.removedElements || []
+		const removedObj = {
+			element: removedElement,
+			parent: dataObj
+				.workers[workersIndex]
+				.weeks[weekIndex]
+				.weekItems,
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		Storage.save(dataObj)
+
+		return true
+	}
+
+	// удаление операции сдачи
+	static deleteHandOverItems(elementId, workerName, weekNumber) {
+		// console.log(elementId)
+		const dataObj = Storage.read()
+		// находим индекс удаляемого элемента
+		for( let i =0; i < dataObj.workers; i++) {
+
+		}
+		const workersIndex = dataObj
+			.workers
+			.findIndex( (worker) => worker.workerName === workerName)
+
+		const weekIndex = dataObj
+			.workers[workersIndex]
+			.weeks
+			.findIndex( (week) => week.weekNumber == weekNumber)
+
+		const index = dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekHandOver
+			.findIndex( (item) => item.id == elementId)
+
+
+		if (index < 0) return true
+		console.log('index', index)
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekHandOver
+			.splice(index, 1)[0]
+		
+		// учитываем удаление элемента в общем весе недели
+		dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekWeight += removedElement.weightWithPercent
+
+		// учитываем удаление элемента в общей сдаче недели
+		dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekSalary -= removedElement.price
 
 		dataObj.removedElements = dataObj.removedElements || []
 		const removedObj = {

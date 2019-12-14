@@ -596,6 +596,7 @@ export default class Page {
 					field: itemFieldElement,
 					type: 'handOverItem',
 					workerName: name,
+					weekNumber,
 					// вес
 					weight: handOverItem.weight,
 					weightWithPercent: handOverItem.weightWithPercent,

@@ -15,6 +15,7 @@ export default class Item {
 		}
 		else if (args.type === 'handOverItem') {
 			this.newElement = Item.createHandOverItem(args)
+			// console.log(this.newElement)
 
 			const handler = new Handler({
 				deleteable: this.newElement
@@ -157,10 +158,12 @@ export default class Item {
 	// создаём элемент операции сдачи
 	static createHandOverItem (args) {
 		const parentElement = args.field
-		let newElement = document.createElement('div')
+		const newElement = document.createElement('div')
 		newElement.classList.add('item')
 		newElement.classList.add('salary-item')
 		newElement.setAttribute('data-id', args.id)
+		newElement.setAttribute('data-worker', args.workerName)
+		newElement.setAttribute('data-week-number', args.weekNumber)
 
 		const chainArray = ["цепь", "цепи", "цепей"]
 		const braceletArray = ["браслет", "браслета", "браслетов"]
@@ -201,6 +204,7 @@ export default class Item {
 		setTimeout(()=> {
 			newElement.scrollIntoView()
 		},400)
+		return newElement
 	}
 
 	// создаём элемент плетения

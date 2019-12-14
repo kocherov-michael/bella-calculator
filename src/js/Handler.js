@@ -371,6 +371,9 @@ export default class Handler {
 		else if (pageAttr === 'weekItems') {
 			Storage.deleteWeekItem(elementId, elementWorker, weekNumber)
 		}
+		else if (pageAttr === 'handOverItems') {
+			Storage.deleteHandOverItems(elementId, elementWorker, weekNumber)
+		}
 	}
 
 	// обработчик перетаскивания обычного элемента
@@ -382,6 +385,7 @@ export default class Handler {
 			event.stopPropagation()
 			// обозначаем перетаскиваемый элемент
 			const draggedElement = event.currentTarget
+			// console.log(draggedElement)
 			
 			let touchPoint = event.changedTouches[0].pageX
 			if (!firstTapPosition) {
@@ -411,13 +415,17 @@ export default class Handler {
 					const elementId = draggedElement.getAttribute('data-id')
 					const elementWorker = draggedElement.getAttribute('data-worker')
 					const weekNumber = draggedElement.getAttribute('data-week-number')
-					// console.log(elementId)
+					console.log(elementId)
+					console.log(elementWorker)
+					console.log(weekNumber)
 
 					// удаляем элемент из памяти
 					Handler.deleteElement(elementId, pageAttr, elementWorker, weekNumber)
 					draggedElement.classList.add('deleted')
 					
-					this.page.showFooterValues(pageAttr, elementWorker, weekNumber)
+					if (elementWorker) {
+						this.page.showFooterValues(pageAttr, elementWorker, weekNumber)
+					}
 
 					setTimeout( () => {
 
