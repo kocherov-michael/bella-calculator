@@ -8,6 +8,7 @@ export default class Page {
 		if (args.start) {
 				
 				this.renderStartPage(args.start)
+				Storage.clear()
 		}
 	}
 	

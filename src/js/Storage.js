@@ -3,6 +3,15 @@ export default class Storage {
 
 	}
 
+	// очищаем Storage
+	static clear() {
+		let dataObj = Storage.read() || {}
+		if (dataObj.cleared !== 'ok') {
+			dataObj = {cleared: 'ok'}
+			Storage.save(dataObj)
+		}
+	}
+
 	// изменяем статус пользователя бригадиром 
 	static setBrigadier(isBrigadier) {
 		const dataObj = Storage.read() || {}
