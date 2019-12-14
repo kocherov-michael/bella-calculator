@@ -66,6 +66,8 @@ export default class Storage {
 	// или вес всех недель, если конкретная неделя не указана
 	static getWeightPreviousWeekItems(workerName, weekNumber = '') {
 		const dataObj = Storage.read() || {}
+		// строка нужна для правильной работы кнопки Назад при отсутствии работников
+		dataObj.workers = dataObj.workers || []
 		
 		for (let i = 0; i < dataObj.workers.length; i++) {
 			// находим работника, у которого будем считать
