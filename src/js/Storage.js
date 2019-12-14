@@ -226,7 +226,7 @@ export default class Storage {
 					// если номер недели совпадает
 					if(dataObj.workers[i].weeks[j].weekNumber === weekNumber) {
 						// возвращаем елементы внутри недели
-						return dataObj.workers[i].weeks[j] || 'empty'
+						return dataObj.workers[i].weeks[j] 
 					}
 				}
 			}

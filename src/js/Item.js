@@ -254,6 +254,7 @@ export default class Item {
 
 	// создаём удалённый элемент
 	static createRemovedItem (args) {
+		console.log(args)
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')

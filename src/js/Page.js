@@ -272,6 +272,7 @@ export default class Page {
 		// показываем зарплату и сдачу за неделю
 		const weekSalaryElement = salaryFieldElement.querySelector('[data-week-salary]')
 		const weekWeightElement = salaryFieldElement.querySelector('[data-week-weight]')
+		
 		const {price, weight} = Page.getWeekBalance(name, weekNumber)
 		weekSalaryElement.textContent = price
 		weekWeightElement.textContent = weight
@@ -279,7 +280,12 @@ export default class Page {
 
 	// получаем зарплату и сдачу за неделю
 	static getWeekBalance(name, weekNumber) {
-		const {weekHandOver, weekWeight} = Storage.getOneWeek(name, weekNumber)
+		const oneWeekObj = Storage.getOneWeek(name, weekNumber)
+		// если недель нет совсем, то возвращаем всё по нулям
+		if (!oneWeekObj) return {price: 0, weight: 0, weekTotalWeight: 0}
+
+		const weekHandOver = oneWeekObj.weekHandOver
+		const weekWeight = oneWeekObj.weekWeight
 		
 		const price = weekHandOver.reduce((accum,curr) => {
 			return Math.round((accum + curr.price) * 10) / 10
@@ -294,7 +300,7 @@ export default class Page {
 		const weekTotalWeight = previousWeekWeight + weekWeight
 		// console.log(weekTotalWeight)
 		// const allWeeksWeight = Storage.getWeightPreviousWeekItems(name)
-		
+		// console.log('end', price, weight, weekTotalWeight)
 		return {price, weight, weekTotalWeight}
 	}
 
