@@ -75,7 +75,6 @@ export default class Handler {
 				percent,
 				price
 			}
-			// console.log(handOverObj)
 
 			const newHandOverValues = {
 				workerName,
@@ -83,7 +82,6 @@ export default class Handler {
 				handOverOperation: handOverObj
 			}
 			
-			// console.log(newHandOverValues)
 			Storage.saveHandOverOperation(newHandOverValues)
 			this.page.addFieldList(page, workerName, weekNumber)
 			this.page.showFooterValues(page, workerName, weekNumber)
@@ -105,7 +103,6 @@ export default class Handler {
 		
 		// операция Добавить
 		addOperationElement.addEventListener('click', () => {
-			// console.log('here')
 			const operationValue = Math.abs(inputOperationElement.value.trim())
 			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
 		})
@@ -141,7 +138,7 @@ export default class Handler {
 
 	// показать, что инпут пустой
 	static showError (element, currentValue, falseValue) {
-		// console.log('error', currentValue == falseValue  )
+		
 		if (currentValue == falseValue) {
 			element.classList.add('warning-input')
 			setTimeout(() => {
@@ -230,7 +227,6 @@ export default class Handler {
 
 		// показваем форму при нажатии Добавить+
 		addButtonElement.addEventListener('click', () => {
-			console.log('click')
 			addFormElement.classList.remove('hide')
 			setTimeout( () => {
 				addFormElement.classList.remove('opacity')
@@ -241,46 +237,13 @@ export default class Handler {
 		})
 	}
 
-	// 
-	// addItemHandler99999999 (page) {
-	// 	// текущая страница
-	// 	const sectionElement =  document.querySelector(`[data-page="${page}"]`)
-	// 	// кнопка Добавить
-	// 	const addButtonElement = sectionElement.querySelector(`[data-add=${page}]`)
-	// 	addButtonElement.setAttribute('data-current-worker', this.args.workerName)
-
-	// 	// Обёртка с затемнением
-	// 	const addFormElement =  document.querySelector(`[data-add-form=${page}]`)
-	// 	// Ищем этот элемент чтобы скрыть раньше обёртки, а показать позже
-	// 	const activeFormElement =  addFormElement.querySelector(`[data-active-form]`)
-		
-	// 	// вешаем обработчик на кнопку Сохранить и Отмена формы добавления сотрудника
-	// 	this.formHandler(addFormElement)
-	// 	this.activeFormElement = activeFormElement
-	// 	this.addFormElement = addFormElement
-
-	// 	// показваем форму при нажатии Добавить+
-	// 	addButtonElement.addEventListener('click', () => {
-	// 		console.log('click')
-	// 		addFormElement.classList.remove('hide')
-	// 		setTimeout( () => {
-	// 			addFormElement.classList.remove('opacity')
-	// 		}, 0)
-	// 		setTimeout( () => {
-	// 			activeFormElement.classList.remove('opacity')
-	// 		}, 200)
-	// 	})
-	// }
 
 	// Обработчик кнопок Сохранить и Отмена
 	formHandler (addFormElement) {
-		// console.log('addFormElement', addFormElement)
-		// console.log(this.args)
 		
 		const pageAttr = addFormElement.getAttribute('data-add-form')
 		// если страница - восстановления элементов
 		if (pageAttr === 'garbageList') {
-			// console.log('bungo')
 			this.restoreItem()
 		}
 		this.formElement = addFormElement
@@ -311,11 +274,7 @@ export default class Handler {
 
 	// Сохраняем введённые значения формы
 	saveFormValues() {
-		console.log('восстанавливаем')
 
-		if (this.args.type === 'removedItem') {
-			console.log('removedItem')
-		}
 		// кнопка Добавить, берём у неё имя работника
 		const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
 
@@ -338,7 +297,6 @@ export default class Handler {
 			}
 			// по ключу инпута записываем его значение
 			newItemValues[inputsList[i].name] = inputsList[i].value
-			// console.log(inputsList[i].value)
 		}
 
 		// если страница добавления плетения
@@ -397,9 +355,6 @@ export default class Handler {
 			}
 			// если нажимаем на удалённый элемент чтобы восстановить
 			else if (!nextAttr & currentAttr === 'garbageList') {
-				// console.log('restore')
-				// console.log(args)
-				// console.log(this.args)
 				// текущая страница
 				const sectionElement =  document.querySelector(`[data-page="garbageList"]`)
 
@@ -431,8 +386,6 @@ export default class Handler {
 
 	// Обработчик кнопок Восстановить и Отмена
 	formRestoreHandler (addFormElement, args) {
-		// console.log('addFormElement', addFormElement)
-		console.log(args)
 		
 		// const pageAttr = addFormElement.getAttribute('data-add-form')
 		this.formElement = addFormElement
@@ -441,7 +394,7 @@ export default class Handler {
 		const closeIconElement = addFormElement.querySelector('[data-close-icon]')
 
 		restoreButtonElement.addEventListener('click', () => {
-			console.log('click')
+			
 			Storage.restoreElement(args.id)
 			// закрываем форму
 			this.closeForm()
@@ -513,7 +466,6 @@ export default class Handler {
 			event.stopPropagation()
 			// обозначаем перетаскиваемый элемент
 			const draggedElement = event.currentTarget
-			// console.log(draggedElement)
 			
 			let touchPoint = event.changedTouches[0].pageX
 			if (!firstTapPosition) {

@@ -34,13 +34,12 @@ export default class Storage {
 	
 	static saveWorker (data) {
 		const dataObj = Storage.read() || {}
-		// console.log('прочитали ил памяти', dataArray)
+		
 		dataObj.workers = dataObj.workers || []
 
 		// проверка на существование имени
 		for (let i = 0; i < dataObj.workers.length; i++) {
 			if (dataObj.workers[i].workerName === data.workerName) {
-				// console.log('exist name')
 				return false
 			}
 		}
@@ -70,7 +69,7 @@ export default class Storage {
 				// проверка на существование номера недели
 				for (let j = 0; j < dataObj.workers[i].weeks.length; j++) {
 					if (dataObj.workers[i].weeks[j].weekNumber === data.weekNumber) {
-						// console.log('exist week')
+						
 						return false
 					}
 				}
@@ -119,7 +118,7 @@ export default class Storage {
 					summWeight += weeksArray[i].weekWeight
 				}
 
-				return summWeight
+				return Math.round(summWeight * 10000) / 10000
 			}
 		}
 	}
@@ -128,8 +127,6 @@ export default class Storage {
 	// сохранить операцию сдачи
 	static saveHandOverOperation (data) {
 		const dataObj = Storage.read() || {}
-		// console.log(dataArray)
-		// console.log(data)
 
 		for (let i = 0; i < dataObj.workers.length; i++) {
 			// если имя работника в массиве из памяти и из формы совпадают
@@ -162,8 +159,6 @@ export default class Storage {
 	// сохранить простую операцию
 	static saveOperation (data) {
 		const dataObj = Storage.read() || {}
-		// console.log(dataArray)
-		// console.log(data)
 		dataObj.workers = dataObj.workers || []
 
 		for (let i = 0; i < dataObj.workers.length; i++) {
@@ -196,7 +191,6 @@ export default class Storage {
 
 	static read () {
 		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
-		// console.log('прочитал', dataObj)
 
 		// return data.workers || []
 		return dataObj
@@ -210,11 +204,9 @@ export default class Storage {
 	// загрузка недель по имени работника
 	static getWorkerWeeks(name) {
 		const dataObj = Storage.read()
-		// console.log(dataArray)
-		// console.log(name)
+
 		for(let i = 0; i < dataObj.workers.length; i++) {
 			if (dataObj.workers[i].workerName === name) {
-				// console.log( dataArray)
 				return dataObj.workers[i] || 'empty'
 			}
 		}
@@ -222,15 +214,13 @@ export default class Storage {
 
 	// загрузка 1 недели работника
 	static getOneWeek(name, weekNumber) {
-		// console.log('static', weekNumber)
+		
 		const dataObj = Storage.read() || {}
-		// const myWay = dataObj.removedElements[0].element.way
-		// console.log(dataObj.removedElements[6].element.way)
 
 		for(let i = 0; i < dataObj.workers.length; i++) {
 			// если имя совпадает
 			if (dataObj.workers[i].workerName === name) {
-				// console.log('here', dataArray[i].weeks)
+				
 				for(let j = 0; j < dataObj.workers[i].weeks.length; j++) {
 					// если номер недели совпадает
 					if(dataObj.workers[i].weeks[j].weekNumber === weekNumber) {
@@ -358,21 +348,19 @@ export default class Storage {
 
 	// удаление недели
 	static deleteWeek(elementId, workerName) {
-		// console.log(elementId)
+		
 		const dataObj = Storage.read()
 		// находим индекс удаляемого элемента
 		for( let i =0; i < dataObj.workers; i++) {
 
 		}
 		const workersIndex = dataObj.workers.findIndex( (worker) => worker.workerName === workerName)
-		// console.log(workersIndex)
 
 		const index = dataObj.workers[workersIndex].weeks.findIndex( (week) => {
 
 			return week.id === +elementId
 		})
 		if (index < 0) return true
-		// console.log('index', index)
 
 		// сохраняем удалённый злемент
 		const removedElement = dataObj.workers[workersIndex].weeks.splice(index, 1)[0]
@@ -399,7 +387,7 @@ export default class Storage {
 	
 	// удаление операции недели
 	static deleteWeekItem(elementId, workerName, weekNumber) {
-		// console.log(elementId)
+		
 		const dataObj = Storage.read()
 		// находим индекс удаляемого элемента
 		for( let i =0; i < dataObj.workers; i++) {
@@ -422,7 +410,6 @@ export default class Storage {
 
 
 		if (index < 0) return true
-		// console.log('index', index)
 
 		// сохраняем удалённый злемент
 		const removedElement = dataObj
@@ -458,7 +445,7 @@ export default class Storage {
 
 	// удаление операции сдачи
 	static deleteHandOverItems(elementId, workerName, weekNumber) {
-		// console.log(elementId)
+		
 		const dataObj = Storage.read()
 		// находим индекс удаляемого элемента
 		for( let i =0; i < dataObj.workers; i++) {
@@ -481,7 +468,6 @@ export default class Storage {
 
 
 		if (index < 0) return true
-		console.log('index', index)
 
 		// сохраняем удалённый злемент
 		const removedElement = dataObj
@@ -578,7 +564,6 @@ export default class Storage {
 		const dataObj = Storage.read() || {}
 		const removedArray = dataObj.removedElements || []
 
-		// console.log(removedArray)
 		for (let i = 0; i < removedArray.length; i++) {
 			if (removedArray[i].id === id) {
 				// читаем сохранённый путь в элементе
@@ -595,7 +580,7 @@ export default class Storage {
 					}
 				}
 				const index = restoreWay.findIndex( (elem) => {
-					// console.log(elem.id, '>', removedArray[i].element.id)
+					
 					return elem.id > removedArray[i].element.id
 				})
 				// удаляем элемент из корзины

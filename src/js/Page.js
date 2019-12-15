@@ -129,7 +129,6 @@ export default class Page {
 		if (previousAttr === 'quotation' || previousAttr === 'garbageList') {
 			previousAttr = 'start'
 		}
-		console.log('начало рендера плетений')
 		this.createHeader(page, name)
 		this.createHeaderBackArrow(page, name, weekNumber, previousAttr)
 		this.addCreateButton(page, name)
@@ -217,7 +216,6 @@ export default class Page {
 		if (page === 'start') {
 			// let totalCommonWeight
 			
-			// console.log(Storage.getAbsolutelyTotalWeight())
 			const footerAllWorkersElement = footerElement.querySelector('[data-all-workers-total]')
 			footerAllWorkersElement.textContent = Storage.getAbsolutelyTotalWeight()
 		}
@@ -298,10 +296,8 @@ export default class Page {
 		// вес с предыдущих недель
 		const previousWeekWeight = Storage.getWeightPreviousWeekItems(name, weekNumber)
 		// Общий баланс к концу недели
-		const weekTotalWeight = previousWeekWeight + weekWeight
-		// console.log(weekTotalWeight)
-		// const allWeeksWeight = Storage.getWeightPreviousWeekItems(name)
-		// console.log('end', price, weight, weekTotalWeight)
+		const weekTotalWeight = Math.round((previousWeekWeight + weekWeight) * 10000) / 10000
+		
 		return {price, weight, weekTotalWeight}
 	}
 
@@ -327,7 +323,6 @@ export default class Page {
 			const stringTemplate = `<option class="option" value="${weavingArr[i].weavingName}">${weavingArr[i].weavingName}</option>`
 			optionTemplate += stringTemplate
 		}
-		// console.log(optionTemplate)
 
 		footerActionElement.innerHTML = ''
 		footerActionElement.innerHTML = 
@@ -542,7 +537,7 @@ export default class Page {
 
 		// создаём элемент стрелки назад в шапке
 		const arrowBackElement = document.createElement('div')
-		// console.log(arrowBackElement)
+		
 		arrowBackElement.classList.add('header__arrow')
 		arrowBackElement.setAttribute('data-header-back', previousPage)
 		arrowBackElement.setAttribute('data-header-back-worker', name)
@@ -581,7 +576,7 @@ export default class Page {
 	
 	// Создаём список элементов из памяти
 	addFieldList (page, name = '', weekNumber = '') {
-		// console.log(page)
+		
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
 	
 		itemFieldElement.innerHTML = ''
@@ -591,7 +586,6 @@ export default class Page {
 	
 		// если страница стартовая
 		if (page === 'start') {
-			// console.log(data)
 
 			data.forEach( (worker) => {
 				
@@ -626,7 +620,7 @@ export default class Page {
 
 		// операции в неделе
 		else if ( page === 'weekItems') {
-			// console.log(name, weekNumber)
+			
 			const oneWeekObj = Storage.getOneWeek(name, weekNumber)
 			oneWeekObj.weekItems.forEach( (weekItem) => {
 				
@@ -695,8 +689,7 @@ export default class Page {
 			for (let i = 0; i < removedArr.length; i++) {
 				const place = (removedArr[i].way[removedArr[i].way.length - 1])
 				let text
-				// console.log(place)
-				console.log(removedArr[i])
+				
 				if (place === 'weeks') {
 					text = 'Неделя ' + removedArr[i].element.weekNumber
 				}

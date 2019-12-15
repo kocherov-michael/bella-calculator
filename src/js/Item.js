@@ -15,7 +15,6 @@ export default class Item {
 		}
 		else if (args.type === 'handOverItem') {
 			this.newElement = Item.createHandOverItem(args)
-			// console.log(this.newElement)
 
 			const handler = new Handler({
 				deleteable: this.newElement
@@ -30,7 +29,6 @@ export default class Item {
 			})
 		}
 		else if (args.type === 'removedItem') {
-			console.log(args)
 			this.newElement = Item.createRemovedItem(args)
 
 			const handler = new Handler({
@@ -46,7 +44,6 @@ export default class Item {
 
 	create(args) {
 
-		// console.log(args)
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
@@ -246,7 +243,6 @@ export default class Item {
 
 		parentElement.append(newElement)
 		setTimeout(()=> {
-			// console.log('прокрутка')
 			newElement.scrollIntoView()
 		},400)
 
@@ -255,7 +251,6 @@ export default class Item {
 
 	// создаём удалённый элемент
 	static createRemovedItem (args) {
-		console.log(args)
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
@@ -278,7 +273,6 @@ export default class Item {
 
 		parentElement.append(newElement)
 		setTimeout(()=> {
-			// console.log('прокрутка')
 			newElement.scrollIntoView()
 		},400)
 
