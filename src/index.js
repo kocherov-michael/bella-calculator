@@ -13,6 +13,11 @@ window.addEventListener('resize', () => {
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 });
 
+window.onerror = function(msg, url, line) {
+	this.alert(msg + '\n' + url + '\n' + line)
+	return true
+}
+
 
 
 // import './js/common'
