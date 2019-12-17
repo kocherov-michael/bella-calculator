@@ -29,10 +29,12 @@
 	margin-top: 160px;
 
 }
-.menu-show {
+.menu.menu-show {
 	bottom: 0;
 	height: 100vh;
+	height: calc(var(--vh, 1vh) * 100);
 	z-index: 9;
+
 	.menu__item {
 		opacity: 1;
 	}

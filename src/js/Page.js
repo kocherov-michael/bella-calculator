@@ -514,7 +514,7 @@ export default class Page {
 			<button class="menu__item" data-next="weavingList"
 			data-weaving-link="${page}">Плетения</button>
 			<button class="menu__item" data-garbage-link="${page}">Восстановить удаления</button>
-			<label class="menu__item check hide">
+			<label class="menu__item check">
 				<input class="check__input" type="checkbox" data-check-brigadier ${checked}>
 				<div class="check__box">
 					<div class="check__box-item"></div>
