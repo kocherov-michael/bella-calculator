@@ -18,7 +18,7 @@
 	display: flex;
 }
 
-.footer__result-item:last-child {
+.footer__result-item:not(:first-child) {
 	padding-top: 10px;
 	margin-top: 10px;
 	border-top: 2px solid $border-light;
