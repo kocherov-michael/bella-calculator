@@ -8,7 +8,6 @@ export default class Page {
 		if (args.start) {
 				
 				this.renderStartPage(args.start)
-				Storage.clear()
 		}
 	}
 	
@@ -602,6 +601,7 @@ export default class Page {
 		}
 		// если страница с неделями
 		else if ( page === 'weeksList') {
+			// console.log(name)
 			const workerWeeks = Storage.getWorkerWeeks(name)
 			workerWeeks.weeks.forEach( (week) => {
 				

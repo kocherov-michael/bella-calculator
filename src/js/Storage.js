@@ -192,12 +192,10 @@ export default class Storage {
 	static read () {
 		const dataObj = JSON.parse(localStorage.getItem('bella-workers')) || {}
 
-		// return data.workers || []
 		return dataObj
 	}
 
 	static save(dataObj) {
-		// const dataObj = {workers: dataArray}
 		localStorage.setItem('bella-workers', JSON.stringify(dataObj))
 	}
 
