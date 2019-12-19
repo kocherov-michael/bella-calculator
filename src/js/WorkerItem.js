@@ -5,6 +5,8 @@ import Router from './Router'
 export default class WorkerItem extends NewItem {
 	constructor (args = {}) {
 		super(args)
+		// console.log(args)
+		this.args = args
 		this.element = this.create(args)
 		this.itemHandler(this.element)
 		// console.log('ok')
@@ -17,7 +19,8 @@ export default class WorkerItem extends NewItem {
 		newElement.setAttribute('data-worker', args.workerName)
 		newElement.setAttribute('data-id', args.id)
 
-		newElement.setAttribute('data-next', 'brigade')
+		// newElement.setAttribute('data-next', 'weekItems')
+		this.args.nextPageAttr = 'weekItems'
 		newElement.innerHTML = 
 		`<div class="item__header">
 			<div class="item__header-text" data-item-name>${args.text || 'у девочки нет имени'}</div>
@@ -27,11 +30,6 @@ export default class WorkerItem extends NewItem {
 		</div>`
 
 		parentElement.appendChild(newElement)
-	
-		// const handler = new Handler({
-		// 	itemHandler: newElement,
-		// 	deleteable: newElement
-		// })
 
 		// прокручиваем до последнего добавленного элемента
 		setTimeout(()=> {newElement.scrollIntoView()},400)
@@ -40,19 +38,24 @@ export default class WorkerItem extends NewItem {
 	}
 
 	itemHandler (element) {
+		const {workerName, nextPageAttr, weekNumber} = this.args
+		// console.log('itemHandler', this.args)
 		element.addEventListener('click', () => {
 			
-			let nextAttr = element.getAttribute('data-next')
-			const currentAttr = 'brigade'
-			const weekNumber = element.getAttribute('data-week-number')
-			const workerName = element.getAttribute('data-worker')
+			// let nextPageAttr = element.getAttribute('data-next')
+			const currentPageAttr = 'brigade'
 
 			// если кликаем на неделю, но не бригадир - идём в неделю работника "Я"
 			// if (nextAttr === 'brigade' && !LocalStorage.isBrigadier()) {
 			// 	nextAttr = 'weekItems'
 			// }
 
-			Router.changeNextPage(currentAttr, nextAttr, weekNumber, workerName)
+			Router.changeNextPage({
+				currentPageAttr, 
+				nextPageAttr, 
+				weekNumber, 
+				workerName
+			})
 		})
 	}
 }

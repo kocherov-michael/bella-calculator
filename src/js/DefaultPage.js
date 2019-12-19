@@ -147,14 +147,14 @@ export default class Page {
 		
 		arrowBackElement.classList.add('header__arrow')
 		// arrowBackElement.setAttribute('data-header-back', previousPage)
-		// if (workerName !== '') {
+		if (workerName !== '') {
 
-		// 	arrowBackElement.setAttribute('data-header-back-worker', workerName)
-		// }
-		// // если на странице со сдачей, то добавляем номер недели
-		// if (weekNumber !== '') {
-		// 	arrowBackElement.setAttribute('data-header-back-week', weekNumber)
-		// }
+			arrowBackElement.setAttribute('data-header-back-worker', workerName)
+		}
+		// если на странице со сдачей, то добавляем номер недели
+		if (weekNumber !== '') {
+			arrowBackElement.setAttribute('data-header-back-week', weekNumber)
+		}
 		headerNavElement.prepend(arrowBackElement)
   
 		// создаём img стрелку назад
@@ -167,7 +167,7 @@ export default class Page {
 		arrowBackElement.addEventListener('click', () => {
 
 			console.log('back')
-			Router.changePreviousPage(page, previousPage)
+			Router.changePreviousPage(page, previousPage, weekNumber, workerName)
 			// let targetPageAttr = backButtonElement.getAttribute('data-header-back')
 			// const targetPageWeekAttr = backButtonElement.getAttribute('data-header-back-week')
 			// let targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
@@ -181,5 +181,29 @@ export default class Page {
 			// // backButtonElement = null
 		})
 
+	}
+
+	// показать текст в шапке
+	showHeaderName (page, name, weekNumber = '') {
+		console.log(page, name, weekNumber)
+		const headerTextElement = document.querySelector(`[data-header-text="${page}"]`)
+
+		if (page === 'handOverItems') {
+			headerTextElement.textContent = 'Сдача'
+		}
+		else if (page === 'weavingList') {
+			headerTextElement.textContent = 'Плетения'
+		}
+		else if (page === 'quotation') {
+			headerTextElement.textContent = 'Котировки'
+		}
+		else if (page === 'weekItems') {
+			headerTextElement.textContent = name
+		}
+
+		else if (headerTextElement) {
+			// если есть номер недели, то неделя {номер}, иначе имя
+			headerTextElement.textContent = weekNumber? `Неделя ${weekNumber}`: name
+		}
 	}
 }

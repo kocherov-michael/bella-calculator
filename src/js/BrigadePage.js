@@ -21,7 +21,8 @@ export default class BrigadePage extends DefaultPage {
 		this.createBrigadeButton(args)
 		super.addCreateButton({ text: 'Добавить работника', ...args })
 		this.addFieldList(args)
-		super.createHeaderBackArrow('brigade', 'weeksList', args.weekNumber)
+		super.createHeaderBackArrow(args.page, 'weeksList', args.weekNumber)
+		super.showHeaderName(args.page, args.workerName, args.weekNumber)
 		// this.showFooterValues(page, name)
 	}
 
@@ -83,9 +84,10 @@ export default class BrigadePage extends DefaultPage {
 					// родительский элемент
 					field: itemFieldElement,
 					// номер недели
+					weekNumber,
 					text: worker.workerName,
 					type: 'worker',
-					workerName: workerName,
+					workerName: worker.workerName,
 					id: worker.id
 				})
 			})

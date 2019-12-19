@@ -1,6 +1,7 @@
 import WeeksListPage from './WeeksListPage'
 import BrigadePage from './BrigadePage'
 import BrigadeBalanceListPage from './BrigadeBalanceListPage'
+import WeekItemsPage from './WeekItemsPage'
 
 export default class Router {
 	constructor (args = {}) {
@@ -25,6 +26,9 @@ export default class Router {
 		else if (page === 'brigadeBalanceList') {
 			const newPage = new BrigadeBalanceListPage (args)
 		}
+		else if (page === 'weekItems') {
+			const newPage = new WeekItemsPage (args)
+		}
 	}
 
 
@@ -32,7 +36,7 @@ export default class Router {
 	static changeNextPage (args) {
 		const {currentPageAttr, nextPageAttr, weekNumber = '', workerName = ''} = args
 		// если следующая страница и текущая - одна и та же, то отмена
-		console.log('changeNextPage')
+		console.log('changeNextPage :', args)
 		if (currentPageAttr === nextPageAttr) {
 			return
 		}
@@ -70,7 +74,8 @@ export default class Router {
 			Router.loadPage ({page: nextPageAttr, weekNumber})
 		}
 		else if (nextPageAttr === 'weekItems') {
-			this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
+			Router.loadPage ({page: nextPageAttr, weekNumber, workerName})
+			// this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
 		}
 		else if (nextPageAttr === 'handOverItems') {
 			this.renderHandOverItemsPage(nextPageAttr, name, weekNumber)
