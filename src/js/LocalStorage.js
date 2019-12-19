@@ -81,7 +81,7 @@ export default class LocalStorage {
 				// const workersArray = dataObj.weeks[i].workers
 				dataObj.weeks[i].workers.push({
 					workerName: data.workerName,
-					workerItems: [], 
+					workerWeekItems: [], 
 					workerWeekHandOver: [],
 					workerWeekWeight: 0,
 					workerWeekSalary: 0,
@@ -93,6 +93,38 @@ export default class LocalStorage {
 		}
 		LocalStorage.save(dataObj)
 		return true
+	}
+
+	// сохранить простую операцию
+	static saveOperation (data) {
+		const dataObj = LocalStorage.read() || {}
+		dataObj.weeks = dataObj.weeks || []
+
+		for (let i = 0; i < dataObj.weeks.length; i++) {
+			// если номер недели в массиве из памяти и из формы совпадают
+			if (dataObj.weeks[i].weekNumber === data.weekNumber) {
+				// проверка на существование имени работника
+				for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
+					if (dataObj.weeks[i].workers[j].workerName === data.workerName) {
+
+						// добавляем id
+						dataObj.weeks[i].workers[j].operationId = dataObj.weeks[i].workers[j].operationId || 0
+
+						// создаём объект новой операции
+						dataObj.weeks[i].workers[j].workerWeekItems.push({
+							value: data.singleOperation,
+							id: ++dataObj.weeks[i].workers[j].operationId,
+						})
+
+						// учитываем операцию в общем весе недели
+						dataObj.weeks[i].workers[j].workerWeekWeight += +data.singleOperation
+						break
+					}
+				}
+			}
+		}
+		LocalStorage.save(dataObj)
+
 	}
 
 }
