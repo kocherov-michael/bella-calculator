@@ -8,7 +8,7 @@ export default class Page {
 	}
 
 	createHeader (args) {
-		console.log('createHeader', args)
+		// console.log('createHeader', args)
 		const {page, isBrigadier, name = '', weekNumber = ''} = args
 		// console.log(page)
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
@@ -166,7 +166,7 @@ export default class Page {
 		// обработчик кнопка назад
 		arrowBackElement.addEventListener('click', () => {
 
-			console.log('back')
+			// console.log('back')
 			Router.changePreviousPage(page, previousPage, weekNumber, workerName)
 			// let targetPageAttr = backButtonElement.getAttribute('data-header-back')
 			// const targetPageWeekAttr = backButtonElement.getAttribute('data-header-back-week')
@@ -185,7 +185,7 @@ export default class Page {
 
 	// показать текст в шапке
 	showHeaderName (page, name, weekNumber = '') {
-		console.log(page, name, weekNumber)
+		// console.log(page, name, weekNumber)
 		const headerTextElement = document.querySelector(`[data-header-text="${page}"]`)
 
 		if (page === 'handOverItems') {

@@ -2,6 +2,7 @@ import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
 import WorkerItem from './WorkerItem'
 import Router from './Router'
+import OperationItem from './OperationItem'
 
 export default class WeekItemsPage extends DefaultPage {
 	constructor (args = {}) {
@@ -27,7 +28,28 @@ export default class WeekItemsPage extends DefaultPage {
 		// this.showFooterValues(page, name, weekNumber)
 	}
 
-	addFieldList (args) {
+	addFieldList (page, workerName, weekNumber) {
+		// const { page, workerName = 'Я', weekNumber } = args
+		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
+	
+		itemFieldElement.innerHTML = ''
+
+		const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
+		console.log(oneWeekObj)
+		oneWeekObj.workerWeekItems.forEach( (weekItem) => {
+			
+			const weekItemButton = new OperationItem({
+				// родительский элемент
+				field: itemFieldElement,
+				// вес
+				weight: weekItem.value,
+				type: 'weekItem',
+				workerName: name,
+				weekNumber,
+				// previous: weekItem.isPrevious,
+				id: weekItem.id
+			})
+		})
 
 	}
 

@@ -127,4 +127,24 @@ export default class LocalStorage {
 
 	}
 
+	// получить 1 неделю работника
+	static getOneWorkerWeek (workerName, weekNumber) {
+		const dataObj = LocalStorage.read() || {}
+		dataObj.weeks = dataObj.weeks || []
+
+		for (let i = 0; i < dataObj.weeks.length; i++) {
+			// если номер недели в массиве из памяти и из формы совпадают
+			if (dataObj.weeks[i].weekNumber === weekNumber) {
+				// проверка на существование имени работника
+				for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
+					if (dataObj.weeks[i].workers[j].workerName === workerName) {
+
+						// возвращаем найденную неделю операций работника
+						return dataObj.weeks[i].workers[j]
+					}
+				}
+			}
+		}
+	}
+
 }
