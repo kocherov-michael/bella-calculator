@@ -14,7 +14,8 @@ export default class WeeksListPage extends DefaultPage {
 		args.isBrigadier = true
 		super.createHeader(args)
 		this.addForm(args)
-		this.addCreateButton(args)
+		// this.addCreateButton(args)
+		super.addCreateButton({ text: 'Добавить неделю', ...args })
 		this.addFieldList(args)
 		// this.showFooterValues(page, name)
 	}
@@ -60,12 +61,7 @@ export default class WeeksListPage extends DefaultPage {
 		</div>`
 	}
 
-	addCreateButton (args) {
-		args.text = 'Добавить неделю'
-		super.addCreateButton(args)
-
-	}
-
+	// заполняем список недель
 	addFieldList (args) {
 		const { page, name = 'Я' } = args
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)

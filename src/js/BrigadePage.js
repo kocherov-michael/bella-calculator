@@ -1,9 +1,8 @@
 import DefaultPage from './DefaultPage'
-import Handler from './Handler'
 import LocalStorage from './LocalStorage'
-// import NewItem from './NewItem'
-import WeekItem from './WeekItem'
 import WorkerItem from './WorkerItem'
+import Router from './Router'
+
 
 export default class BrigadePage extends DefaultPage {
 	constructor (args = {}) {
@@ -14,12 +13,13 @@ export default class BrigadePage extends DefaultPage {
 
 	// отрисовываем страницу бригады
 	renderBrigadePage(args) {
-		console.log('brigade args:', args)
+		// console.log('brigade args:', args)
 		args.isBrigadier = true
 		args.page = 'brigade'
 		super.createHeader(args)
 		this.addForm(args)
-		this.addCreateButton(args)
+		this.createBrigadeButton(args)
+		super.addCreateButton({ text: 'Добавить работника', ...args })
 		this.addFieldList(args)
 		super.createHeaderBackArrow('brigade', 'weeksList', args.weekNumber)
 		// this.showFooterValues(page, name)
@@ -74,10 +74,10 @@ export default class BrigadePage extends DefaultPage {
 		itemFieldElement.innerHTML = ''
 	
 		// получаем данные из памяти
-		const workersArr = LocalStorage.getOneWeek(weekNumber) || []
+		const weekArr = LocalStorage.getOneWeek(weekNumber) || []
 
 		// const workerWeeks = LocalStorage.getWorkerWeeks(name)
-		workersArr.forEach( (worker) => {
+		weekArr.forEach( (worker) => {
 				
 				const workerButton = new WorkerItem({
 					// родительский элемент
@@ -91,9 +91,40 @@ export default class BrigadePage extends DefaultPage {
 			})
 	}
 
-	// кнопка добавления работника
-	addCreateButton (args) {
-		args.text = 'Добавить работника'
-		super.addCreateButton(args)
+	// создаём кнопку баланса бригады
+	createBrigadeButton (args) {
+		const { page, workerName , weekNumber } = args
+		const itemBrigadeElement = document.querySelector(`[data-brigade-field="${page}"]`)
+
+		itemBrigadeElement.innerHTML = ''
+
+		// получаем данные из памяти
+		// const weekArr = LocalStorage.getOneWeek(weekNumber) || []
+
+		// weekArr.brigade
+
+		let newElement = document.createElement('div')
+		newElement.classList.add('item')
+		newElement.setAttribute('data-next', 'brigadeBalanceList')
+		newElement.innerHTML = 
+		`<div class="item__header">
+			<div class="item__header-text" data-item-name>Бригада приход</div>
+			<div class="item__header-arrow">
+				<div class="chevron"></div>
+			</div>
+		</div>`
+		itemBrigadeElement.appendChild(newElement)
+
+		newElement.addEventListener('click', () => {
+			console.log({currentPageAttr: page, nextPageAttr: 'brigadeBalanceList', weekNumber, brigade: true})
+			Router.changeNextPage({
+				currentPageAttr: page, 
+				nextPageAttr: 'brigadeBalanceList', 
+				weekNumber, 
+				brigade: true
+			})
+		})
+
 	}
+
 }

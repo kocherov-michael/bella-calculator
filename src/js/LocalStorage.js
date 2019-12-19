@@ -36,7 +36,8 @@ export default class LocalStorage {
 		dataObj.weeks.push({
 			weekNumber: data.weekNumber,
 			id: ++dataObj.weeksId,
-			workers: []
+			workers: [],
+			brigade: []
 		})
 		// }
 

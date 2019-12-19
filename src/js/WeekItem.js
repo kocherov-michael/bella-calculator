@@ -43,16 +43,16 @@ export default class WeekItem extends NewItem {
 	itemHandler (element) {
 		element.addEventListener('click', () => {
 			
-			let nextAttr = element.getAttribute('data-next')
-			const currentAttr = 'weeksList'
+			let nextPageAttr = element.getAttribute('data-next')
+			const currentPageAttr = 'weeksList'
 			const weekNumber = element.getAttribute('data-week-number')
 
 			// если кликаем на неделю, но не бригадир - идём в неделю работника "Я"
-			if (nextAttr === 'brigade' && !LocalStorage.isBrigadier()) {
-				nextAttr = 'weekItems'
+			if (nextPageAttr === 'brigade' && !LocalStorage.isBrigadier()) {
+				nextPageAttr = 'weekItems'
 			}
 
-			Router.changeNextPage(currentAttr, nextAttr, weekNumber)
+			Router.changeNextPage({currentPageAttr, nextPageAttr, weekNumber})
 		})
 	}
 }

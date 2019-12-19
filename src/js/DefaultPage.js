@@ -8,7 +8,7 @@ export default class Page {
 	}
 
 	createHeader (args) {
-		// console.log(args)
+		console.log('createHeader', args)
 		const {page, isBrigadier, name = '', weekNumber = ''} = args
 		// console.log(page)
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
@@ -52,7 +52,7 @@ export default class Page {
 	addCreateButton(args) {
 		const { page, name, text, weekNumber } = args
 
-		const fieldElement = document.querySelector(`[data-field="${page}"]`)
+		const fieldElement = document.querySelector(`[data-add-item="${page}"]`)
 
 		// let text
 		// if(page === ('start' || 'brigade')) {
