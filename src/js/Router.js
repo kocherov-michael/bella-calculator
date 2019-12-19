@@ -3,6 +3,7 @@ import BrigadePage from './BrigadePage'
 import BrigadeBalanceListPage from './BrigadeBalanceListPage'
 import WeekItemsPage from './WeekItemsPage'
 import HandOverPage from './HandOverPage'
+import WeavingListPage from './WeavingListPage'
 
 export default class Router {
 	constructor (args = {}) {
@@ -33,6 +34,10 @@ export default class Router {
 		else if (page === 'handOverItems') {
 			const newPage = new HandOverPage (args)
 		}
+		else if (page === 'weavingList') {
+			// console.log('new WeavingListPage', args)
+			const newPage = new WeavingListPage (args)
+		}
 	}
 
 
@@ -40,7 +45,7 @@ export default class Router {
 	static changeNextPage (args) {
 		const {currentPageAttr, nextPageAttr, weekNumber = '', workerName = ''} = args
 		// если следующая страница и текущая - одна и та же, то отмена
-		console.log('changeNextPage :', args)
+		// console.log('changeNextPage :', args)
 		if (currentPageAttr === nextPageAttr) {
 			return
 		}
@@ -57,7 +62,7 @@ export default class Router {
 
 		let timeout = 400
 
-		console.log('nextPageAttr', nextPageAttr)
+		// console.log('nextPageAttr', nextPageAttr)
 		// Router.renderPage(args)
 		if (nextPageAttr === 'weeksList') {
 			this.renderWeekListPage(nextPageAttr, name)
@@ -86,7 +91,9 @@ export default class Router {
 			// this.renderHandOverItemsPage(nextPageAttr, name, weekNumber)
 		}
 		else if (nextPageAttr === 'weavingList') {
-			this.renderWeavingListPage(nextPageAttr, name, weekNumber, currentPageAttr)
+			// console.log('heere')
+			Router.loadPage ({page: nextPageAttr, weekNumber, workerName, previousAttr: currentPageAttr})
+			// this.renderWeavingListPage(nextPageAttr, name, weekNumber, currentPageAttr)
 		}
 		else if (nextPageAttr === 'quotation') {
 			this.renderQuotationPage(nextPageAttr, name, weekNumber, currentPageAttr)

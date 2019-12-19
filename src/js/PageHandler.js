@@ -108,20 +108,22 @@ export default class PageHandler {
 
 		// если страница добавления плетения
 		if (this.args.page === 'weavingList') {
-			const result = Storage.saveWeavingItem(newItemValues)
+			const result = LocalStorage.saveWeavingItem(newItemValues)
 
 			// если уже есть такое название плетения, то отмена
 			if (!result) return
 			
 			this.closeForm()
-			this.page.addFieldList('weavingList')
+			// this.page.addFieldList('weavingList')
+			console.log('добавили плетение, а предыдущая страница не сохранилась в атрибутах')
+			Router.loadPage({page: 'weavingList'})
 
 		} else if (this.args.page === 'start') {
 
 			const result = Storage.saveWorker(newItemValues)
 			if (!result) return
 			this.closeForm()
-			this.page.addFieldList(this.args.addItem, nameForRender)
+			// this.page.addFieldList(this.args.addItem, nameForRender)
 		}
 
 

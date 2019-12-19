@@ -12,7 +12,7 @@ export default class WeekItemsPage extends DefaultPage {
 		this.renderWeekItemsPage(args)
 	}
 
-	// отрисовываем страницу бригады
+	// отрисовываем страницу недели работника
 	renderWeekItemsPage(args) {
 		// console.log('WeekItemsPage args:', args)
 		args.page = 'weekItems'

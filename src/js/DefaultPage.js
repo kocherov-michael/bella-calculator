@@ -8,7 +8,7 @@ export default class Page {
 	}
 
 	createHeader (args) {
-		console.log('createHeader', args)
+		// console.log('createHeader', args)
 		const {page, isBrigadier, name = '', weekNumber = ''} = args
 		// console.log(page)
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
@@ -54,7 +54,11 @@ export default class Page {
 
 		// обработчик кнопки плетений
 		weavingLinkElement.addEventListener('click', () => {
-			this.page.changeNextPage(args.page, 'weavingList', args.name, args.weekNumber)
+			Router.changeNextPage({
+				currentPageAttr: args.page, 
+				nextPageAttr: 'weavingList', 
+				workerName: args.name, 
+				weekNumber: args.weekNumber})
 
 			setTimeout(() => {
 				headerMenuElement.classList.toggle('cross')
@@ -96,6 +100,7 @@ export default class Page {
 
 	addCreateButton(args) {
 		const { page, name, text, weekNumber } = args
+		// console.log('addCreateButton', args)
 
 		const fieldElement = document.querySelector(`[data-add-item="${page}"]`)
 
@@ -135,7 +140,7 @@ export default class Page {
 
 	// добавляем в шапку стрелку назад
 	createHeaderBackArrow (page, previousPage = '', weekNumber = '', workerName = '') {
-		console.log('createHeaderBackArrow', page)
+		// console.log('createHeaderBackArrow', page)
 		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
 		// // если предыдущая страница не обозначена, значит она идёт по порядку
 		// if(!previousPage) {
@@ -218,4 +223,5 @@ export default class Page {
 			return true
 		}
 	}
+
 }

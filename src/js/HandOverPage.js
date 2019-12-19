@@ -11,14 +11,14 @@ export default class WeekItemsPage extends DefaultPage {
 		this.renderWeekItemsPage(args)
 	}
 
-	// отрисовываем страницу бригады
+	// отрисовываем страницу сдачи
 	renderWeekItemsPage(args) {
 		// console.log('WeekItemsPage args:', args)
 		args.page = 'handOverItems'
 		const {page, workerName, weekNumber} = args
 		args.isBrigadier = true
 		super.createHeader(args)
-		super.createHeaderBackArrow(page, 'brigade', weekNumber)
+		super.createHeaderBackArrow(page, 'weekItems', weekNumber)
 		// this.showPreviousWeight(page, name, weekNumber)
 		this.addFieldList(page, workerName, weekNumber)
 		super.showHeaderName(page, workerName, weekNumber)
