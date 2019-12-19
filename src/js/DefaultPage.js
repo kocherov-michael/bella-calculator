@@ -37,14 +37,59 @@ export default class Page {
 		</div>
 	</div>`
 
-		const handler = new PageHandler({
-			page,
-			name,
-			weekNumber,
-			menu: page,
-			// addItem: page,
-			// workerName: name,
-			// backButton: page
+		// обозначаем элементы меню навигации
+		const sectionElement =  document.querySelector(`[data-page="${args.page}"]`)
+		const headerMenuElement = sectionElement.querySelector('[data-header-menu]')
+		const headerMenuListElement = sectionElement.querySelector('[data-menu-list]')
+		const weavingLinkElement = sectionElement.querySelector('[data-weaving-link]')
+		const quotationLinkElement = sectionElement.querySelector('[data-quotation-link]')
+		const garbageLinkElement = sectionElement.querySelector('[data-garbage-link]')
+		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
+
+		// прослушка кнопки гамбургера
+		headerMenuElement.addEventListener('click', () => {
+			headerMenuElement.classList.toggle('cross')
+			headerMenuListElement.classList.toggle('menu-show')
+		} )
+
+		// обработчик кнопки плетений
+		weavingLinkElement.addEventListener('click', () => {
+			this.page.changeNextPage(args.page, 'weavingList', args.name, args.weekNumber)
+
+			setTimeout(() => {
+				headerMenuElement.classList.toggle('cross')
+				headerMenuListElement.classList.toggle('menu-show')
+			}, 400)
+			
+		})
+
+		// обработчик кнопки котировок
+		quotationLinkElement.addEventListener('click', () => {
+			
+			this.page.changeNextPage(args.page, 'quotation', args.name, args.weekNumber)
+
+			setTimeout(() => {
+				headerMenuElement.classList.toggle('cross')
+				headerMenuListElement.classList.toggle('menu-show')
+			}, 400)
+			
+		})
+		// обработчик кнопки корзины
+		garbageLinkElement.addEventListener('click', () => {
+			
+			this.page.changeNextPage(args.page, 'garbageList', args.name, args.weekNumber)
+
+			setTimeout(() => {
+				headerMenuElement.classList.toggle('cross')
+				headerMenuListElement.classList.toggle('menu-show')
+			}, 400)
+			
+		})
+
+		// чекбокс бригадир
+		brigadierCheckBoxElement.addEventListener('click', () => {
+			// изменяем статус бригадир / не бригадир
+			Storage.setBrigadier(brigadierCheckBoxElement.checked)
 		})
 
 	}
