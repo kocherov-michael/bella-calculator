@@ -53,11 +53,12 @@ export default class Router {
 		}
 		else if (nextPageAttr === 'brigade') {
 			// Router.renderBrigadePage({nextPageAttr, name, weekNumber, currentPageAttr})
-			const newPage = new BrigadePage ({
-				currentPageAttr,
-				nextPageAttr,
-				weekNumber
-			})
+			Router.loadPage ({page: nextPageAttr, weekNumber})
+			// const newPage = new BrigadePage ({
+			// 	currentPageAttr,
+			// 	nextPageAttr,
+			// 	weekNumber
+			// })
 		}
 		else if (nextPageAttr === 'weekItems') {
 			this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
@@ -82,6 +83,68 @@ export default class Router {
 			containerElement.classList.remove('nextPage')
 			currentPageElement.classList.remove('order-previous')
 		}, timeout)
+	}
+
+	// перелистываем страницу назад
+	static changePreviousPage (currentPageAttr, previousPageAttr, weekNumber = '', workerName = '') {
+
+		// если предыдущая страница и текущая - одна и та же, то отмена
+		if (currentPageAttr === previousPageAttr) {
+			return
+		}
+		
+		const containerElement = document.querySelector('[data-container]')
+		const currentPageElement = document.querySelector(`[data-page=${currentPageAttr}]`)
+		const previousPageElement = document.querySelector(`[data-page=${previousPageAttr}]`)
+
+		previousPageElement.classList.remove('hide')
+		containerElement.classList.add('fromNextToPrevious')
+		
+		// отрисовываем предыдущую страницу
+		Router.loadPage ({page: previousPageAttr, weekNumber, workerName})
+
+
+		// if (currentPageAttr === 'weavingList' && previousPageAttr === 'handOverItems') {
+		// 	this.renderHandOverItemsPage(previousPageAttr, name, weekNumber)
+
+		// } else if (previousPageAttr === 'start') {
+		// 	this.renderStartPage('start')
+
+		// }
+		// else if (previousPageAttr === 'weeksList') {
+		// 	// this.renderWeekListPage(previousPageAttr, name)
+		// 	Router.loadPage ({page: previousPageAttr})
+		// }
+		// else if (previousPageAttr === 'weekItems') {
+		// 	this.renderWeekItemsPage(previousPageAttr, name, weekNumber)
+			
+		// }
+		// else if (previousPageAttr === 'handOverItems') {
+		// 	this.renderHandOverItemsPage(previousPageAttr, name, weekNumber)
+			
+		// }
+		//  else {
+			
+		// 	this.addFieldList(previousPageAttr, name, weekNumber)
+		// 	// this.showFooterValues(previousPageAttr, name, weekNumber)
+		// 	// если страница добавили сдачу, то при возвращении назад показываем актуальную сдачу
+		// 	if (previousPageAttr === 'weekItems') {
+
+		// 		this.showSalaryValues(previousPageAttr, name, weekNumber)
+		// 	}
+
+		// }
+		
+		
+		setTimeout( () => {
+			containerElement.classList.add('previousPage')
+		}, 0)
+
+		setTimeout( () => {
+			currentPageElement.classList.add('hide')
+			containerElement.classList.remove('previousPage')
+			containerElement.classList.remove('fromNextToPrevious')
+		}, 400)
 	}
 
 

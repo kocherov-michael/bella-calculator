@@ -77,7 +77,7 @@ export default class WeeksListPage extends DefaultPage {
 
 		// const workerWeeks = LocalStorage.getWorkerWeeks(name)
 		weeksArr.forEach( (week) => {
-			console.log(week)
+			// console.log(week)
 				
 				const weekButton = new WeekItem({
 					// родительский элемент

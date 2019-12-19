@@ -21,6 +21,7 @@ export default class BrigadePage extends DefaultPage {
 		this.addForm(args)
 		this.addCreateButton(args)
 		this.addFieldList(args)
+		super.createHeaderBackArrow('brigade', 'weeksList', args.weekNumber)
 		// this.showFooterValues(page, name)
 	}
 

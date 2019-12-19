@@ -1,5 +1,6 @@
 // import Handler from './Handler'
 import PageHandler from './PageHandler'
+import Router from './Router'
 
 export default class Page {
 	constructor (args = {}) {
@@ -85,5 +86,55 @@ export default class Page {
 			workerName: name,
 			// backButton: page
 		})
+	}
+
+	// добавляем в шапку стрелку назад
+	createHeaderBackArrow (page, previousPage = '', weekNumber = '', workerName = '') {
+
+		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
+		// // если предыдущая страница не обозначена, значит она идёт по порядку
+		// if(!previousPage) {
+		// 	previousPage = this.getPreviousPage(page)
+		// }
+
+		// создаём элемент стрелки назад в шапке
+		const arrowBackElement = document.createElement('div')
+		
+		arrowBackElement.classList.add('header__arrow')
+		// arrowBackElement.setAttribute('data-header-back', previousPage)
+		// if (workerName !== '') {
+
+		// 	arrowBackElement.setAttribute('data-header-back-worker', workerName)
+		// }
+		// // если на странице со сдачей, то добавляем номер недели
+		// if (weekNumber !== '') {
+		// 	arrowBackElement.setAttribute('data-header-back-week', weekNumber)
+		// }
+		headerNavElement.prepend(arrowBackElement)
+  
+		// создаём img стрелку назад
+		const imgArrowElement = document.createElement('img')
+		imgArrowElement.setAttribute('src', 'assets/img/arrow.svg')
+		imgArrowElement.setAttribute('alt', 'назад')
+		arrowBackElement.append(imgArrowElement)
+
+		// обработчик кнопка назад
+		arrowBackElement.addEventListener('click', () => {
+
+			console.log('back')
+			Router.changePreviousPage(page, previousPage)
+			// let targetPageAttr = backButtonElement.getAttribute('data-header-back')
+			// const targetPageWeekAttr = backButtonElement.getAttribute('data-header-back-week')
+			// let targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
+
+			// if (targetPageAttr === 'start' && !Storage.isBrigadier()) {
+			// 	targetPageAttr = 'weeksList'
+			// 	targetPageWorkerAttr = 'Я'
+			// }
+
+			// this.page.changePreviousPage(page, targetPageAttr, targetPageWorkerAttr, targetPageWeekAttr)
+			// // backButtonElement = null
+		})
+
 	}
 }
