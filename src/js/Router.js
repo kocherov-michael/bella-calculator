@@ -2,6 +2,7 @@ import WeeksListPage from './WeeksListPage'
 import BrigadePage from './BrigadePage'
 import BrigadeBalanceListPage from './BrigadeBalanceListPage'
 import WeekItemsPage from './WeekItemsPage'
+import HandOverPage from './HandOverPage'
 
 export default class Router {
 	constructor (args = {}) {
@@ -28,6 +29,9 @@ export default class Router {
 		}
 		else if (page === 'weekItems') {
 			const newPage = new WeekItemsPage (args)
+		}
+		else if (page === 'handOverItems') {
+			const newPage = new HandOverPage (args)
 		}
 	}
 
@@ -78,7 +82,8 @@ export default class Router {
 			// this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
 		}
 		else if (nextPageAttr === 'handOverItems') {
-			this.renderHandOverItemsPage(nextPageAttr, name, weekNumber)
+			Router.loadPage ({page: nextPageAttr, weekNumber, workerName})
+			// this.renderHandOverItemsPage(nextPageAttr, name, weekNumber)
 		}
 		else if (nextPageAttr === 'weavingList') {
 			this.renderWeavingListPage(nextPageAttr, name, weekNumber, currentPageAttr)

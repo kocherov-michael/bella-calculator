@@ -8,7 +8,7 @@ export default class Page {
 	}
 
 	createHeader (args) {
-		// console.log('createHeader', args)
+		console.log('createHeader', args)
 		const {page, isBrigadier, name = '', weekNumber = ''} = args
 		// console.log(page)
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
@@ -135,7 +135,7 @@ export default class Page {
 
 	// добавляем в шапку стрелку назад
 	createHeaderBackArrow (page, previousPage = '', weekNumber = '', workerName = '') {
-
+		console.log('createHeaderBackArrow', page)
 		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
 		// // если предыдущая страница не обозначена, значит она идёт по порядку
 		// if(!previousPage) {
@@ -204,6 +204,18 @@ export default class Page {
 		else if (headerTextElement) {
 			// если есть номер недели, то неделя {номер}, иначе имя
 			headerTextElement.textContent = weekNumber? `Неделя ${weekNumber}`: name
+		}
+	}
+
+	// показать, что инпут пустой
+	static showError (element, currentValue, falseValue) {
+		
+		if (currentValue == falseValue) {
+			element.classList.add('warning-input')
+			setTimeout(() => {
+				element.classList.remove('warning-input')
+			}, 2000)
+			return true
 		}
 	}
 }

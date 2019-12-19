@@ -3,6 +3,7 @@ import LocalStorage from './LocalStorage'
 import WorkerItem from './WorkerItem'
 import Router from './Router'
 import OperationItem from './OperationItem'
+import HandOverPage from './HandOverPage'
 
 export default class WeekItemsPage extends DefaultPage {
 	constructor (args = {}) {
@@ -14,9 +15,9 @@ export default class WeekItemsPage extends DefaultPage {
 	// отрисовываем страницу бригады
 	renderWeekItemsPage(args) {
 		// console.log('WeekItemsPage args:', args)
+		args.page = 'weekItems'
 		const {page, workerName, weekNumber} = args
 		args.isBrigadier = true
-		args.page = 'weekItems'
 		super.createHeader(args)
 		super.createHeaderBackArrow(page, 'brigade', weekNumber)
 		// this.showPreviousWeight(page, name, weekNumber)
@@ -99,7 +100,17 @@ export default class WeekItemsPage extends DefaultPage {
 		<span>&nbsp;г</span>
 	</div>`
 		
-	salaryFieldElement.prepend(newElement)
+		salaryFieldElement.prepend(newElement)
+
+		newElement.addEventListener('click', () => {
+			Router.changeNextPage({
+				currentPageAttr: page, 
+				nextPageAttr: 'handOverItems', 
+				weekNumber,
+				workerName
+				// brigade: true
+			})
+		})
 
 		
 	}

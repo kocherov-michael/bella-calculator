@@ -118,7 +118,7 @@ export default class BrigadePage extends DefaultPage {
 		itemBrigadeElement.appendChild(newElement)
 
 		newElement.addEventListener('click', () => {
-			console.log({currentPageAttr: page, nextPageAttr: 'brigadeBalanceList', weekNumber, brigade: true})
+			// console.log({currentPageAttr: page, nextPageAttr: 'brigadeBalanceList', weekNumber, brigade: true})
 			Router.changeNextPage({
 				currentPageAttr: page, 
 				nextPageAttr: 'brigadeBalanceList', 
