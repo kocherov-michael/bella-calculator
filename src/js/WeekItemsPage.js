@@ -12,17 +12,18 @@ export default class WeekItemsPage extends DefaultPage {
 
 	// отрисовываем страницу бригады
 	renderWeekItemsPage(args) {
-		console.log('WeekItemsPage args:', args)
+		// console.log('WeekItemsPage args:', args)
+		const {page, workerName, weekNumber} = args
 		args.isBrigadier = true
 		args.page = 'weekItems'
 		super.createHeader(args)
-		super.createHeaderBackArrow(args.page, 'brigade', args.weekNumber)
+		super.createHeaderBackArrow(page, 'brigade', weekNumber)
 		// this.showPreviousWeight(page, name, weekNumber)
-		this.addFieldList(args)
-		super.showHeaderName(args.page, args.workerName, args.weekNumber)
-		this.createSalaryItem(args.page, args.workerName, args.weekNumber)
+		this.addFieldList(page, workerName, weekNumber)
+		super.showHeaderName(page, workerName, weekNumber)
+		this.createSalaryItem(page, workerName, weekNumber)
 		// this.showSalaryValues(args.page, args.workerName, args.weekNumber)
-		this.createFormAddSingleOperation(args.page, args.workerName, args.weekNumber)
+		this.createFormAddSingleOperation(page, workerName, weekNumber)
 		// this.showFooterValues(page, name, weekNumber)
 	}
 
@@ -93,16 +94,75 @@ export default class WeekItemsPage extends DefaultPage {
 		const footerActionElement = document.createElement('div')
 		footerActionElement.classList.add('footer__actions')
 
-		footerActionElement.innerHTML = 
-		`<div class="week-orepations" data-form-add-operation-worker-name="${workerName}">
-			<input type="number" class="week-orepations__input input" placeholder="Введите вес" data-input-week-operation="${weekNumber}">
-			
-			<button class="week-orepations__button item item_warning" data-addbutton-operation="${weekNumber}">Прибавить</button>
-			<button class="week-orepations__button item item_subtract" data-minusbutton-operation="${weekNumber}">Вычесть</button>
+		const formSingleOperationElement = document.createElement('div')
+		formSingleOperationElement.classList.add('week-orepations')
+		footerActionElement.append(formSingleOperationElement)
 
-		</div>`
-		
+		// инпут для ввода веса
+		const inputOperationElement = document.createElement('input')
+		inputOperationElement.classList.add('week-orepations__input', 'input')
+		inputOperationElement.setAttribute('placeholder', 'Введите вес')
+		formSingleOperationElement.append(inputOperationElement)
+
+		// кнопка Прибавить
+		const addOperationElement = document.createElement('button')
+		addOperationElement.classList.add('week-orepations__button', 'item', 'item_warning')
+		addOperationElement.textContent = 'Прибавить'
+		formSingleOperationElement.append(addOperationElement)
+
+		// кнопка Вычесть
+		const minusOperationElement = document.createElement('button')
+		minusOperationElement.classList.add('week-orepations__button', 'item', 'item_subtract')
+		minusOperationElement.textContent = 'Вычесть'
+		formSingleOperationElement.append(minusOperationElement)
+
 		footerElement.prepend(footerActionElement)
+
+		// операция Добавить
+		addOperationElement.addEventListener('click', () => {
+			const operationValue = Math.abs(inputOperationElement.value.trim())
+			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
+		})
+
+		// операция Вычесть
+		minusOperationElement.addEventListener('click', () => {
+			const operationValue = Math.abs(inputOperationElement.value.trim()) * -1
+			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
+		})
+	}
+
+	// обработка нажатий Прибавить и Вычесть в Операции
+	addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
+
+		// Если ничего не введено, то предупреждаем пользователя
+		const ifEmpty = WeekItemsPage.showError(inputOperationElement, operationValue, '')
+		if (ifEmpty) return
+		
+		const newItemValues = {
+			workerName,
+			weekNumber,
+			singleOperation: operationValue
+		}
+		
+		LocalStorage.saveOperation(newItemValues)
+		// добавляем элемент на страницу
+		this.addFieldList('weekItems', workerName, weekNumber)
+		// обновляем показания в футуре
+		// this.showFooterValues('weekItems', workerName, weekNumber)
+		// очищаем инпут после ввода цифры
+		inputOperationElement.value = ''
+	}
+
+	// показать, что инпут пустой
+	static showError (element, currentValue, falseValue) {
+		
+		if (currentValue == falseValue) {
+			element.classList.add('warning-input')
+			setTimeout(() => {
+				element.classList.remove('warning-input')
+			}, 2000)
+			return true
+		}
 	}
 
 
