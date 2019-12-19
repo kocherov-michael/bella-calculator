@@ -1,7 +1,9 @@
 import Storage from './Storage'
+import LocalStorage from './LocalStorage'
 import Page from './Page'
 // import StartPage from './StartPage'
 // import WeeksListPage from './WeeksListPage'
+import Router from './Router'
 
 export default class Handler {
 	constructor (args = {}) {
@@ -318,10 +320,14 @@ export default class Handler {
 		}
 		else if (this.args.page === 'weeksList') {
 			// если сохраняем неделю
-			const result = Storage.saveOneWeek(newItemValues)
+			// const result = Storage.saveOneWeek(newItemValues)
+			// newoop
+			const result = LocalStorage.saveOneWeek(newItemValues)
 			if (!result) return
 			this.closeForm()
-			this.page.addFieldList(this.args.addItem, nameForRender)
+			// this.page.addFieldList(this.args.addItem, nameForRender)
+			//newoop
+			Router.loadPage({page: 'weeksList'})
 		}
 		else {
 
@@ -336,11 +342,16 @@ export default class Handler {
 		element.addEventListener('click', () => {
 			
 			const name = element.getAttribute('data-worker')
-			const nextAttr = element.getAttribute('data-next')
+			let nextAttr = element.getAttribute('data-next')
 			const currentParentElement = element.closest('[data-item-field]')
 			const currentAttr = currentParentElement ? currentParentElement.getAttribute('data-item-field') 
 				: element.closest('[data-field]').getAttribute('data-field')
 			const weekNumber = element.getAttribute('data-week-number')
+
+			// если кликаем на неделю, но не бригадир - идём в неделю работника "Я"
+			if (nextAttr === 'brigade' && !Storage.isBrigadier()) {
+				nextAttr = 'weekItems'
+			}
 
 			// показываем / скрываем промежуточный баланс
 			if (!nextAttr & currentAttr === 'weekItems') {

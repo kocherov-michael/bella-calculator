@@ -13,10 +13,11 @@ window.addEventListener('resize', () => {
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 });
 
-window.onerror = function(msg, url, line) {
-	this.alert(msg + '\n' + url + '\n' + line)
-	return true
-}
+// показывает ошибки (для мобильного браузера)
+// window.onerror = function(msg, url, line) {
+// 	this.alert(msg + '\n' + url + '\n' + line)
+// 	return true
+// }
 
 
 
@@ -26,7 +27,11 @@ import './scss/main.scss'
 
 
 
-import Page from './js/Page'
-const page = new Page({
-	start: 'start'
-})
+// import Page from './js/Page'
+// const page = new Page({
+// 	start: 'start'
+// })
+
+import Router from './js/Router'
+
+Router.loadPage({page: 'weeksList'})

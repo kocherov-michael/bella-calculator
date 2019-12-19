@@ -7,7 +7,9 @@ export default class Page {
 
 		if (args.start) {
 				
-				this.renderStartPage(args.start)
+				// this.renderStartPage(args.start)
+				this.renderWeekListPage('weeksList')
+				this.renderBrigadePage('brigade')
 		}
 	}
 	
@@ -43,14 +45,14 @@ export default class Page {
 
 	}
 
-	renderWeekListPage (page, name = '', weekNumber = '') {
-
+	renderWeekListPage (page, name = 'Я', weekNumber = '') {
+		console.log('начало рендера списка недель')
 		this.createHeader(page)
 		// если бригадир, то стрелка назад и имя работника видны
-		if (Storage.isBrigadier()) {
-			this.createHeaderBackArrow(page)
-			this.showHeaderName(page, name)
-		}
+		// if (Storage.isBrigadier()) {
+			// this.createHeaderBackArrow(page)
+			// this.showHeaderName(page, name)
+		// }
 		
 		this.addCreateButton(page, name)
 		this.addForm(page, name)
@@ -67,6 +69,29 @@ export default class Page {
 		
 		this.addFieldList(page, name)
 		this.showFooterValues(page, name)
+	}
+
+	// страница бригады
+	renderBrigadePage (page, name = 'brigade007', weekNumber = '008') {
+		this.createHeader(page, name)
+		this.createHeaderBackArrow(page, name, weekNumber, 'weeksList')
+		// this.addCreateButton(page, name)
+		// this.addForm(page, name)
+
+		const handler = new Handler({
+			page,
+			name,
+			weekNumber,
+			menu: page,
+			// addItem: page,
+			// workerName: name,
+			backButton: page
+		})
+
+		// this.showPreviousWeight(page, name, weekNumber)
+		// this.addFieldList(page, name)
+		// this.showHeaderName(page, name, weekNumber)
+		// this.showFooterValues(page, name)
 	}
 
 	// страница недели
@@ -471,7 +496,7 @@ export default class Page {
 		const fieldElement = document.querySelector(`[data-field="${page}"]`)
 
 		let text
-		if(page === 'start') {
+		if(page === ('start' || 'brigade')) {
 			text = 'Добавить сотрудника'
 		}
 		else if(page === 'weeksList') {
@@ -497,6 +522,7 @@ export default class Page {
 	// создаём шапку
 	// импортируем
 	createHeader (page) {
+		console.log(page)
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
 		const checked = Storage.isBrigadier() ? 'checked' : ''
 		headerElement.innerHTML = ''
@@ -828,6 +854,7 @@ export default class Page {
 		const pages = [
 			'start',
 			'weeksList',
+			'brigade',
 			'weekItems',
 			'handOverItems'
 		]

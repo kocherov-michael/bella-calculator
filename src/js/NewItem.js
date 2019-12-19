@@ -3,43 +3,43 @@ import Handler from './Handler'
 export default class Item {
 	constructor (args = {}) {
 		// this.handler = new Handler()
-		if (args.type === 'salary') {
-			this.newElement = Item.createSalaryItem(args)
+		// if (args.type === 'salary') {
+		// 	this.newElement = Item.createSalaryItem(args)
 
-			const handler = new Handler({
-				itemHandler: this.newElement,
-				// deleteable: this.newElement
-			})
+		// 	const handler = new Handler({
+		// 		itemHandler: this.newElement,
+		// 		// deleteable: this.newElement
+		// 	})
 
 
-		}
-		else if (args.type === 'handOverItem') {
-			this.newElement = Item.createHandOverItem(args)
+		// }
+		// else if (args.type === 'handOverItem') {
+		// 	this.newElement = Item.createHandOverItem(args)
 
-			const handler = new Handler({
-				deleteable: this.newElement
-			})
+		// 	const handler = new Handler({
+		// 		deleteable: this.newElement
+		// 	})
 
-		}
-		else if (args.type === 'weavingItem') {
-			this.newElement = Item.createWeavingItem(args)
+		// }
+		// else if (args.type === 'weavingItem') {
+		// 	this.newElement = Item.createWeavingItem(args)
 
-			const handler = new Handler({
-				deleteable: this.newElement
-			})
-		}
-		else if (args.type === 'removedItem') {
-			this.newElement = Item.createRemovedItem(args)
+		// 	const handler = new Handler({
+		// 		deleteable: this.newElement
+		// 	})
+		// }
+		// else if (args.type === 'removedItem') {
+		// 	this.newElement = Item.createRemovedItem(args)
 
-			const handler = new Handler({
-				args,
-				itemHandler: this.newElement,
-				deleteable: this.newElement
-			})
-		}
-		 else {
-			this.create(args)
-		}
+		// 	const handler = new Handler({
+		// 		args,
+		// 		itemHandler: this.newElement,
+		// 		deleteable: this.newElement
+		// 	})
+		// }
+		//  else {
+		// 	this.create(args)
+		// }
 	}
 
 	create(args) {
