@@ -19,7 +19,7 @@ export default class LocalStorage {
 
 	// сохраняем 1 неделю
 	static saveOneWeek (data) {
-		console.log(data)
+		// console.log(data)
 		const dataObj = LocalStorage.read() || {}
 		
 		dataObj.weeks = dataObj.weeks || []
@@ -47,7 +47,7 @@ export default class LocalStorage {
 
 	// загружаем работников 1 недели
 	static getOneWeek(weekNumber) {
-		console.log('weekNumber', weekNumber)
+		// console.log('weekNumber', weekNumber)
 		
 		const dataObj = LocalStorage.read() || {}
 
@@ -61,7 +61,7 @@ export default class LocalStorage {
 	}
 
 	static saveWorker(data) {
-		console.log('идёт сохранение работника data:', data)
+		// console.log('идёт сохранение работника data:', data)
 		const dataObj = LocalStorage.read() || {}
 		dataObj.weeks = dataObj.weeks || []
 
@@ -118,6 +118,39 @@ export default class LocalStorage {
 
 						// учитываем операцию в общем весе недели
 						dataObj.weeks[i].workers[j].workerWeekWeight += +data.singleOperation
+						break
+					}
+				}
+			}
+		}
+		LocalStorage.save(dataObj)
+
+	}
+
+	// сохранить операцию сдачи
+	static saveHandOverOperation (data) {
+		console.log(data)
+		const dataObj = LocalStorage.read() || {}
+
+		for (let i = 0; i < dataObj.weeks.length; i++) {
+			// если имя работника в массиве из памяти и из формы совпадают
+			if (dataObj.weeks[i].weekNumber === data.weekNumber) {
+				// проверка на существование номера недели
+				for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
+					if (dataObj.weeks[i].workers[j].workerName === data.workerName) {
+
+						// учитываем операцию сдачи в общем весе недели
+						dataObj.weeks[i].workers[j].workerWeekWeight -= +data.handOverOperation.weightWithPercent
+
+						// учитываем операцию сдачи в общей сдаче недели
+						dataObj.weeks[i].workers[j].workerWeekSalary += +data.handOverOperation.price
+
+						// добавляем id
+						dataObj.weeks[i].workers[j].handOverId = dataObj.weeks[i].workers[j].handOverId || 0
+						data.handOverOperation.id = ++dataObj.weeks[i].workers[j].handOverId
+
+						// добавляем операцию сдачи в массив сдач
+						dataObj.weeks[i].workers[j].workerWeekHandOver.push(data.handOverOperation)
 						break
 					}
 				}

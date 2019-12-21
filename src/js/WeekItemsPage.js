@@ -36,7 +36,7 @@ export default class WeekItemsPage extends DefaultPage {
 		itemFieldElement.innerHTML = ''
 
 		const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
-		console.log(oneWeekObj)
+		// console.log(oneWeekObj)
 		oneWeekObj.workerWeekItems.forEach( (weekItem) => {
 			
 			const weekItemButton = new OperationItem({

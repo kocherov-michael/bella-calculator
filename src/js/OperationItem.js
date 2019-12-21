@@ -2,7 +2,7 @@ import NewItem from './NewItem'
 import LocalStorage from './LocalStorage'
 import Router from './Router'
 
-export default class WorkerItem extends NewItem {
+export default class OperationItem extends NewItem {
 	constructor (args = {}) {
 		super(args)
 		// console.log(args)

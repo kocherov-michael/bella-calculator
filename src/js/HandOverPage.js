@@ -3,7 +3,8 @@ import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
 import WorkerItem from './WorkerItem'
 import Router from './Router'
-import OperationItem from './OperationItem'
+// import OperationItem from './OperationItem'
+import HandOverItem from './HandOverItem'
 
 
 export default class HandOverPage extends DefaultPage {
@@ -20,7 +21,7 @@ export default class HandOverPage extends DefaultPage {
 		const {page, workerName, weekNumber} = args
 		args.isBrigadier = true
 		super.createHeader(args)
-		super.createHeaderBackArrow(page, 'weekItems', weekNumber)
+		super.createHeaderBackArrow(page, 'weekItems', weekNumber, workerName)
 		// this.showPreviousWeight(page, name, weekNumber)
 		this.addFieldList(page, workerName, weekNumber)
 		super.showHeaderName(page, workerName, weekNumber)
@@ -38,38 +39,43 @@ export default class HandOverPage extends DefaultPage {
 		itemFieldElement.innerHTML = ''
 
 		const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
-		console.log(oneWeekObj)
-		oneWeekObj.workerWeekItems.forEach( (weekItem) => {
+		// console.log(oneWeekObj)
+		oneWeekObj.workerWeekHandOver.forEach( (handOverItem) => {
 			
-			const weekItemButton = new OperationItem({
+			const handOverItemButton = new HandOverItem({
 				// родительский элемент
 				field: itemFieldElement,
-				// вес
-				weight: weekItem.value,
-				type: 'weekItem',
+				// type: 'handOverItem',
 				workerName: name,
 				weekNumber,
-				// previous: weekItem.isPrevious,
-				id: weekItem.id
+				// вес
+				weight: handOverItem.weight,
+				weightWithPercent: handOverItem.weightWithPercent,
+				weaving: handOverItem.weaving,
+				count: handOverItem.count,
+				isChain: handOverItem.isChain,
+				percent: handOverItem.percent,
+				price: handOverItem.price,
+				id: handOverItem.id
 			})
 		})
 
 	}
 
 	// создаём форму добавления сдачи
-	createAddHandOverForm (page, name, weekNumber) {
+	createAddHandOverForm (page, workerName = name, weekNumber) {
 		const footerActionElement = document.querySelector(`[data-footer-action="${page}"]`)
 
 		let optionTemplate = ''
-		// const weavingArr = LocalStorage.getWeavingArray()
-		// for ( let i = 0; i < weavingArr.length; i++) {
-		// 	weavingArr[i].weavingName
-		// 	weavingArr[i].percent
-		// 	weavingArr[i].chain
-		// 	weavingArr[i].bracelet
-		// 	const stringTemplate = `<option class="option" value="${weavingArr[i].weavingName}">${weavingArr[i].weavingName}</option>`
-		// 	optionTemplate += stringTemplate
-		// }
+		const weavingArr = LocalStorage.getWeavingArray()
+		for ( let i = 0; i < weavingArr.length; i++) {
+			weavingArr[i].weavingName
+			weavingArr[i].percent
+			weavingArr[i].chain
+			weavingArr[i].bracelet
+			const stringTemplate = `<option class="option" value="${weavingArr[i].weavingName}">${weavingArr[i].weavingName}</option>`
+			optionTemplate += stringTemplate
+		}
 
 		footerActionElement.innerHTML = ''
 
@@ -146,7 +152,7 @@ export default class HandOverPage extends DefaultPage {
 			if (weightIsEmpty || countIsEmpty || weavingIsEmpty) return
 
 			// получаем параметры плетения для вычисления сдачи
-			const {weavingName, percent, chain, bracelet} = Storage.getOneWeaving(weavingSelectElement.value)
+			const {weavingName, percent, chain, bracelet} = LocalStorage.getOneWeaving(weavingSelectElement.value)
 			
 			// количество
 			const count = Math.floor(+countInputElement.value)
@@ -158,7 +164,7 @@ export default class HandOverPage extends DefaultPage {
 			// создаём объект для записи в память сдачи
 			const handOverObj = {
 				weight: Math.round(+weightInputElement.value * 10000) / 10000,
-				weightWithPercent: Handler.getWeightWithPercent(+weightInputElement.value, percent),
+				weightWithPercent: HandOverPage.getWeightWithPercent(+weightInputElement.value, percent),
 				weaving: weavingSelectElement.value,
 				count,
 				isChain,
@@ -172,15 +178,21 @@ export default class HandOverPage extends DefaultPage {
 				handOverOperation: handOverObj
 			}
 			
-			Storage.saveHandOverOperation(newHandOverValues)
-			this.page.addFieldList(page, workerName, weekNumber)
-			this.page.showFooterValues(page, workerName, weekNumber)
+			LocalStorage.saveHandOverOperation(newHandOverValues)
+			console.log(this.page)
+			this.addFieldList(page, workerName, weekNumber)
+			// this.showFooterValues(page, workerName, weekNumber)
 
 			// после ввода операции сбрасываем вес и количество
 			weightInputElement.value = ''
 			countInputElement.value = ''
 		})
 
+	}
+
+	// получаем вес с процентами по весу
+	static getWeightWithPercent (weight, percent) {
+		return Math.round(weight * 10000 + weight * percent * 10000 / 100) / 10000
 	}
 
 }
