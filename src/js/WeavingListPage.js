@@ -10,7 +10,7 @@ export default class WeavingListPage extends DefaultPage {
 	}
 
 	renderWeavingListPage(args) {
-		console.log('WeavingListPage')
+		// console.log('WeavingListPage')
 		args.page = 'weavingList'
 		const {page, workerName, weekNumber, previousAttr} = args
 		super.createHeader(args)
@@ -85,6 +85,9 @@ export default class WeavingListPage extends DefaultPage {
 				bracelet: weavingItem.bracelet,
 				id: weavingItem.id
 			})
+
+			// вешаем прослушку перетаскивания для удаления
+			super.itemTouchHandler(handOverButton.element)
 		})
 	}
 

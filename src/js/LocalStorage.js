@@ -33,25 +33,31 @@ export default class LocalStorage {
 
 		// создаём список работников из последней недели
 		const lastWeek = dataObj.weeks.length - 1
-		console.log(dataObj.weeks[lastWeek].workers)
-		const lastWeekWorkewsArr = dataObj.weeks[lastWeek].workers
+		// console.log(lastWeek)
+		
 		const workersArr = []
 		let workersId = 0
-		for (let i = 0; i < lastWeekWorkewsArr.length; i++) {
-			const workerName = lastWeekWorkewsArr[i].workerName
-			console.log('workerName', workerName)
-			// workersArr.push(workerName)
 
-			// dataObj.weeks[i].workersId = dataObj.weeks[i].workersId || 0
-				
-			workersArr.push({
-				workerName: workerName,
-				workerWeekItems: [], 
-				workerWeekHandOver: [],
-				workerWeekWeight: 0,
-				workerWeekSalary: 0,
-				id: ++workersId
-			})
+		if (lastWeek >= 0) {
+
+			// console.log(dataObj.weeks[lastWeek].workers)
+			const lastWeekWorkewsArr = dataObj.weeks[lastWeek].workers
+			for (let i = 0; i < lastWeekWorkewsArr.length; i++) {
+				const workerName = lastWeekWorkewsArr[i].workerName
+				// console.log('workerName', workerName)
+				// workersArr.push(workerName)
+	
+				// dataObj.weeks[i].workersId = dataObj.weeks[i].workersId || 0
+					
+				workersArr.push({
+					workerName: workerName,
+					workerWeekItems: [], 
+					workerWeekHandOver: [],
+					workerWeekWeight: 0,
+					workerWeekSalary: 0,
+					id: ++workersId
+				})
+			}
 		}
 
 

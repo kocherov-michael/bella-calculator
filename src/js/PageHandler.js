@@ -39,6 +39,13 @@ export default class PageHandler {
 
 		// показваем форму при нажатии Добавить+
 		addButtonElement.addEventListener('click', () => {
+			
+			// высчитываем номер недели, следующий за последней в списке
+			// если страница - список недель
+			if (this.addDefaultWeekNumber){
+				this.addDefaultWeekNumber(addFormElement)
+			}
+			
 			addFormElement.classList.remove('hide')
 			setTimeout( () => {
 				addFormElement.classList.remove('opacity')

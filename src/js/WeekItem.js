@@ -12,6 +12,7 @@ export default class WeekItem extends NewItem {
 		// console.log('ok')
 	}
 	create (args) {
+		
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
@@ -21,7 +22,7 @@ export default class WeekItem extends NewItem {
 		newElement.setAttribute('data-next', 'brigade')
 		newElement.innerHTML = 
 		`<div class="item__header">
-			<div class="item__header-text" data-item-name>${args.text || 'у девочки нет имени'}</div>
+			<div class="item__header-text" data-item-name>Неделя ${args.text || 'дракона'}</div>
 			<div class="item__header-arrow">
 				<div class="chevron"></div>
 			</div>
@@ -56,4 +57,11 @@ export default class WeekItem extends NewItem {
 			Router.changeNextPage({currentPageAttr, nextPageAttr, weekNumber})
 		})
 	}
+
+	// // высчитываем номер недели, следующий за последней в списке 
+	// static getNextWeekNumber() {
+	// 	const dataObj = LocalStorage.read()
+		
+	// 	return +(dataObj.weeks[dataObj.weeks.length - 1].weekNumber) + 1
+	// }
 }

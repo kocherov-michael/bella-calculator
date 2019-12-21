@@ -35,7 +35,7 @@ export default class WeeksListPage extends DefaultPage {
 				<div class="form__heading-close" data-close-icon>&#10006;</div>
 			</div>
 			<div class="form__inputs">
-				<input type="text" class="input" placeholder="Номер недели" value="" name="weekNumber">
+				<input type="number" class="input" placeholder="Номер недели" value="" name="weekNumber" data-week-number-input>
 			</div>
 			<div class="form__buttons">
 				<div class="form__buttons-save">
@@ -90,5 +90,25 @@ export default class WeeksListPage extends DefaultPage {
 				// вешаем прослушку перетаскивания для удаления
 				super.itemTouchHandler(weekButton.element)
 			})
+	}
+
+	// ставим номер недели по умолчанию в поле инпута
+	// обращаемся к методу из PageHandler
+	addDefaultWeekNumber(addFormElement) {
+		const inputElement = addFormElement.querySelector('[data-week-number-input]')
+		inputElement.value = WeeksListPage.getNextWeekNumber()
+	}
+
+	// высчитываем номер недели, следующий за последней в списке 
+	static getNextWeekNumber() {
+		const weeksArr = LocalStorage.read().weeks || []
+		console.log('weeksArr.length', weeksArr.length)
+		if (weeksArr.length) {
+			return +(weeksArr[weeksArr.length - 1].weekNumber) + 1
+		}
+		else {
+			return 1
+		}
+		
 	}
 }
