@@ -1,10 +1,12 @@
 import DefaultPage from './DefaultPage'
+// import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
 import WorkerItem from './WorkerItem'
 import Router from './Router'
 import OperationItem from './OperationItem'
 
-export default class WeekItemsPage extends DefaultPage {
+
+export default class HandOverPage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
 

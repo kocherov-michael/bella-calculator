@@ -2,9 +2,10 @@
 import PageHandler from './PageHandler'
 import Router from './Router'
 
-export default class Page {
+// export default class DefaultPage {
+export default class DefaultPage extends PageHandler {
 	constructor (args = {}) {
-
+		super(args)
 	}
 
 	createHeader (args) {
@@ -99,7 +100,7 @@ export default class Page {
 	}
 
 	addCreateButton(args) {
-		const { page, name, text, weekNumber } = args
+		const { page, workerName = name, text, weekNumber } = args
 		// console.log('addCreateButton', args)
 
 		const fieldElement = document.querySelector(`[data-add-item="${page}"]`)
@@ -116,26 +117,52 @@ export default class Page {
 		// }
 
 		fieldElement.innerHTML = ''
-		fieldElement.innerHTML = 
-		`<div class="item-field__items" data-item-field="${page}"></div>
-		<div class="item item_warning item_add" data-add="${page}">
-			<div class="item__header">
-				<div class="item__header-text">${text}</div>
-				<div class="item__header-arrow">
-					<div class="chevron"></div>
-				</div>
+		// fieldElement.innerHTML = 
+		// // <div class="item-field__items" data-item-field="${page}"></div>
+		// `<div class="item item_warning item_add" data-add="${page}">
+		// 	<div class="item__header">
+		// 		<div class="item__header-text">${text}</div>
+		// 		<div class="item__header-arrow">
+		// 			<div class="chevron"></div>
+		// 		</div>
+		// 	</div>
+		// </div>`
+
+		// кнопка Добавить
+		const addButtonElement = document.createElement('div')
+		addButtonElement.classList.add('item', 'item_warning', 'item_add')
+		addButtonElement.setAttribute('data-add', page)
+		if ( workerName) {
+			addButtonElement.setAttribute('data-current-worker', workerName)
+		}
+		addButtonElement.innerHTML = 
+		`<div class="item__header">
+			<div class="item__header-text">${text}</div>
+			<div class="item__header-arrow">
+				<div class="chevron"></div>
 			</div>
 		</div>`
+		fieldElement.append(addButtonElement)
 
-		const handler = new PageHandler({
+
+		super.addItemHandler({
 			page,
 			name,
 			weekNumber,
-			// menu: page,
-			addItem: page,
+			// addItem: page,
 			workerName: name,
-			// backButton: page
+			addButtonElement
 		})
+
+		// const handler = new PageHandler({
+		// 	page,
+		// 	name,
+		// 	weekNumber,
+		// 	// menu: page,
+		// 	addItem: page,
+		// 	workerName: name,
+		// 	// backButton: page
+		// })
 	}
 
 	// добавляем в шапку стрелку назад
@@ -223,5 +250,6 @@ export default class Page {
 			return true
 		}
 	}
+
 
 }

@@ -1,22 +1,31 @@
 import LocalStorage from './LocalStorage'
 import Router from './Router'
+// import DefaultPage from './DefaultPage'
 
 export default class PageHandler {
+// export default class PageHandler extends DefaultPage {
 	constructor (args = {}) {
-		this.args = args
+		// super(args)
+		// this.args = args
 
-		if (args.addItem) {
-			this.addItemHandler(args.addItem)
-		}
+		// if (args.addItem) {
+		// 	this.addItemHandler(args.addItem)
+		// }
 	}
 
 	// Обработчик кнопки Добавить сотрудника / неделю / плетение
-	addItemHandler (page) {
+	addItemHandler (args) {
+		const { page, workerName, addButtonElement } = args
+		this.handlerArgs = args
+		// console.log(addButtonElement)
 		// текущая страница
 		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
 		// кнопка Добавить
-		const addButtonElement = sectionElement.querySelector(`[data-add="${page}"]`)
-		addButtonElement.setAttribute('data-current-worker', this.args.workerName)
+		// const addButtonElement = sectionElement.querySelector(`[data-add="${page}"]`)
+		// addButtonElement.setAttribute('data-current-worker', this.args.workerName)
+		// if ( workerName) {
+		// 	addButtonElement.setAttribute('data-current-worker', workerName)
+		// }
 
 		// Обёртка с затемнением
 		const addFormElement =  document.querySelector(`[data-add-form="${page}"]`)
@@ -78,20 +87,20 @@ export default class PageHandler {
 	saveFormValues() {
 
 		// кнопка Добавить, берём у неё имя работника
-		const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
+		// const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
 
 		const newItemValues = {}
-		// console.log('this.args', this.args)
+		// console.log('this.args', this.handlerArgs)
 
-		if (this.args.weekNumber) {
-			newItemValues.weekNumber = this.args.weekNumber
-		}
+		// if (this.args.weekNumber) {
+		// 	newItemValues.weekNumber = this.args.weekNumber
+		// }
 
 		// if (this.args.workerName) {
 		// 	newItemValues.workerName = this.args.workerName
 		// }
 		// сохраняем имя, если работник уже создан
-		const nameForRender = this.args.workerName
+		// const nameForRender = this.args.workerName
 
 		const inputsList = this.formElement.querySelectorAll('input')
 
@@ -107,7 +116,8 @@ export default class PageHandler {
 		}
 
 		// если страница добавления плетения
-		if (this.args.page === 'weavingList') {
+		// if (this.args.page === 'weavingList') {
+		if (this.handlerArgs.page === 'weavingList') {
 			const result = LocalStorage.saveWeavingItem(newItemValues)
 
 			// если уже есть такое название плетения, то отмена
@@ -118,7 +128,8 @@ export default class PageHandler {
 			console.log('добавили плетение, а предыдущая страница не сохранилась в атрибутах')
 			Router.loadPage({page: 'weavingList'})
 
-		} else if (this.args.page === 'start') {
+		// } else if (this.args.page === 'start') {
+		} else if (this.handlerArgs.page === 'start') {
 
 			const result = Storage.saveWorker(newItemValues)
 			if (!result) return
@@ -127,22 +138,30 @@ export default class PageHandler {
 		}
 
 
-		else if (this.args.page === 'weeksList') {
+		// else if (this.args.page === 'weeksList') {
+		else if (this.handlerArgs.page === 'weeksList') {
 			// если сохраняем неделю
 			// const result = Storage.saveOneWeek(newItemValues)
+
 			// newoop
 			const result = LocalStorage.saveOneWeek(newItemValues)
 			if (!result) return
 			this.closeForm()
 			// this.page.addFieldList(this.args.addItem, nameForRender)
+
 			//newoop
-			Router.loadPage({page: 'weeksList'})
+			// Router.loadPage({page: 'weeksList'})
+			
+			this.addFieldList({page: 'weeksList'})
 		}
-		else if (this.args.page === 'brigade') {
+		// else if (this.args.page === 'brigade') {
+		else if (this.handlerArgs.page === 'brigade') {
 			const result = LocalStorage.saveWorker(newItemValues)
 			if (!result) return
 			this.closeForm()
-			Router.loadPage({page: 'brigade', weekNumber: this.args.weekNumber})
+			// Router.loadPage({page: 'brigade', weekNumber: this.args.weekNumber})
+			// Router.loadPage({page: 'brigade', weekNumber: this.handlerArgs.weekNumber})
+			this.addFieldList({page: 'brigade', weekNumber: this.handlerArgs.weekNumber})
 		}
 
 		else {

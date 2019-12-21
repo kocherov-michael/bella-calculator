@@ -5,6 +5,7 @@ import LocalStorage from './LocalStorage'
 import WeekItem from './WeekItem'
 
 export default class WeeksListPage extends DefaultPage {
+// export default class WeeksListPage extends PageHandler {
 	constructor (args = {}) {
 		super(args)
 
