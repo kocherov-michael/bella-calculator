@@ -346,7 +346,7 @@ export default class DefaultPage extends PageHandler {
 		this.addFieldList(this.page, workerName, weekNumber)
 
 		// обновляем показания в футуре
-		// this.showFooterValues('weekItems', workerName, weekNumber)
+		this.showFooterValues(this.page, workerName, weekNumber)
 		// очищаем инпут после ввода цифры
 		inputOperationElement.value = ''
 	}
@@ -372,11 +372,11 @@ export default class DefaultPage extends PageHandler {
 			// let totalCommonWeight
 			
 			const footerAllWorkersElement = footerElement.querySelector('[data-all-workers-total]')
-			footerAllWorkersElement.textContent = Storage.getAbsolutelyTotalWeight()
+			footerAllWorkersElement.textContent = LocalStorage.getAbsolutelyTotalWeight()
 		}
 
 		// все недели
-		const allWeeksWeight = Storage.getWeightPreviousWeekItems(workerName)
+		const allWeeksWeight = LocalStorage.getWeightPreviousWeekItems(workerName)
 		const footerAllWeeksWeightElement = footerElement.querySelector('[data-all-weeks-total]')
 		if (footerAllWeeksWeightElement) footerAllWeeksWeightElement.textContent = allWeeksWeight
 

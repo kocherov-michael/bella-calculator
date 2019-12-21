@@ -1,14 +1,15 @@
 import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
-import WorkerItem from './WorkerItem'
+// import WorkerItem from './WorkerItem'
 import Router from './Router'
 import OperationItem from './OperationItem'
-import HandOverPage from './HandOverPage'
+// import HandOverPage from './HandOverPage'
 
 export default class WeekItemsPage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
-
+		this.workerName = args.workerName
+		this.weekNumber = args.weekNumber
 		this.renderWeekItemsPage(args)
 	}
 
@@ -20,13 +21,13 @@ export default class WeekItemsPage extends DefaultPage {
 		args.isBrigadier = true
 		super.createHeader(args)
 		super.createHeaderBackArrow(page, 'brigade', weekNumber)
-		// this.showPreviousWeight(page, name, weekNumber)
+		this.showPreviousWeight(page, workerName, weekNumber)
 		this.addFieldList(page, workerName, weekNumber)
 		super.showHeaderName(page, workerName, weekNumber)
 		this.createSalaryItem(page, workerName, weekNumber)
 		// this.showSalaryValues(args.page, args.workerName, args.weekNumber)
 		super.createFormAddSingleOperation(page, workerName, weekNumber)
-		// this.showFooterValues(page, name, weekNumber)
+		this.showFooterValues(page, workerName, weekNumber)
 	}
 
 	addFieldList (page, workerName, weekNumber) {
@@ -57,6 +58,14 @@ export default class WeekItemsPage extends DefaultPage {
 
 	}
 
+	// показываем остаток с предфдущих недель
+	showPreviousWeight(page, workerName, weekNumber) {
+		const previousWeightElement = document.querySelector('[data-previous-weight="weekItems"]')
+		console.log('previousWeightElement', previousWeightElement)
+		// getWeightPreviousWeekItems(workerName, weekNumber)
+		previousWeightElement.textContent = `${LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber)}`
+	}
+
 	// создаём главный элемент сдачи
 	createSalaryItem (page, workerName, weekNumber) {
 		// const {workerName, weekNumber, page} = args
@@ -74,6 +83,9 @@ export default class WeekItemsPage extends DefaultPage {
 		// 	workerName: name,
 		// 	weekNumber
 		// })
+
+		// получаем вес сдачи и зарплату
+		const {price, weight} = this.getWeekBalance(workerName, weekNumber)
 
 		// const parentElement = args.field
 		const newElement = document.createElement('div')
@@ -93,13 +105,13 @@ export default class WeekItemsPage extends DefaultPage {
 
 	<div class="item__uppper">
 		<span>Зарплата:</span>
-		<span data-week-salary>0</span>
+		<span data-week-salary>${price}</span>
 		<span>&nbsp;₽</span>
 	</div>
 
 	<div class="item__lower">
 		<span>Вес:</span>
-		<span data-week-weight>0</span>
+		<span data-week-weight>${weight}</span>
 		<span>&nbsp;г</span>
 	</div>`
 		
@@ -201,6 +213,23 @@ export default class WeekItemsPage extends DefaultPage {
 	// 	}
 	// }
 
+	showFooterValues(page, workerName = this.workerName, weekNumber) {
+		console.log(workerName)
+		console.log('weekItemsPage showFooterValues:', page, workerName, weekNumber)
+		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+		
+		const {price, weight, weekTotalWeight} = this.getWeekBalance(workerName, weekNumber)
+
+		// сдача
+		// const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
+		// const footerWeightElement = footerElement.querySelector('[data-week-weight]')
+		// if (footerSalaryElement) footerSalaryElement.textContent = price
+		// if (footerWeightElement) footerWeightElement.textContent = weight
+
+		// 1 неделя
+		const footerWeekWeightElement = footerElement.querySelector('[data-week-total]')
+		if (footerWeekWeightElement) footerWeekWeightElement.textContent = weekTotalWeight
+	}
 
 
 }

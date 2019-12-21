@@ -653,33 +653,37 @@ export default class LocalStorage {
 
 	// получить вес всех предыдущих недель работника
 	// или вес всех недель, если конкретная неделя не указана
-	static getWeightPreviousWeekItems(workerName, weekNumber = '') {
+	static getWeightPreviousWeekItems(workerName, weekNumber) {
+		// console.log('workerName', workerName)
+		// console.log('weekNumber', weekNumber)
 		const dataObj = LocalStorage.read() || {}
 		// строка нужна для правильной работы кнопки Назад при отсутствии работников
 		dataObj.weeks = dataObj.weeks || []
 		
+		// обозначаем аккумулирующую переменную для веса
+		let summWeight = 0
+		
+		// обходим все недели, ищем в них работника по имени
 		for (let i = 0; i < dataObj.weeks.length; i++) {
-			// находим работника, у которого будем считать
+			// console.log('dataObj.weeks[i]', dataObj.weeks[i])
+
+			// находим неделю, до которой будем считать
 			if (dataObj.weeks[i].weekNumber === weekNumber) {
-				const workersArray = dataObj.weeks[i].workers
-				// обозначаем аккумулирующую переменную для веса
-				let summWeight = 0
-				// находим индекс текушей недели в массиве, либо длинну массива, если номер не задан
-				let indexCurrentWeek = workersArray.findIndex( (worker) => {
-					return worker.workerName === workerName 
-				}) 
-				// если индекс не указана, то обходим все недели
-				if (indexCurrentWeek === -1) {
-					indexCurrentWeek = workersArray.length
-				}
 
-				// обходим недели до текущей недели
-				for (let i = 0; i < indexCurrentWeek; i++) {
-					summWeight += workersArray[i].workerWeekWeight
-				}
-
+				console.log('getWeightPreviousWeekItems возвращает:', Math.round(summWeight * 10000) / 10000)
 				return Math.round(summWeight * 10000) / 10000
+
 			}
+
+			// ищем работника по имени
+			for (let j = 0; j < dataObj.weeks[i].workers.length; j++ ) {
+				if (dataObj.weeks[i].workers[j].workerName === workerName) {
+
+					summWeight += dataObj.weeks[i].workers[j].workerWeekWeight
+					// console.log('summWeight', summWeight)
+				}
+			}
+
 		}
 	}
 

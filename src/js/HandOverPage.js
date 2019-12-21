@@ -185,7 +185,7 @@ export default class HandOverPage extends DefaultPage {
 			LocalStorage.saveHandOverOperation(newHandOverValues)
 			// console.log(this.page)
 			this.addFieldList(page, workerName, weekNumber)
-			// this.showFooterValues(page, workerName, weekNumber)
+			this.showFooterValues(page, workerName, weekNumber)
 
 			// после ввода операции сбрасываем вес и количество
 			weightInputElement.value = ''
@@ -213,8 +213,8 @@ export default class HandOverPage extends DefaultPage {
 		if (footerWeightElement) footerWeightElement.textContent = weight
 
 		// 1 неделя
-		const footerWeekWeightElement = footerElement.querySelector('[data-week-total]')
-		if (footerWeekWeightElement) footerWeekWeightElement.textContent = weekTotalWeight
+		// const footerWeekWeightElement = footerElement.querySelector('[data-week-total]')
+		// if (footerWeekWeightElement) footerWeekWeightElement.textContent = weekTotalWeight
 	}
 
 }

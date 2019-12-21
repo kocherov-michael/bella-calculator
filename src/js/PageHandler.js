@@ -226,6 +226,7 @@ export default class PageHandler {
 					
 					if (elementWorker) {
 						// this.page.showFooterValues(pageAttr, elementWorker, weekNumber)
+						this.showFooterValues(this.page, this.workerName, this.weekNumber)
 					}
 
 					setTimeout( () => {
