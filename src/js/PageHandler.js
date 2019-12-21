@@ -90,11 +90,12 @@ export default class PageHandler {
 		// const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
 
 		const newItemValues = {}
-		// console.log('this.args', this.handlerArgs)
+		console.log('this.handlerArgs', this.handlerArgs)
 
-		// if (this.args.weekNumber) {
-		// 	newItemValues.weekNumber = this.args.weekNumber
-		// }
+		// если сохраняем работника, то номер недели уже должен быть
+		if (this.handlerArgs.weekNumber) {
+			newItemValues.weekNumber = this.handlerArgs.weekNumber
+		}
 
 		// if (this.args.workerName) {
 		// 	newItemValues.workerName = this.args.workerName

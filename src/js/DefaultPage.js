@@ -101,7 +101,7 @@ export default class DefaultPage extends PageHandler {
 
 	addCreateButton(args) {
 		const { page, workerName = name, text, weekNumber } = args
-		// console.log('addCreateButton', args)
+		console.log('addCreateButton', args)
 
 		const fieldElement = document.querySelector(`[data-add-item="${page}"]`)
 

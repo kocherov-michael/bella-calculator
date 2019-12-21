@@ -19,7 +19,7 @@ export default class LocalStorage {
 
 	// сохраняем 1 неделю
 	static saveOneWeek (data) {
-		// console.log(data)
+		console.log('LocalStorage', data)
 		const dataObj = LocalStorage.read() || {}
 		
 		dataObj.weeks = dataObj.weeks || []
@@ -31,13 +31,38 @@ export default class LocalStorage {
 			}
 		}
 
+		// создаём список работников из последней недели
+		const lastWeek = dataObj.weeks.length - 1
+		console.log(dataObj.weeks[lastWeek].workers)
+		const lastWeekWorkewsArr = dataObj.weeks[lastWeek].workers
+		const workersArr = []
+		let workersId = 0
+		for (let i = 0; i < lastWeekWorkewsArr.length; i++) {
+			const workerName = lastWeekWorkewsArr[i].workerName
+			console.log('workerName', workerName)
+			// workersArr.push(workerName)
+
+			// dataObj.weeks[i].workersId = dataObj.weeks[i].workersId || 0
+				
+			workersArr.push({
+				workerName: workerName,
+				workerWeekItems: [], 
+				workerWeekHandOver: [],
+				workerWeekWeight: 0,
+				workerWeekSalary: 0,
+				id: ++workersId
+			})
+		}
+
+
 		dataObj.weeksId = dataObj.weeksId || 0
 
 		dataObj.weeks.push({
 			weekNumber: data.weekNumber,
 			id: ++dataObj.weeksId,
-			workers: [],
-			brigade: []
+			workers: workersArr,
+			brigade: [],
+			workersId
 		})
 		// }
 
@@ -61,7 +86,7 @@ export default class LocalStorage {
 	}
 
 	static saveWorker(data) {
-		// console.log('идёт сохранение работника data:', data)
+		console.log('идёт сохранение работника data:', data)
 		const dataObj = LocalStorage.read() || {}
 		dataObj.weeks = dataObj.weeks || []
 
