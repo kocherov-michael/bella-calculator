@@ -4,6 +4,7 @@ import BrigadeBalanceListPage from './BrigadeBalanceListPage'
 import WeekItemsPage from './WeekItemsPage'
 import HandOverPage from './HandOverPage'
 import WeavingListPage from './WeavingListPage'
+import GarbageListPage from './GarbageListPage'
 
 export default class Router {
 	constructor (args = {}) {
@@ -18,25 +19,29 @@ export default class Router {
 		const {page} = args
 
 		if (page === 'weeksList') {
-			const newPage = new WeeksListPage (args)
+			const newPage = new WeeksListPage(args)
 		}
 
 		else if (page === 'brigade') {
-			const newPage = new BrigadePage (args)
+			const newPage = new BrigadePage(args)
 		}
 
 		else if (page === 'brigadeBalanceList') {
-			const newPage = new BrigadeBalanceListPage (args)
+			const newPage = new BrigadeBalanceListPage(args)
 		}
 		else if (page === 'weekItems') {
-			const newPage = new WeekItemsPage (args)
+			const newPage = new WeekItemsPage(args)
 		}
 		else if (page === 'handOverItems') {
-			const newPage = new HandOverPage (args)
+			const newPage = new HandOverPage(args)
 		}
 		else if (page === 'weavingList') {
 			// console.log('new WeavingListPage', args)
-			const newPage = new WeavingListPage (args)
+			const newPage = new WeavingListPage(args)
+		}
+		else if (page === 'garbageList') {
+			// console.log('garbageList', args)
+			const newPage = new GarbageListPage(args)
 		}
 	}
 
@@ -92,14 +97,30 @@ export default class Router {
 		}
 		else if (nextPageAttr === 'weavingList') {
 			// console.log('heere')
-			Router.loadPage ({page: nextPageAttr, weekNumber, workerName, previousAttr: currentPageAttr})
+			Router.loadPage ({page: nextPageAttr, weekNumber, workerName, previousAttr: currentPageAttr || ''})
 			// this.renderWeavingListPage(nextPageAttr, name, weekNumber, currentPageAttr)
 		}
 		else if (nextPageAttr === 'quotation') {
-			this.renderQuotationPage(nextPageAttr, name, weekNumber, currentPageAttr)
+			Router.loadPage ({
+				page: nextPageAttr,
+				nextPageAttr, 
+				weekNumber, 
+				workerName, 
+				previousAttr: currentPageAttr || '', 
+				currentPageAttr
+			})
+			// this.renderQuotationPage(nextPageAttr, name, weekNumber, currentPageAttr)
 		}
 		else if (nextPageAttr === 'garbageList') {
-			this.renderGarbageListPage(nextPageAttr, name, weekNumber, currentPageAttr)
+			Router.loadPage ({
+				page: nextPageAttr,
+				nextPageAttr, 
+				weekNumber, 
+				workerName, 
+				previousAttr: currentPageAttr || '', 
+				currentPageAttr
+			})
+			// this.renderGarbageListPage(nextPageAttr, name, weekNumber, currentPageAttr)
 		}
 		
 

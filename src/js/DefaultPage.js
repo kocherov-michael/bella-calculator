@@ -1,6 +1,7 @@
 // import Handler from './Handler'
 import PageHandler from './PageHandler'
 import Router from './Router'
+import LocalStorage from './LocalStorage'
 
 // export default class DefaultPage {
 export default class DefaultPage extends PageHandler {
@@ -10,7 +11,8 @@ export default class DefaultPage extends PageHandler {
 
 	createHeader (args) {
 		// console.log('createHeader', args)
-		const {page, isBrigadier, name = '', weekNumber = ''} = args
+		args.workerName = args.name || ''
+		const {page, isBrigadier, workerName = '', weekNumber = ''} = args
 		// console.log(page)
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
 		// const checked = Storage.isBrigadier() ? 'checked' : ''
@@ -58,8 +60,8 @@ export default class DefaultPage extends PageHandler {
 			Router.changeNextPage({
 				currentPageAttr: args.page, 
 				nextPageAttr: 'weavingList', 
-				workerName: args.name, 
-				weekNumber: args.weekNumber})
+				workerName, 
+				weekNumber})
 
 			setTimeout(() => {
 				headerMenuElement.classList.toggle('cross')
@@ -71,7 +73,12 @@ export default class DefaultPage extends PageHandler {
 		// обработчик кнопки котировок
 		quotationLinkElement.addEventListener('click', () => {
 			
-			this.page.changeNextPage(args.page, 'quotation', args.name, args.weekNumber)
+			// this.page.changeNextPage(args.page, 'quotation', args.workerName, args.weekNumber)
+			Router.changeNextPage({
+				currentPageAttr: args.page, 
+				nextPageAttr: 'quotation', 
+				workerName, 
+				weekNumber})
 
 			setTimeout(() => {
 				headerMenuElement.classList.toggle('cross')
@@ -82,7 +89,13 @@ export default class DefaultPage extends PageHandler {
 		// обработчик кнопки корзины
 		garbageLinkElement.addEventListener('click', () => {
 			
-			this.page.changeNextPage(args.page, 'garbageList', args.name, args.weekNumber)
+			// this.page.changeNextPage(args.page, 'garbageList', args.name, args.weekNumber)
+
+			Router.changeNextPage({
+				currentPageAttr: args.page, 
+				nextPageAttr: 'garbageList', 
+				workerName, 
+				weekNumber})
 
 			setTimeout(() => {
 				headerMenuElement.classList.toggle('cross')
@@ -94,7 +107,7 @@ export default class DefaultPage extends PageHandler {
 		// чекбокс бригадир
 		brigadierCheckBoxElement.addEventListener('click', () => {
 			// изменяем статус бригадир / не бригадир
-			Storage.setBrigadier(brigadierCheckBoxElement.checked)
+			LocalStorage.setBrigadier(brigadierCheckBoxElement.checked)
 		})
 
 	}

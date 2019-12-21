@@ -10,11 +10,11 @@ export default class WeavingListPage extends DefaultPage {
 	}
 
 	renderWeavingListPage(args) {
-		// console.log('WeavingListPage')
+		console.log('WeavingListPage args', args)
 		args.page = 'weavingList'
 		const {page, workerName, weekNumber, previousAttr} = args
 		super.createHeader(args)
-		super.createHeaderBackArrow(page, 'weeksList', weekNumber, previousAttr)
+		super.createHeaderBackArrow(page, previousAttr, weekNumber, workerName)
 		this.addForm(args)
 		super.addCreateButton({ text: 'Добавить плетение', ...args })
 		super.showHeaderName(page, workerName, weekNumber)

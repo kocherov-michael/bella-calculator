@@ -13,8 +13,27 @@ export default class LocalStorage {
 		localStorage.setItem('bella-calculator', JSON.stringify(dataObj))
 	}
 
-	static isBrigadier () {
+	// изменяем статус пользователя бригадиром 
+	static setBrigadier(isBrigadier) {
+		return
+		const dataObj = Storage.read() || {}
+		dataObj.isBrigadier = isBrigadier
+		LocalStorage.save(dataObj)
+	}
+
+	// узнаём бригадир ли пользователь
+	static isBrigadier() {
 		return true
+		const dataObj = LocalStorage.read() || {}
+
+		LocalStorage.saveWorker({workerName: 'Я'})
+		// если бригадир никогда не устанавливался, то задаём ему false
+		// и создаём работника "Я"
+		if (dataObj.isBrigadier === undefined) {
+			LocalStorage.setBrigadier(false)
+		}
+		
+		return dataObj.isBrigadier = dataObj.isBrigadier || false
 	}
 
 	// сохраняем 1 неделю
@@ -34,7 +53,7 @@ export default class LocalStorage {
 		// создаём список работников из последней недели
 		const lastWeek = dataObj.weeks.length - 1
 		// console.log(lastWeek)
-		
+
 		const workersArr = []
 		let workersId = 0
 
@@ -408,7 +427,8 @@ export default class LocalStorage {
 			element: removedElement,
 			time: LocalStorage.getTime(),
 			id: ++dataObj.removedId,
-			way: ['weeks', [weekIndex], 'workers', [workerIndex],  'weekItems'],
+			// way: ['weeks', [weekIndex], 'workers', [workerIndex],  'weekItems'],
+			way: ['weeks', weekIndex, 'workers', workerIndex,  'workerWeekItems'],
 			index
 		}
 
@@ -485,7 +505,7 @@ export default class LocalStorage {
 			element: removedElement,
 			time: LocalStorage.getTime(),
 			id: ++dataObj.removedId,
-			way: ['weeks', [weekIndex], 'workers', [workerIndex], 'weekHandOver'],
+			way: ['weeks', [weekIndex], 'workers', [workerIndex], 'workerWeekHandOver'],
 			index
 		}
 
@@ -550,33 +570,46 @@ export default class LocalStorage {
 
 	// восстановить удалённый элемент
 	static restoreElement(id) {
-		
+		// console.log('id', id)
 		const dataObj = LocalStorage.read() || {}
 		const removedArray = dataObj.removedElements || []
 
 		for (let i = 0; i < removedArray.length; i++) {
-			if (removedArray[i].id === id) {
+			// console.log(removedArray[i].id)
+			if (removedArray[i].id === +id) {
 				// читаем сохранённый путь в элементе
 				const wayArr = removedArray[i].way
 
 				// получаем путь до массива, из которого удаляли
 				let restoreWay = dataObj
+				// console.log('restoreWay', restoreWay)
 
 				for (let j = 0; j < wayArr.length; j+=2) {
 					if (wayArr[j+1] === undefined) {
+						// console.log(wayArr[j])
 						restoreWay = restoreWay[`${wayArr[j]}`]
+						// console.log('restoreWay', restoreWay)
 					} else {
+						// console.log(wayArr[j], wayArr[j+1])
 						restoreWay = restoreWay[`${wayArr[j]}`][`${wayArr[j+1]}`]
+						// console.log('restoreWay', restoreWay)
 					}
 				}
+				// console.log('restoreWay', restoreWay)
 				const index = restoreWay.findIndex( (elem) => {
 					
 					return elem.id > removedArray[i].element.id
 				})
+				console.log(index)
 				// удаляем элемент из корзины
 				const restoredElement = removedArray.splice(i, 1)[0].element
 				// вставляем элемент обратно в используемую часть БД
-				restoreWay.splice(index, 0, restoredElement)
+				if (index < 0) {
+					restoreWay.push(restoredElement)
+				} else {
+					restoreWay.splice(index, 0, restoredElement)
+				}
+
 
 				LocalStorage.save(dataObj)
 

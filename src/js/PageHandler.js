@@ -45,7 +45,7 @@ export default class PageHandler {
 			if (this.addDefaultWeekNumber){
 				this.addDefaultWeekNumber(addFormElement)
 			}
-			
+
 			addFormElement.classList.remove('hide')
 			setTimeout( () => {
 				addFormElement.classList.remove('opacity')
@@ -64,7 +64,8 @@ export default class PageHandler {
 		if (pageAttr === 'garbageList') {
 			this.restoreItem()
 		}
-		this.formElement = addFormElement
+		// this.formElement = addFormElement
+		this.addFormElement = addFormElement
 		const saveButtonElement = addFormElement.querySelector('[data-save-button]')
 		const cancelButtonElement = addFormElement.querySelector('[data-cancel-button]')
 		const closeIconElement = addFormElement.querySelector('[data-close-icon]')
@@ -78,7 +79,8 @@ export default class PageHandler {
 	// закрываем форму
 	closeForm () {
 		// очищаем все инпуты при закрытии формы
-		const inputsList = this.formElement.querySelectorAll('input')
+		// const inputsList = this.formElement.querySelectorAll('input')
+		const inputsList = this.addFormElement.querySelectorAll('input')
 		for (let i = 0; i < inputsList.length; i++) {
 			inputsList[i].value = ''
 		}
@@ -86,8 +88,10 @@ export default class PageHandler {
 		this.activeFormElement.classList.add('opacity')
 		this.addFormElement.classList.add('opacity')
 		setTimeout( () => {
-			this.formElement.classList.add('hide')
+			// this.formElement.classList.add('hide')
+			this.addFormElement.classList.add('hide')
 		}, 400)
+
 	}
 
 	// Сохраняем введённые значения формы

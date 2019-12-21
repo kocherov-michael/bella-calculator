@@ -58,10 +58,4 @@ export default class WeekItem extends NewItem {
 		})
 	}
 
-	// // высчитываем номер недели, следующий за последней в списке 
-	// static getNextWeekNumber() {
-	// 	const dataObj = LocalStorage.read()
-		
-	// 	return +(dataObj.weeks[dataObj.weeks.length - 1].weekNumber) + 1
-	// }
 }
