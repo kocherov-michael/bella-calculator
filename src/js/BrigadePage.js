@@ -90,6 +90,8 @@ export default class BrigadePage extends DefaultPage {
 					workerName: worker.workerName,
 					id: worker.id
 				})
+
+				super.itemTouchHandler(workerButton.element)
 			})
 	}
 

@@ -13,10 +13,12 @@ export default class WorkerItem extends NewItem {
 	}
 
 	create (args) {
+		console.log('workerItem', args)
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
 		newElement.setAttribute('data-worker', args.workerName)
+		newElement.setAttribute('data-week-number', args.weekNumber)
 		newElement.setAttribute('data-id', args.id)
 
 		// newElement.setAttribute('data-next', 'weekItems')

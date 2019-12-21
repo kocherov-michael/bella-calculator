@@ -275,4 +275,286 @@ export default class LocalStorage {
 		}
 	}
 
+	// удаление недели
+	static deleteWeek(elementId) {
+		const dataObj = LocalStorage.read()
+		// находим индекс удаляемого элемента
+		const index = dataObj.weeks.findIndex( (week) => {
+
+			return week.id === +elementId
+		})
+		if (index < 0) return true
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj.weeks.splice(index, 1)[0]
+
+		dataObj.removedElements = dataObj.removedElements || []
+
+		dataObj.removedId = dataObj.removedId || 0
+
+		const removedObj = {
+			element: removedElement,
+			time: LocalStorage.getTime(),
+			id: ++dataObj.removedId,
+			way: ['weeks'],
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		LocalStorage.save(dataObj)
+
+		return true
+	}
+
+	
+	// удаление работника
+	static deleteWorker(elementId, weekNumber) {
+		console.log(elementId, weekNumber)
+		
+		const dataObj = LocalStorage.read()
+		// находим индекс удаляемого элемента
+		// for( let i =0; i < dataObj.workers; i++) {
+
+		// }
+		const weeksIndex = dataObj.weeks.findIndex( (week) => week.weekNumber === weekNumber)
+
+		const index = dataObj.weeks[weeksIndex].workers.findIndex( (worker) => {
+
+			return worker.id === +elementId
+		})
+		if (index < 0) return true
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj.weeks[weeksIndex].workers.splice(index, 1)[0]
+
+		dataObj.removedElements = dataObj.removedElements || []
+
+		dataObj.removedId = dataObj.removedId || 0
+
+		const removedObj = {
+			element: removedElement,
+			time: LocalStorage.getTime(),
+			id: ++dataObj.removedId,
+			way: ['weeks', [weeksIndex], 'workers'],
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		LocalStorage.save(dataObj)
+
+		return true
+	}
+
+	
+	// удаление операции недели
+	static deleteWeekItem(elementId, workerName, weekNumber) {
+		
+		const dataObj = LocalStorage.read()
+		// находим индекс удаляемого элемента
+		for( let i =0; i < dataObj.workers; i++) {
+
+		}
+		const workersIndex = dataObj
+			.workers
+			.findIndex( (worker) => worker.workerName === workerName)
+
+		const weekIndex = dataObj
+			.workers[workersIndex]
+			.weeks
+			.findIndex( (week) => week.weekNumber == weekNumber)
+
+		const index = dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekItems
+			.findIndex( (item) => item.id == elementId)
+
+
+		if (index < 0) return true
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekItems
+			.splice(index, 1)[0]
+		
+		// учитываем удаление элемента в общем весе недели
+		dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekWeight -= removedElement.value
+
+		dataObj.removedElements = dataObj.removedElements || []
+
+		dataObj.removedId = dataObj.removedId || 0
+		
+		const removedObj = {
+			element: removedElement,
+			time: LocalStorage.getTime(),
+			id: ++dataObj.removedId,
+			way: ['workers', [workersIndex], 'weeks', [weekIndex], 'weekItems'],
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		LocalStorage.save(dataObj)
+
+		return true
+	}
+
+	// удаление операции сдачи
+	static deleteHandOverItems(elementId, workerName, weekNumber) {
+		
+		const dataObj = LocalStorage.read()
+		// находим индекс удаляемого элемента
+		for( let i =0; i < dataObj.workers; i++) {
+
+		}
+		const workersIndex = dataObj
+			.workers
+			.findIndex( (worker) => worker.workerName === workerName)
+
+		const weekIndex = dataObj
+			.workers[workersIndex]
+			.weeks
+			.findIndex( (week) => week.weekNumber == weekNumber)
+
+		const index = dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekHandOver
+			.findIndex( (item) => item.id == elementId)
+
+
+		if (index < 0) return true
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekHandOver
+			.splice(index, 1)[0]
+		
+		// учитываем удаление элемента в общем весе недели
+		dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekWeight += removedElement.weightWithPercent
+
+		// учитываем удаление элемента в общей сдаче недели
+		dataObj
+			.workers[workersIndex]
+			.weeks[weekIndex]
+			.weekSalary -= removedElement.price
+
+		dataObj.removedElements = dataObj.removedElements || []
+		dataObj.removedId = dataObj.removedId || 0
+
+		const removedObj = {
+			element: removedElement,
+			time: LocalStorage.getTime(),
+			id: ++dataObj.removedId,
+			way: ['workers', [workersIndex], 'weeks', [weekIndex], 'weekHandOver'],
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		LocalStorage.save(dataObj)
+
+		return true
+	}
+
+	// удаление плетения
+	static deleteWeaving(elementId) {
+		const dataObj = LocalStorage.read()
+		// находим индекс удаляемого элемента
+		const index = dataObj.weavings.findIndex( (weaving) => {
+
+			return weaving.id === +elementId
+		})
+		if (index < 0) return true
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj.weavings.splice(index, 1)[0]
+
+		dataObj.removedElements = dataObj.removedElements || []
+
+		dataObj.removedId = dataObj.removedId || 0
+
+		const removedObj = {
+			element: removedElement,
+			time: LocalStorage.getTime(),
+			id: ++dataObj.removedId,
+			way: ['weavings'],
+			index
+		}
+
+		dataObj.removedElements.push(removedObj)
+
+		LocalStorage.save(dataObj)
+
+		return true
+	}
+
+	// получить сегодняшнюю дату
+	static getTime () {
+		const monthsArray = ['января', 'февраля', 'марта', 'апреля', 'мая','июня','июля','августа','сентября','октября','ноября','декабря']
+
+		const date = new Date()
+		const month = monthsArray[date.getMonth()]
+		const day = date.getDate()
+		const hour = date.getHours()
+		// если минут до 10, то добавляем нолик вперёд
+		const minutes = date.getMinutes().toString().length === 2 ? date.getMinutes() : `0${date.getMinutes()}`
+
+		return `${day} ${month} в ${hour}:${minutes}`
+	}
+
+	// получаем удалённые элементы
+	static getRemovedItems() {
+		const dataObj = LocalStorage.read() || {}
+		return dataObj.removedElements = dataObj.removedElements || []
+	}
+
+	// восстановить удалённый элемент
+	static restoreElement(id) {
+		
+		const dataObj = LocalStorage.read() || {}
+		const removedArray = dataObj.removedElements || []
+
+		for (let i = 0; i < removedArray.length; i++) {
+			if (removedArray[i].id === id) {
+				// читаем сохранённый путь в элементе
+				const wayArr = removedArray[i].way
+
+				// получаем путь до массива, из которого удаляли
+				let restoreWay = dataObj
+
+				for (let j = 0; j < wayArr.length; j+=2) {
+					if (wayArr[j+1] === undefined) {
+						restoreWay = restoreWay[`${wayArr[j]}`]
+					} else {
+						restoreWay = restoreWay[`${wayArr[j]}`][`${wayArr[j+1]}`]
+					}
+				}
+				const index = restoreWay.findIndex( (elem) => {
+					
+					return elem.id > removedArray[i].element.id
+				})
+				// удаляем элемент из корзины
+				const restoredElement = removedArray.splice(i, 1)[0].element
+				// вставляем элемент обратно в используемую часть БД
+				restoreWay.splice(index, 0, restoredElement)
+
+				LocalStorage.save(dataObj)
+
+			}
+		}
+	}
+
 }

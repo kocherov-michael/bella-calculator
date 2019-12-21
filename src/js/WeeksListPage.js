@@ -86,6 +86,9 @@ export default class WeeksListPage extends DefaultPage {
 					// workerName: name,
 					id: week.id
 				})
+
+				// console.log(weekButton.element)
+				super.itemTouchHandler(weekButton.element)
 			})
 	}
 }

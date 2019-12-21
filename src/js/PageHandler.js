@@ -171,6 +171,96 @@ export default class PageHandler {
 		}
 	}
 
+	// обработчик перетаскивания обычного элемента
+	itemTouchHandler (element) {
+		const touchArray = []
+		let firstTapPosition = null
+
+		element.addEventListener("touchmove", (event) => {
+			event.stopPropagation()
+			// обозначаем перетаскиваемый элемент
+			const draggedElement = event.currentTarget
+			
+			let touchPoint = event.changedTouches[0].pageX
+			if (!firstTapPosition) {
+				firstTapPosition = touchPoint
+			}
+			touchArray.push(touchPoint)
+			
+			let difference = firstTapPosition - touchPoint
+			
+			// поле, в котором находится элемент
+			const fieldElement = draggedElement.closest('[data-field]')
+			
+			if ( difference > 0) {
+				// элемент не виден, когда выходит за границы поля
+				fieldElement.style.overflow = 'hidden'
+				// перемещаем элемент в горизонтальной плоскости
+				draggedElement.style.marginLeft = `-${difference}px`
+				draggedElement.style.marginRight = `${difference}px`
+
+				// Удаляем элемент операции
+				if ( difference > 200 ) {
+					const pageAttr = fieldElement.getAttribute('data-field')
+
+					const elementId = draggedElement.getAttribute('data-id')
+					const elementWorker = draggedElement.getAttribute('data-worker')
+					const weekNumber = draggedElement.getAttribute('data-week-number')
+
+					// console.log(elementId, pageAttr, elementWorker, weekNumber)
+					// удаляем элемент из памяти
+					PageHandler.deleteElement(elementId, pageAttr, elementWorker, weekNumber)
+					draggedElement.classList.add('deleted')
+					
+					if (elementWorker) {
+						// this.page.showFooterValues(pageAttr, elementWorker, weekNumber)
+					}
+
+					setTimeout( () => {
+
+						draggedElement.style.display = 'none'
+					}, 200)
+
+				}
+			}
+
+			// если отпускаем палец, то элемент возвращается обратно
+			draggedElement.addEventListener('touchend', (event) => {
+				event.stopPropagation()
+				touchArray.length = 0
+				firstTapPosition = null
+				draggedElement.style.transition = 'all 0.4s ease'
+				draggedElement.style.marginLeft = ''
+				draggedElement.style.marginRight = ''
+				// после возвращения элемента на место плавность отключаем
+				setTimeout( () => {
+					fieldElement.style.overflow = 'auto'
+					draggedElement.style.transition = ''
+				}, 400)
+			})
+			
+		} )
+	}
+
+	// удаление элемента
+	static deleteElement(elementId, pageAttr, elementWorker, weekNumber) {
+		if (pageAttr === 'weeksList') {
+			LocalStorage.deleteWeek(elementId)
+		}
+		else if ( pageAttr === 'brigade') {
+			LocalStorage.deleteWorker(elementId, weekNumber)
+		}
+		else if (pageAttr === 'weekItems') {
+			LocalStorage.deleteWeekItem(elementId, elementWorker, weekNumber)
+		}
+		else if (pageAttr === 'handOverItems') {
+			LocalStorage.deleteHandOverItems(elementId, elementWorker, weekNumber)
+		}
+		else if (pageAttr === 'weavingList') {
+			LocalStorage.deleteWeaving(elementId)
+		}
+	}
+
 
 
 }

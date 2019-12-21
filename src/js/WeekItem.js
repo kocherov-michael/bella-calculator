@@ -36,6 +36,7 @@ export default class WeekItem extends NewItem {
 
 		// прокручиваем до последнего добавленного элемента
 		setTimeout(()=> {newElement.scrollIntoView()},400)
+		// console.log('WeekItem return:', newElement)
 		
 		return newElement
 	}
