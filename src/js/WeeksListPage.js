@@ -87,7 +87,7 @@ export default class WeeksListPage extends DefaultPage {
 					id: week.id
 				})
 
-				// console.log(weekButton.element)
+				// вешаем прослушку перетаскивания для удаления
 				super.itemTouchHandler(weekButton.element)
 			})
 	}

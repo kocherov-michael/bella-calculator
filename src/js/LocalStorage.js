@@ -317,9 +317,14 @@ export default class LocalStorage {
 		// for( let i =0; i < dataObj.workers; i++) {
 
 		// }
-		const weeksIndex = dataObj.weeks.findIndex( (week) => week.weekNumber === weekNumber)
+		const weeksIndex = dataObj
+			.weeks
+			.findIndex( (week) => week.weekNumber === weekNumber)
 
-		const index = dataObj.weeks[weeksIndex].workers.findIndex( (worker) => {
+		const index = dataObj
+			.weeks[weeksIndex]
+			.workers
+			.findIndex( (worker) => {
 
 			return worker.id === +elementId
 		})
@@ -351,24 +356,26 @@ export default class LocalStorage {
 	// удаление операции недели
 	static deleteWeekItem(elementId, workerName, weekNumber) {
 		
+		console.log(elementId, workerName, weekNumber)
 		const dataObj = LocalStorage.read()
 		// находим индекс удаляемого элемента
-		for( let i =0; i < dataObj.workers; i++) {
+		// for( let i =0; i < dataObj.workers; i++) {
 
-		}
-		const workersIndex = dataObj
-			.workers
-			.findIndex( (worker) => worker.workerName === workerName)
+		// }
 
 		const weekIndex = dataObj
-			.workers[workersIndex]
 			.weeks
-			.findIndex( (week) => week.weekNumber == weekNumber)
+			.findIndex( (week) => week.weekNumber === weekNumber)
+
+		const workerIndex = dataObj
+			.weeks[weekIndex]
+			.workers
+			.findIndex( (worker) => worker.workerName == workerName)
 
 		const index = dataObj
-			.workers[workersIndex]
 			.weeks[weekIndex]
-			.weekItems
+			.workers[workerIndex]
+			.workerWeekItems
 			.findIndex( (item) => item.id == elementId)
 
 
@@ -376,16 +383,16 @@ export default class LocalStorage {
 
 		// сохраняем удалённый злемент
 		const removedElement = dataObj
-			.workers[workersIndex]
 			.weeks[weekIndex]
-			.weekItems
+			.workers[workerIndex]
+			.workerWeekItems
 			.splice(index, 1)[0]
 		
 		// учитываем удаление элемента в общем весе недели
 		dataObj
-			.workers[workersIndex]
 			.weeks[weekIndex]
-			.weekWeight -= removedElement.value
+			.workers[workerIndex]
+			.workerWeekWeight -= removedElement.value
 
 		dataObj.removedElements = dataObj.removedElements || []
 
@@ -395,7 +402,7 @@ export default class LocalStorage {
 			element: removedElement,
 			time: LocalStorage.getTime(),
 			id: ++dataObj.removedId,
-			way: ['workers', [workersIndex], 'weeks', [weekIndex], 'weekItems'],
+			way: ['weeks', [weekIndex], 'workers', [workerIndex],  'weekItems'],
 			index
 		}
 
@@ -411,45 +418,59 @@ export default class LocalStorage {
 		
 		const dataObj = LocalStorage.read()
 		// находим индекс удаляемого элемента
-		for( let i =0; i < dataObj.workers; i++) {
-
-		}
-		const workersIndex = dataObj
-			.workers
-			.findIndex( (worker) => worker.workerName === workerName)
 
 		const weekIndex = dataObj
-			.workers[workersIndex]
 			.weeks
-			.findIndex( (week) => week.weekNumber == weekNumber)
+			.findIndex( (week) => week.weekNumber === weekNumber)
+
+		const workerIndex = dataObj
+			.weeks[weekIndex]
+			.workers
+			.findIndex( (worker) => worker.workerName == workerName)
 
 		const index = dataObj
-			.workers[workersIndex]
 			.weeks[weekIndex]
-			.weekHandOver
+			.workers[workerIndex]
+			.workerWeekHandOver
 			.findIndex( (item) => item.id == elementId)
+		
+		
+		// const workersIndex = dataObj
+		// 	.workers
+		// 	.findIndex( (worker) => worker.workerName === workerName)
+
+		// const weekIndex = dataObj
+		// 	.workers[workersIndex]
+		// 	.weeks
+		// 	.findIndex( (week) => week.weekNumber == weekNumber)
+
+		// const index = dataObj
+		// 	.workers[workersIndex]
+		// 	.weeks[weekIndex]
+		// 	.weekHandOver
+		// 	.findIndex( (item) => item.id == elementId)
 
 
 		if (index < 0) return true
 
 		// сохраняем удалённый злемент
 		const removedElement = dataObj
-			.workers[workersIndex]
 			.weeks[weekIndex]
-			.weekHandOver
+			.workers[workerIndex]
+			.workerWeekHandOver
 			.splice(index, 1)[0]
 		
 		// учитываем удаление элемента в общем весе недели
 		dataObj
-			.workers[workersIndex]
 			.weeks[weekIndex]
-			.weekWeight += removedElement.weightWithPercent
+			.workers[workerIndex]
+			.workerWeekWeight += removedElement.weightWithPercent
 
 		// учитываем удаление элемента в общей сдаче недели
 		dataObj
-			.workers[workersIndex]
 			.weeks[weekIndex]
-			.weekSalary -= removedElement.price
+			.workers[workerIndex]
+			.workerWeekSalary -= removedElement.price
 
 		dataObj.removedElements = dataObj.removedElements || []
 		dataObj.removedId = dataObj.removedId || 0
@@ -458,7 +479,7 @@ export default class LocalStorage {
 			element: removedElement,
 			time: LocalStorage.getTime(),
 			id: ++dataObj.removedId,
-			way: ['workers', [workersIndex], 'weeks', [weekIndex], 'weekHandOver'],
+			way: ['weeks', [weekIndex], 'workers', [workerIndex], 'weekHandOver'],
 			index
 		}
 

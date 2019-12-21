@@ -46,7 +46,7 @@ export default class HandOverPage extends DefaultPage {
 				// родительский элемент
 				field: itemFieldElement,
 				// type: 'handOverItem',
-				workerName: name,
+				workerName,
 				weekNumber,
 				// вес
 				weight: handOverItem.weight,
@@ -58,6 +58,9 @@ export default class HandOverPage extends DefaultPage {
 				price: handOverItem.price,
 				id: handOverItem.id
 			})
+
+			// вешаем прослушку перетаскивания для удаления
+			super.itemTouchHandler(handOverItemButton.element)
 		})
 
 	}

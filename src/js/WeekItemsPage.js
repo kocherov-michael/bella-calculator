@@ -45,11 +45,14 @@ export default class WeekItemsPage extends DefaultPage {
 				// вес
 				weight: weekItem.value,
 				type: 'weekItem',
-				workerName: name,
+				workerName,
 				weekNumber,
 				// previous: weekItem.isPrevious,
 				id: weekItem.id
 			})
+
+			// вешаем прослушку перетаскивания для удаления
+			super.itemTouchHandler(weekItemButton.element)
 		})
 
 	}

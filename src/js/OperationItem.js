@@ -17,7 +17,7 @@ export default class OperationItem extends NewItem {
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
-		// newElement.setAttribute('data-worker', args.workerName)
+		newElement.setAttribute('data-worker', args.workerName)
 		newElement.setAttribute('data-id', args.id)
 
 		newElement.classList.add('week-item', 'closedable', 'closed', 'hidetext')

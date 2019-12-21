@@ -91,6 +91,7 @@ export default class BrigadePage extends DefaultPage {
 					id: worker.id
 				})
 
+				// вешаем прослушку перетаскивания для удаления
 				super.itemTouchHandler(workerButton.element)
 			})
 	}
