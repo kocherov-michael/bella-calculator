@@ -10,6 +10,9 @@ export default class GarbageListPage extends DefaultPage {
 	}
 	renderWeekListPage(args) {
 		args.isBrigadier = true
+		if (args.previousAttr === 'weavingList' || args.previousAttr === 'quotation') {
+			args.previousAttr = 'weeksList'
+		}
 		const {page, workerName, weekNumber, previousAttr} = args
 		super.createHeader(args)
 		super.createHeaderBackArrow(page, previousAttr, weekNumber, workerName)

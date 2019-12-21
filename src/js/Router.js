@@ -5,6 +5,7 @@ import WeekItemsPage from './WeekItemsPage'
 import HandOverPage from './HandOverPage'
 import WeavingListPage from './WeavingListPage'
 import GarbageListPage from './GarbageListPage'
+import QuotationPage from './QuotationPage'
 
 export default class Router {
 	constructor (args = {}) {
@@ -42,6 +43,10 @@ export default class Router {
 		else if (page === 'garbageList') {
 			// console.log('garbageList', args)
 			const newPage = new GarbageListPage(args)
+		}
+		else if (page === 'quotation') {
+			// console.log('garbageList', args)
+			const newPage = new QuotationPage(args)
 		}
 	}
 

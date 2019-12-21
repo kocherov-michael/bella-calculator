@@ -12,6 +12,9 @@ export default class WeavingListPage extends DefaultPage {
 	renderWeavingListPage(args) {
 		console.log('WeavingListPage args', args)
 		args.page = 'weavingList'
+		if (args.previousAttr === 'quotation' || args.previousAttr === 'garbageList') {
+			args.previousAttr = 'weeksList'
+		}
 		const {page, workerName, weekNumber, previousAttr} = args
 		super.createHeader(args)
 		super.createHeaderBackArrow(page, previousAttr, weekNumber, workerName)
