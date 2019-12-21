@@ -242,6 +242,9 @@ export default class DefaultPage extends PageHandler {
 		else if (page === 'quotation') {
 			headerTextElement.textContent = 'Котировки'
 		}
+		else if (page === 'brigadeBalanceList') {
+			headerTextElement.textContent = 'Приход в бригаду'
+		}
 		else if (page === 'weekItems') {
 			headerTextElement.textContent = name
 		}
@@ -263,6 +266,102 @@ export default class DefaultPage extends PageHandler {
 			return true
 		}
 	}
+
+	// создаём форму добавления простой операции в футере
+	createFormAddSingleOperation (page, workerName, weekNumber) {
+		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+		// если элемент уже есть, то удаляем его
+		const footerOldActionElement = footerElement.querySelector('.footer__actions')
+		if (footerOldActionElement)  {
+			footerElement.removeChild(footerOldActionElement)
+		}
+
+		const footerActionElement = document.createElement('div')
+		footerActionElement.classList.add('footer__actions')
+
+		const formSingleOperationElement = document.createElement('div')
+		formSingleOperationElement.classList.add('week-orepations')
+		footerActionElement.append(formSingleOperationElement)
+
+		// инпут для ввода веса
+		const inputOperationElement = document.createElement('input')
+		inputOperationElement.classList.add('week-orepations__input', 'input')
+		inputOperationElement.setAttribute('placeholder', 'Введите вес')
+		formSingleOperationElement.append(inputOperationElement)
+
+		// кнопка Прибавить
+		const addOperationElement = document.createElement('button')
+		addOperationElement.classList.add('week-orepations__button', 'item', 'item_warning')
+		addOperationElement.textContent = 'Прибавить'
+		formSingleOperationElement.append(addOperationElement)
+
+		// кнопка Вычесть
+		const minusOperationElement = document.createElement('button')
+		minusOperationElement.classList.add('week-orepations__button', 'item', 'item_subtract')
+		minusOperationElement.textContent = 'Вычесть'
+		formSingleOperationElement.append(minusOperationElement)
+
+		footerElement.prepend(footerActionElement)
+
+		// операция Добавить
+		addOperationElement.addEventListener('click', () => {
+			const operationValue = Math.abs(inputOperationElement.value.trim())
+			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
+		})
+
+		// операция Вычесть
+		minusOperationElement.addEventListener('click', () => {
+			const operationValue = Math.abs(inputOperationElement.value.trim()) * -1
+			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
+		})
+	}
+
+	// обработка нажатий Прибавить и Вычесть в Операции
+	addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
+
+		// Если ничего не введено, то предупреждаем пользователя
+		// const ifEmpty = WeekItemsPage.showError(inputOperationElement, operationValue, '')
+		const ifEmpty = DefaultPage.showError(inputOperationElement, operationValue, '')
+		if (ifEmpty) return
+		
+		const newItemValues = {
+			workerName,
+			weekNumber,
+			singleOperation: operationValue
+		}
+
+		console.log('this.page', this.page)
+
+		if (this.page === 'weekItems') {
+			LocalStorage.saveOperation(newItemValues)
+		}
+		else if (this.page === 'brigadeBalanceList') {
+			LocalStorage.saveBrigadeOperation(newItemValues)
+		}
+		
+		// добавляем элемент на страницу
+
+		// this.addFieldList('weekItems', workerName, weekNumber)
+
+		this.addFieldList(this.page, workerName, weekNumber)
+
+		// обновляем показания в футуре
+		// this.showFooterValues('weekItems', workerName, weekNumber)
+		// очищаем инпут после ввода цифры
+		inputOperationElement.value = ''
+	}
+
+	// // показать, что инпут пустой
+	// static showError (element, currentValue, falseValue) {
+		
+	// 	if (currentValue == falseValue) {
+	// 		element.classList.add('warning-input')
+	// 		setTimeout(() => {
+	// 			element.classList.remove('warning-input')
+	// 		}, 2000)
+	// 		return true
+	// 	}
+	// }
 
 
 }

@@ -114,7 +114,8 @@ export default class PageHandler {
 		// сохраняем имя, если работник уже создан
 		// const nameForRender = this.args.workerName
 
-		const inputsList = this.formElement.querySelectorAll('input')
+		// const inputsList = this.formElement.querySelectorAll('input')
+		const inputsList = this.addFormElement.querySelectorAll('input')
 
 		// проходимся по всем инпутам
 		for (let i = 0; i < inputsList.length; i++) {
@@ -203,15 +204,15 @@ export default class PageHandler {
 			// поле, в котором находится элемент
 			const fieldElement = draggedElement.closest('[data-field]')
 			
-			if ( difference > 0) {
+			if ( difference > 40) {
 				// элемент не виден, когда выходит за границы поля
 				fieldElement.style.overflow = 'hidden'
 				// перемещаем элемент в горизонтальной плоскости
-				draggedElement.style.marginLeft = `-${difference}px`
-				draggedElement.style.marginRight = `${difference}px`
+				draggedElement.style.marginLeft = `-${difference - 40}px`
+				draggedElement.style.marginRight = `${difference - 40}px`
 
 				// Удаляем элемент операции
-				if ( difference > 200 ) {
+				if ( difference > 250 ) {
 					const pageAttr = fieldElement.getAttribute('data-field')
 
 					const elementId = draggedElement.getAttribute('data-id')

@@ -75,7 +75,7 @@ export default class BrigadePage extends DefaultPage {
 		itemFieldElement.innerHTML = ''
 	
 		// получаем данные из памяти
-		const weekArr = LocalStorage.getOneWeek(weekNumber) || []
+		const weekArr = LocalStorage.getOneWeek(weekNumber).workers || []
 
 		// const workerWeeks = LocalStorage.getWorkerWeeks(name)
 		weekArr.forEach( (worker) => {

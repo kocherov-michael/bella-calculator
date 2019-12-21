@@ -13,7 +13,7 @@ export default class WorkerItem extends NewItem {
 	}
 
 	create (args) {
-		console.log('workerItem', args)
+		// console.log('workerItem', args)
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
@@ -29,6 +29,22 @@ export default class WorkerItem extends NewItem {
 			<div class="item__header-arrow">
 				<div class="chevron"></div>
 			</div>
+		</div>
+		<div class="item__uppper">
+			<span>Остаток:</span>
+			<span>55555</span>&nbsp;
+			<span>г</span>
+		</div>
+
+		<div class="item__uppper">
+			<span>Зарплата:</span>
+			<span>10000</span>&nbsp;
+			<span>₽</span>
+		</div>
+		<div class="item__lower">
+			<span>Бонусные (всего):</span>
+			<span>1000 (10000)</span>&nbsp;
+			<span>₽</span>
 		</div>`
 
 		parentElement.appendChild(newElement)

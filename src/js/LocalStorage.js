@@ -105,7 +105,8 @@ export default class LocalStorage {
 			// если номер недели совпадает
 			if (dataObj.weeks[i].weekNumber === weekNumber) {
 				// возвращаем елементы внутри недели
-				return dataObj.weeks[i].workers
+				console.log('если ошибка к БД, то в запросе LocalStorage добавить .workers ')
+				return dataObj.weeks[i]
 			}
 		}
 	}
@@ -143,6 +144,39 @@ export default class LocalStorage {
 		}
 		LocalStorage.save(dataObj)
 		return true
+	}
+
+	
+	// сохранить операцию баланса бригады
+	static saveBrigadeOperation (data) {
+		const dataObj = LocalStorage.read() || {}
+		dataObj.weeks = dataObj.weeks || []
+
+		for (let i = 0; i < dataObj.weeks.length; i++) {
+			// если номер недели в массиве из памяти и из формы совпадают
+			if (dataObj.weeks[i].weekNumber === data.weekNumber) {
+				// проверка на существование имени работника
+				// for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
+					// if (dataObj.weeks[i].workers[j].workerName === data.workerName) {
+
+						// добавляем id
+						dataObj.weeks[i].brigadeId = dataObj.weeks[i].brigadeId || 0
+
+						// создаём объект новой операции
+						dataObj.weeks[i].brigade.push({
+							value: data.singleOperation,
+							id: ++dataObj.weeks[i].brigadeId,
+						})
+
+						// учитываем операцию в общем весе бригады
+						dataObj.weeks[i].brigadeWeekWeight += +data.singleOperation
+						break
+					// }
+				// }
+			}
+		}
+		LocalStorage.save(dataObj)
+
 	}
 
 	// сохранить простую операцию
