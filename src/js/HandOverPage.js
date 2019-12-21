@@ -10,7 +10,8 @@ import HandOverItem from './HandOverItem'
 export default class HandOverPage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
-
+		this.workerName = args.workerName
+		this.weekNumber = args.weekNumber
 		this.renderWeekItemsPage(args)
 	}
 
@@ -29,7 +30,7 @@ export default class HandOverPage extends DefaultPage {
 		// this.createSalaryItem(page, workerName, weekNumber)
 		// this.showSalaryValues(args.page, args.workerName, args.weekNumber)
 		// this.createFormAddSingleOperation(page, workerName, weekNumber)
-		// this.showFooterValues(page, name, weekNumber)
+		this.showFooterValues(page, workerName, weekNumber)
 	}
 
 	addFieldList (page, workerName, weekNumber) {
@@ -182,7 +183,7 @@ export default class HandOverPage extends DefaultPage {
 			}
 			
 			LocalStorage.saveHandOverOperation(newHandOverValues)
-			console.log(this.page)
+			// console.log(this.page)
 			this.addFieldList(page, workerName, weekNumber)
 			// this.showFooterValues(page, workerName, weekNumber)
 
@@ -196,6 +197,24 @@ export default class HandOverPage extends DefaultPage {
 	// получаем вес с процентами по весу
 	static getWeightWithPercent (weight, percent) {
 		return Math.round(weight * 10000 + weight * percent * 10000 / 100) / 10000
+	}
+
+	// показываем вес в подвале
+	showFooterValues(page, workerName, weekNumber) {
+
+		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+		
+		const {price, weight, weekTotalWeight} = this.getWeekBalance(workerName, weekNumber)
+
+		// сдача
+		const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
+		const footerWeightElement = footerElement.querySelector('[data-week-weight]')
+		if (footerSalaryElement) footerSalaryElement.textContent = price
+		if (footerWeightElement) footerWeightElement.textContent = weight
+
+		// 1 неделя
+		const footerWeekWeightElement = footerElement.querySelector('[data-week-total]')
+		if (footerWeekWeightElement) footerWeekWeightElement.textContent = weekTotalWeight
 	}
 
 }
