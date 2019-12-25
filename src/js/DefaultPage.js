@@ -330,7 +330,7 @@ export default class DefaultPage extends PageHandler {
 			singleOperation: operationValue
 		}
 
-		console.log('this.page', this.page)
+		// console.log('this.page', this.page)
 
 		if (this.page === 'weekItems') {
 			LocalStorage.saveOperation(newItemValues)
@@ -382,12 +382,12 @@ export default class DefaultPage extends PageHandler {
 
 		// если загружаем список недель, то дальше не идём
 		if (!weekNumber) return
-		const {price, weight, weekTotalWeight} = Page.getWeekBalance(workerName, weekNumber)
+		const {weekSalary, weight, weekTotalWeight} = Page.getWeekBalance(workerName, weekNumber)
 
 		// сдача
 		const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
 		const footerWeightElement = footerElement.querySelector('[data-week-weight]')
-		if (footerSalaryElement) footerSalaryElement.textContent = price
+		if (footerSalaryElement) footerSalaryElement.textContent = weekSalary
 		if (footerWeightElement) footerWeightElement.textContent = weight
 
 		// 1 неделя
@@ -400,18 +400,21 @@ export default class DefaultPage extends PageHandler {
 
 	// получаем зарплату и сдачу за неделю
 	getWeekBalance(workerName = this.workerName, weekNumber = this.weekNumber) {
-		console.log(workerName, weekNumber)
+		// console.log(workerName, weekNumber)
 		const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
-		console.log(oneWeekObj)
+		// console.log(oneWeekObj)
 		// если недель нет совсем, то возвращаем всё по нулям
-		if (!oneWeekObj) return {price: 0, weight: 0, weekTotalWeight: 0}
+		if (!oneWeekObj) return {weekSalary: 0, weight: 0, weekTotalWeight: 0}
 
 		const workerWeekHandOver = oneWeekObj.workerWeekHandOver
 		const workerWeekWeight = oneWeekObj.workerWeekWeight
 		
-		const price = workerWeekHandOver.reduce((accum,curr) => {
-			return Math.round((accum + curr.price) * 10) / 10
+		// зарплата за неделю
+		const weekSalary = workerWeekHandOver.reduce((accum,curr) => {
+			return Math.round((accum + curr.weekSalary) * 10) / 10
 		}, 0)
+
+		// вес сдачи за неделю с процентами
 		const weight = workerWeekHandOver.reduce((accum,curr) => {
 			return Math.round((accum + curr.weightWithPercent) * 10000) / 10000
 		}, 0)
@@ -420,8 +423,8 @@ export default class DefaultPage extends PageHandler {
 		const previousWeekWeight = LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber)
 		// Общий баланс к концу недели
 		const weekTotalWeight = Math.round((previousWeekWeight + workerWeekWeight) * 10000) / 10000
-		
-		return {price, weight, weekTotalWeight}
+		console.log()
+		return {weekSalary, weight, weekTotalWeight}
 	}
 
 

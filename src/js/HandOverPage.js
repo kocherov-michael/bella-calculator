@@ -204,12 +204,13 @@ export default class HandOverPage extends DefaultPage {
 
 		const footerElement = document.querySelector(`[data-footer="${page}"]`)
 		
-		const {price, weight, weekTotalWeight} = this.getWeekBalance(workerName, weekNumber)
+		// const {price, weight, weekTotalWeight} = this.getWeekBalance(workerName, weekNumber)
+		const {weekSalary, weight, weekTotalWeight} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)
 
 		// сдача
 		const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
 		const footerWeightElement = footerElement.querySelector('[data-week-weight]')
-		if (footerSalaryElement) footerSalaryElement.textContent = price
+		if (footerSalaryElement) footerSalaryElement.textContent = weekSalary
 		if (footerWeightElement) footerWeightElement.textContent = weight
 
 		// 1 неделя

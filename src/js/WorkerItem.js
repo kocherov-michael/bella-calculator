@@ -5,8 +5,10 @@ import Router from './Router'
 export default class WorkerItem extends NewItem {
 	constructor (args = {}) {
 		super(args)
-		// console.log(args)
+		console.log('workerItem:', args)
 		this.args = args
+		this.workerName = args.workerName
+		this.weekNumber = args.weekNumber
 		this.element = this.create(args)
 		this.itemHandler(this.element)
 		// console.log('ok')
@@ -21,6 +23,8 @@ export default class WorkerItem extends NewItem {
 		newElement.setAttribute('data-week-number', args.weekNumber)
 		newElement.setAttribute('data-id', args.id)
 
+		const {weekSalary, weight, weekTotalWeight, bonus, totalBonus} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)
+
 		// newElement.setAttribute('data-next', 'weekItems')
 		this.args.nextPageAttr = 'weekItems'
 		newElement.innerHTML = 
@@ -32,18 +36,18 @@ export default class WorkerItem extends NewItem {
 		</div>
 		<div class="item__uppper">
 			<span>Остаток:</span>
-			<span>55555</span>&nbsp;
+			<span>${weekTotalWeight}</span>&nbsp;
 			<span>г</span>
 		</div>
 
 		<div class="item__uppper">
 			<span>Зарплата:</span>
-			<span>10000</span>&nbsp;
+			<span>${weekSalary}</span>&nbsp;
 			<span>₽</span>
 		</div>
 		<div class="item__lower">
 			<span>Бонусные (всего):</span>
-			<span>1000 (10000)</span>&nbsp;
+			<span>${bonus} (${totalBonus})</span>&nbsp;
 			<span>₽</span>
 		</div>`
 

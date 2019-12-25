@@ -61,9 +61,10 @@ export default class WeekItemsPage extends DefaultPage {
 	// показываем остаток с предфдущих недель
 	showPreviousWeight(page, workerName, weekNumber) {
 		const previousWeightElement = document.querySelector('[data-previous-weight="weekItems"]')
-		console.log('previousWeightElement', previousWeightElement)
+		// console.log('previousWeightElement', previousWeightElement)
 		// getWeightPreviousWeekItems(workerName, weekNumber)
-		previousWeightElement.textContent = `${LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber)}`
+		const {summWeight} = LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber)
+		previousWeightElement.textContent = `${summWeight}`
 	}
 
 	// создаём главный элемент сдачи
@@ -85,7 +86,8 @@ export default class WeekItemsPage extends DefaultPage {
 		// })
 
 		// получаем вес сдачи и зарплату
-		const {price, weight} = this.getWeekBalance(workerName, weekNumber)
+		// const {price, weight} = this.getWeekBalance(workerName, weekNumber)
+		const {weekSalary, weight} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)
 
 		// const parentElement = args.field
 		const newElement = document.createElement('div')
@@ -105,7 +107,7 @@ export default class WeekItemsPage extends DefaultPage {
 
 	<div class="item__uppper">
 		<span>Зарплата:</span>
-		<span data-week-salary>${price}</span>
+		<span data-week-salary>${weekSalary}</span>
 		<span>&nbsp;₽</span>
 	</div>
 
@@ -214,11 +216,12 @@ export default class WeekItemsPage extends DefaultPage {
 	// }
 
 	showFooterValues(page, workerName = this.workerName, weekNumber) {
-		console.log(workerName)
-		console.log('weekItemsPage showFooterValues:', page, workerName, weekNumber)
+		// console.log(workerName)
+		// console.log('weekItemsPage showFooterValues:', page, workerName, weekNumber)
 		const footerElement = document.querySelector(`[data-footer="${page}"]`)
 		
-		const {price, weight, weekTotalWeight} = this.getWeekBalance(workerName, weekNumber)
+		// const {price, weight, weekTotalWeight} = this.getWeekBalance(workerName, weekNumber)
+		const {weekSalary, weight, weekTotalWeight} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)
 
 		// сдача
 		// const footerSalaryElement = footerElement.querySelector('[data-week-salary]')
