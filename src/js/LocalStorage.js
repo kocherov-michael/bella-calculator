@@ -96,7 +96,7 @@ export default class LocalStorage {
 		return true
 	}
 
-	// загружаем работников 1 недели
+	// загружаем 1 неделю
 	static getOneWeek(weekNumber) {
 		// console.log('weekNumber', weekNumber)
 		
@@ -137,6 +137,7 @@ export default class LocalStorage {
 					workerWeekHandOver: [],
 					workerWeekWeight: 0,
 					workerWeekSalary: 0,
+					// workerWeekHandOverWeight: 0,
 					id: ++dataObj.weeks[i].workersId,
 					weekBonus: 0
 				})
@@ -227,6 +228,9 @@ export default class LocalStorage {
 
 						// учитываем операцию сдачи в общем весе недели
 						dataObj.weeks[i].workers[j].workerWeekWeight -= +data.handOverOperation.weightWithPercent
+
+						// суммируем вес всей сдачи за неделю
+						dataObj.weeks[i].workers[j].workerWeekHandOverWeight += +data.handOverOperation.weightWithPercent
 
 						// учитываем операцию сдачи в общей сдаче недели
 						const weekSalary = dataObj.weeks[i].workers[j].workerWeekSalary += +data.handOverOperation.price
@@ -748,20 +752,30 @@ export default class LocalStorage {
 		return {weekSalary, weight, weekTotalWeight, bonus, totalBonus}
 	}
 
-	// полученный бригадой вес за 1 неделю
-	// brigadeReceivingWeight(weekNumber) {
-	// 	const dataObj = LocalStorage.read() || {}
-	// 	dataObj.weeks = dataObj.weeks || []
+	// получаем сдачу всех работников за 1 неделю
+	static weekHandOverAllWorkers (weekNumber) {
+		const dataObj = LocalStorage.read() || {}
+		dataObj.weeks = dataObj.weeks || []
 
-	// 	for (let i = 0; i < dataObj.weeks.length; i++) {
-	// 		// находим номер недели по названию
-	// 		if (dataObj.weeks[i].weekNumber == weekNumber) {
-	// 			// считаем все операции получения бригадой
-	// 			for (let j = 0; j < dataObj.weeks[i].brigade.length; j++) {
+		let workersWeekHandOverWeight = 0
+		let workersWeekSalary = 0
+		for (let i = 0; i < dataObj.weeks.length; i++) {
+			if (dataObj.weeks[i].weekNumber === weekNumber) {
+				// если нашли искомую неделю, то обходим всех работников
+				for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
+					// в каждом работнике обходим его сдачу за неделю
+					for (let k = 0; k < dataObj.weeks[i].workers[j].workerWeekHandOver.length; k++) {
+						workersWeekHandOverWeight += dataObj.weeks[i].workers[j].workerWeekHandOver[k].weightWithPercent
+						workersWeekSalary += dataObj.weeks[i].workers[j].workerWeekHandOver[k].price
+					}
+				}
 
-	// 			}
-	// 		}
-	// 	}
-	// }
+			}
+		}
+		return {workersWeekHandOverWeight, workersWeekSalary}
+	}
+
+	// получаем остаток предыдущих недель для бригады
+	// static 
 
 }

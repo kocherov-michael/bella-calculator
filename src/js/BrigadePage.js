@@ -13,7 +13,9 @@ export default class BrigadePage extends DefaultPage {
 
 	// отрисовываем страницу бригады
 	renderBrigadePage(args) {
-		// console.log('brigade args:', args)
+		console.log('brigade args:', args)
+		this.weekNumber = args.weekNumber
+		this.page = args.page
 		args.isBrigadier = true
 		args.page = 'brigade'
 		super.createHeader(args)
@@ -23,7 +25,7 @@ export default class BrigadePage extends DefaultPage {
 		this.addFieldList(args)
 		super.createHeaderBackArrow(args.page, 'weeksList', args.weekNumber)
 		super.showHeaderName(args.page, args.workerName, args.weekNumber)
-		// this.showFooterValues(page, name)
+		this.showFooterValues(args.page, name)
 	}
 
 	addForm (args) {
@@ -136,6 +138,20 @@ export default class BrigadePage extends DefaultPage {
 				brigade: true
 			})
 		})
+
+	}
+
+	showFooterValues () {
+		const handOverElement = document.querySelector(`[data-brigade-week-hand-over=${this.page}]`)
+		const weightElement = document.querySelector(`[data-brigade-week-weight=${this.page}]`)
+		const salaryElement = document.querySelector(`[data-brigade-week-salary=${this.page}]`)
+		const salaryPercentElement = document.querySelector(`[data-brigade-week-percent-salary=${this.page}]`)
+		// получаем для всех работников вес сдачи и зарплату
+		const {workersWeekHandOverWeight, workersWeekSalary} = LocalStorage.weekHandOverAllWorkers(this.weekNumber)
+
+		handOverElement.textContent = workersWeekHandOverWeight
+		salaryElement.textContent = workersWeekSalary
+		salaryPercentElement.textContent = Math.round(workersWeekSalary * 107 /10) / 10
 
 	}
 
