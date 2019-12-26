@@ -13,7 +13,7 @@ export default class BrigadePage extends DefaultPage {
 
 	// отрисовываем страницу бригады
 	renderBrigadePage(args) {
-		console.log('brigade args:', args)
+		// console.log('brigade args:', args)
 		this.weekNumber = args.weekNumber
 		this.page = args.page
 		args.isBrigadier = true
@@ -73,7 +73,7 @@ export default class BrigadePage extends DefaultPage {
 	// показываем вес бригады с предыдущей недели
 	showPreviousBrigadeWeight () {
 		const previousBrigadeWeightElement = document.querySelector(`[data-brigade-previous-weight=${this.page}]`)
-		const {previousWeeksAllWorkersHandOverWeight} = LocalStorage.getPreviousBrigadeWeekWeight(this.weekNumber)
+		const previousWeeksAllWorkersHandOverWeight = LocalStorage.getPreviousBrigadeWeekWeight(this.weekNumber)
 
 		let sign = ''
 		if (previousWeeksAllWorkersHandOverWeight > 0) {
@@ -164,11 +164,12 @@ export default class BrigadePage extends DefaultPage {
 		const salaryPercentElement = document.querySelector(`[data-brigade-week-percent-salary=${this.page}]`)
 		// получаем для всех работников вес сдачи и зарплату
 		const {workersWeekHandOverWeight, workersWeekSalary} = LocalStorage.weekHandOverAllWorkers(this.weekNumber)
+		const currentBrigadeWeight = LocalStorage.getCurrentBrigadeWeekWeight(this.weekNumber)
 
 		handOverElement.textContent = workersWeekHandOverWeight
 		salaryElement.textContent = workersWeekSalary
 		salaryPercentElement.textContent = Math.round(workersWeekSalary * 107 /10) / 10
-
+		weightElement.textContent = currentBrigadeWeight
 	}
 
 }

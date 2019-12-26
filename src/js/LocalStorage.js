@@ -106,7 +106,7 @@ export default class LocalStorage {
 			// если номер недели совпадает
 			if (dataObj.weeks[i].weekNumber === weekNumber) {
 				// возвращаем елементы внутри недели
-				console.log('если ошибка к БД, то в запросе LocalStorage добавить .workers ')
+				// console.log('если ошибка к БД, то в запросе LocalStorage добавить .workers ')
 				return dataObj.weeks[i]
 			}
 		}
@@ -783,7 +783,7 @@ export default class LocalStorage {
 		let previousWeeksAllWorkersHandOverWeight = 0
 		for (let i = 0; i < dataObj.weeks.length; i++) {
 			if (dataObj.weeks[i].weekNumber === weekNumber) {
-				return {previousWeeksAllWorkersHandOverWeight}
+				return previousWeeksAllWorkersHandOverWeight
 			}
 
 			// суммируем приход в бригаду за конкретную неделю
@@ -800,6 +800,33 @@ export default class LocalStorage {
 			}
 
 		}
+	}
+
+	// получаем остаток текущей недели для бригады, учитывая предыдущие
+	static getCurrentBrigadeWeekWeight (weekNumber) {
+		const dataObj = LocalStorage.read() || {}
+		dataObj.weeks = dataObj.weeks || []
+
+		let currentBrigadeWeight = LocalStorage.getPreviousBrigadeWeekWeight(weekNumber)
+		for (let i = 0; i < dataObj.weeks.length; i++) {
+			if (dataObj.weeks[i].weekNumber === weekNumber) {
+
+				// суммируем приход в бригаду за конкретную неделю
+				for (let j = 0; j < dataObj.weeks[i].brigade.length; j++) {
+					currentBrigadeWeight += dataObj.weeks[i].brigade[j].value
+				}
+
+				// суммируем сдачу всех работников за конкретную неделю
+				for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
+					// в каждом работнике обходим его сдачу за неделю
+					for (let k = 0; k < dataObj.weeks[i].workers[j].workerWeekHandOver.length; k++) {
+						currentBrigadeWeight -= dataObj.weeks[i].workers[j].workerWeekHandOver[k].weightWithPercent
+					}
+				}
+
+			}
+		}
+		return currentBrigadeWeight
 	}
 
 }
