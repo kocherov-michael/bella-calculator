@@ -20,6 +20,7 @@ export default class BrigadePage extends DefaultPage {
 		args.page = 'brigade'
 		super.createHeader(args)
 		this.addForm(args)
+		this.showPreviousBrigadeWeight()
 		this.createBrigadeButton(args)
 		super.addCreateButton({ text: 'Добавить работника', ...args })
 		this.addFieldList(args)
@@ -67,6 +68,21 @@ export default class BrigadePage extends DefaultPage {
 				</div>
 			</div>
 		</div>`
+	}
+
+	// показываем вес бригады с предыдущей недели
+	showPreviousBrigadeWeight () {
+		const previousBrigadeWeightElement = document.querySelector(`[data-brigade-previous-weight=${this.page}]`)
+		const {previousWeeksAllWorkersHandOverWeight} = LocalStorage.getPreviousBrigadeWeekWeight(this.weekNumber)
+
+		let sign = ''
+		if (previousWeeksAllWorkersHandOverWeight > 0) {
+			sign = '+'
+		}
+		else if (previousWeeksAllWorkersHandOverWeight < 0) {
+			sign = '-'
+		}
+		previousBrigadeWeightElement.textContent = `${sign} ${Math.abs(previousWeeksAllWorkersHandOverWeight)}`
 	}
 
 	// заполняем список работниками

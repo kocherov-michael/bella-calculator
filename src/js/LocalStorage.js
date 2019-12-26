@@ -776,6 +776,30 @@ export default class LocalStorage {
 	}
 
 	// получаем остаток предыдущих недель для бригады
-	// static 
+	static getPreviousBrigadeWeekWeight (weekNumber) {
+		const dataObj = LocalStorage.read() || {}
+		dataObj.weeks = dataObj.weeks || []
+
+		let previousWeeksAllWorkersHandOverWeight = 0
+		for (let i = 0; i < dataObj.weeks.length; i++) {
+			if (dataObj.weeks[i].weekNumber === weekNumber) {
+				return {previousWeeksAllWorkersHandOverWeight}
+			}
+
+			// суммируем приход в бригаду за конкретную неделю
+			for (let j = 0; j < dataObj.weeks[i].brigade.length; j++) {
+				previousWeeksAllWorkersHandOverWeight += dataObj.weeks[i].brigade[j].value
+			}
+
+			// суммируем сдачу всех работников за конкретную неделю
+			for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
+				// в каждом работнике обходим его сдачу за неделю
+				for (let k = 0; k < dataObj.weeks[i].workers[j].workerWeekHandOver.length; k++) {
+					previousWeeksAllWorkersHandOverWeight -= dataObj.weeks[i].workers[j].workerWeekHandOver[k].weightWithPercent
+				}
+			}
+
+		}
+	}
 
 }
