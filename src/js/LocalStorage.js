@@ -87,7 +87,8 @@ export default class LocalStorage {
 			id: ++dataObj.weeksId,
 			workers: workersArr,
 			brigade: [],
-			workersId
+			workersId,
+			brigadeWeekWeight: 0
 		})
 		// }
 
@@ -136,7 +137,8 @@ export default class LocalStorage {
 					workerWeekHandOver: [],
 					workerWeekWeight: 0,
 					workerWeekSalary: 0,
-					id: ++dataObj.weeks[i].workersId
+					id: ++dataObj.weeks[i].workersId,
+					weekBonus: 0
 				})
 				// dataObj.weeks[i].workers = workersArray
 				break
@@ -698,7 +700,7 @@ export default class LocalStorage {
 		}
 	}
 
-	// получаем зарплату и сдачу за неделю
+	// получаем зарплату и сдачу за неделю для одного работника
 	static getWeekBalance(workerName, weekNumber) {
 		// console.log(workerName, weekNumber)
 		const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
@@ -730,14 +732,36 @@ export default class LocalStorage {
 		}, 0)
 
 		// вес с предыдущих недель
+		// console.log('workerName', workerName)
+		// console.log('weekNumber', weekNumber)
 		const {summWeight, summBonus} = LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber)
+		// console.log(LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber))
 		const previousWeekWeight = summWeight
 		// Общий баланс к концу недели
 		const weekTotalWeight = Math.round((previousWeekWeight + workerWeekWeight) * 10000) / 10000
 		// сумма бонусов за все предыдущие недели и текущую
+		// console.log('summBonus', summBonus)
+		// console.log('bonus', bonus)
 		const totalBonus = summBonus + bonus
+		// console.log('totalBonus', totalBonus)
 		// const price = weekSalary
 		return {weekSalary, weight, weekTotalWeight, bonus, totalBonus}
 	}
+
+	// полученный бригадой вес за 1 неделю
+	// brigadeReceivingWeight(weekNumber) {
+	// 	const dataObj = LocalStorage.read() || {}
+	// 	dataObj.weeks = dataObj.weeks || []
+
+	// 	for (let i = 0; i < dataObj.weeks.length; i++) {
+	// 		// находим номер недели по названию
+	// 		if (dataObj.weeks[i].weekNumber == weekNumber) {
+	// 			// считаем все операции получения бригадой
+	// 			for (let j = 0; j < dataObj.weeks[i].brigade.length; j++) {
+
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 }

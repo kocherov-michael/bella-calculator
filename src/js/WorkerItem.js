@@ -5,7 +5,7 @@ import Router from './Router'
 export default class WorkerItem extends NewItem {
 	constructor (args = {}) {
 		super(args)
-		console.log('workerItem:', args)
+		// console.log('workerItem:', args)
 		this.args = args
 		this.workerName = args.workerName
 		this.weekNumber = args.weekNumber

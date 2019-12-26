@@ -101,6 +101,8 @@ export default class BrigadePage extends DefaultPage {
 		const { page, workerName , weekNumber } = args
 		const itemBrigadeElement = document.querySelector(`[data-brigade-field="${page}"]`)
 
+		const brigadeReceiving = LocalStorage.getOneWeek(weekNumber).brigadeWeekWeight
+
 		itemBrigadeElement.innerHTML = ''
 
 		// получаем данные из памяти
@@ -117,6 +119,11 @@ export default class BrigadePage extends DefaultPage {
 			<div class="item__header-arrow">
 				<div class="chevron"></div>
 			</div>
+		</div>
+		<div class="item__lower">
+			<span>Получено:</span>
+			<span>${brigadeReceiving ? brigadeReceiving : 0}</span>&nbsp;
+			<span>г</span>
 		</div>`
 		itemBrigadeElement.appendChild(newElement)
 

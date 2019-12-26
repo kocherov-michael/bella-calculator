@@ -13,7 +13,7 @@ export default class BrigadeBalanceList extends DefaultPage {
 
 	// отрисовываем страницу бригады
 	renderBrigadeBalanceListPage(args) {
-		console.log('BalanceList args:', args)
+		// console.log('BalanceList args:', args)
 		args.isBrigadier = true
 		this.page = args.page = 'brigadeBalanceList'
 		const {page, workerName, weekNumber} = args
@@ -34,7 +34,7 @@ export default class BrigadeBalanceList extends DefaultPage {
 
 		const brigadeArr = LocalStorage.getOneWeek(weekNumber).brigade
 		// const brigadeArr = LocalStorage.getOneWeek(weekNumber)
-		console.log(brigadeArr)
+		// console.log(brigadeArr)
 		brigadeArr.forEach( (brigadeItem) => {
 			
 			const weekItemButton = new OperationItem({
@@ -52,6 +52,10 @@ export default class BrigadeBalanceList extends DefaultPage {
 			// вешаем прослушку перетаскивания для удаления
 			super.itemTouchHandler(weekItemButton.element)
 		})
+	}
+
+	showFooterValues () {
+		// console.log('showFooterValues')
 	}
 
 	
