@@ -24,6 +24,18 @@ export default class DefaultPage extends PageHandler {
 			</div>
 		</div>
 		<div class="menu" data-menu-list>
+			<label class="menu__item font-select">
+				<div class="font-select__text">Размер шрифта</div>
+				<select class="font-select__select" type="select" data-font-size>
+					<option class="option" value="10">10</option>
+					<option class="option" value="12">12</option>
+					<option class="option" value="14">14</option>
+					<option class="option" value="16" selected="">16</option>
+					<option class="option" value="18">18</option>
+					<option class="option" value="20">20</option>
+					<option class="option" value="22">22</option>
+				</select>
+			</label>
 			<button class="menu__item" data-next="quotation" data-quotation-link="${page}">Котировки</button>
 			<button class="menu__item" data-next="weavingList"
 			data-weaving-link="${page}">Плетения</button>
@@ -32,7 +44,10 @@ export default class DefaultPage extends PageHandler {
 				<input class="check__input" type="checkbox" data-check-brigadier ${checked}>
 				<div class="check__box">
 					<div class="check__box-item"></div>
-				</div>Я бригадир</label>
+				</div>
+				Я бригадир
+			</label>
+			
 		</div>
 	</div>`
 

@@ -11,18 +11,7 @@
 	outline: none;
 }
 
-select {
-	width: 100%;
-	// убираем стандартную галочку
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
 
-	font-family: inherit;
-	font-size: inherit;
-	background-color: $default-color;
-	
-}
 .hand-over-orepations__label {
 	position: relative;
 
@@ -110,3 +99,4 @@ input:-moz-placeholder {
 .check__input:focus + .check__box {
 	// box-shadow:	0 0 0 0.1em $border-check;
 }
+

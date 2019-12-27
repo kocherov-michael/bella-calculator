@@ -1,0 +1,27 @@
+select {
+	width: 100%;
+	// убираем стандартную галочку
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+
+	font-family: inherit;
+	font-size: inherit;
+	background-color: $default-color;
+	
+}
+
+.menu .menu__item.font-select {
+	display: flex;
+	margin-top: 5em;
+}
+.font-select__text {
+	line-height: 1.7;
+	
+}
+
+.font-select__select {
+	width: auto;
+	padding: 0 12px;
+	margin-left: 10px;
+}
