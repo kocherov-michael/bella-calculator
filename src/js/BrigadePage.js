@@ -8,16 +8,16 @@ export default class BrigadePage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
 
+		args.isBrigadier = true
+		args.page = 'brigade'
+		this.page = args.page
+		this.weekNumber = args.weekNumber
 		this.renderBrigadePage(args)
 	}
 
 	// отрисовываем страницу бригады
 	renderBrigadePage(args) {
 		// console.log('brigade args:', args)
-		this.weekNumber = args.weekNumber
-		this.page = args.page
-		args.isBrigadier = true
-		args.page = 'brigade'
 		super.createHeader(args)
 		this.addForm(args)
 		this.showPreviousBrigadeWeight()
@@ -117,9 +117,10 @@ export default class BrigadePage extends DefaultPage {
 	// создаём кнопку баланса бригады
 	createBrigadeButton (args) {
 		const { page, workerName , weekNumber } = args
-		const itemBrigadeElement = document.querySelector(`[data-brigade-field="${page}"]`)
+		const itemBrigadeElement = document.querySelector(`[data-brigade-field="${this.page}"]`)
 
-		const brigadeReceiving = LocalStorage.getOneWeek(weekNumber).brigadeWeekWeight
+		// const brigadeReceiving = LocalStorage.getOneWeek(weekNumber).brigadeWeekWeight
+		const brigadeReceiving = LocalStorage.getBrigadeWeekReceive(this.weekNumber)
 
 		itemBrigadeElement.innerHTML = ''
 

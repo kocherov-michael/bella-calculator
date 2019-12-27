@@ -73,7 +73,7 @@ export default class LocalStorage {
 					workerWeekItems: [], 
 					workerWeekHandOver: [],
 					// workerWeekWeight: 0,
-					workerWeekSalary: 0,
+					// workerWeekSalary: 0,
 					id: ++workersId
 				})
 			}
@@ -136,10 +136,10 @@ export default class LocalStorage {
 					workerWeekItems: [], 
 					workerWeekHandOver: [],
 					// workerWeekWeight: 0,
-					workerWeekSalary: 0,
+					// workerWeekSalary: 0,
 					// workerWeekHandOverWeight: 0,
 					id: ++dataObj.weeks[i].workersId,
-					weekBonus: 0
+					// weekBonus: 0
 				})
 				// dataObj.weeks[i].workers = workersArray
 				break
@@ -231,17 +231,17 @@ export default class LocalStorage {
 						// dataObj.weeks[i].workers[j].workerWeekWeight -= +data.handOverOperation.weightWithPercent
 
 						// суммируем вес всей сдачи за неделю
-						dataObj.weeks[i].workers[j].workerWeekHandOverWeight += +data.handOverOperation.weightWithPercent
+						// dataObj.weeks[i].workers[j].workerWeekHandOverWeight += +data.handOverOperation.weightWithPercent
 
 						// учитываем операцию сдачи в общей сдаче недели
-						const weekSalary = dataObj.weeks[i].workers[j].workerWeekSalary += +data.handOverOperation.price
+						// const weekSalary = dataObj.weeks[i].workers[j].workerWeekSalary += +data.handOverOperation.price
 
 						// бонус за неделю
-						let bonus = 0
-						if (weekSalary > 6600) {
-							bonus = Math.round((weekSalary - 6600) * 2) / 10
-						}
-						dataObj.weeks[i].workers[j].weekBonus = bonus
+						// let bonus = 0
+						// if (weekSalary > 6600) {
+						// 	bonus = Math.round((weekSalary - 6600) * 2) / 10
+						// }
+						// dataObj.weeks[i].workers[j].weekBonus = bonus
 
 						// добавляем id
 						dataObj.weeks[i].workers[j].handOverId = dataObj.weeks[i].workers[j].handOverId || 0
@@ -541,10 +541,10 @@ export default class LocalStorage {
 		// 	.workerWeekWeight += removedElement.weightWithPercent
 
 		// учитываем удаление элемента в общей сдаче недели
-		dataObj
-			.weeks[weekIndex]
-			.workers[workerIndex]
-			.workerWeekSalary -= removedElement.price
+		// dataObj
+		// 	.weeks[weekIndex]
+		// 	.workers[workerIndex]
+		// 	.workerWeekSalary -= removedElement.price
 
 		dataObj.removedElements = dataObj.removedElements || []
 		dataObj.removedId = dataObj.removedId || 0
@@ -727,7 +727,7 @@ export default class LocalStorage {
 	static getWeekBalance(workerName, weekNumber) {
 		// console.log(workerName, weekNumber)
 		const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
-		console.log(oneWeekObj)
+		// console.log(oneWeekObj)
 		// если недель нет совсем, то возвращаем всё по нулям
 		if (!oneWeekObj) return {weekSalary: 0, weight: 0, weekTotalWeight: 0}
 
@@ -860,7 +860,34 @@ export default class LocalStorage {
 
 			}
 		}
-		return currentBrigadeWeight
+		return Math.round(currentBrigadeWeight * 1000) / 1000
 	}
+
+	// Получить остаток всех недель бригады
+	static getAbsolutelyTotalWeight () {
+		const dataObj = LocalStorage.read() || {}
+		dataObj.weeks = dataObj.weeks || []
+
+		let result = 0
+		// находим номер последней недели
+		if (dataObj.weeks.length) {
+			const lastWeekNumber = dataObj.weeks[dataObj.weeks.length - 1].weekNumber
+			result = LocalStorage.getCurrentBrigadeWeekWeight(lastWeekNumber)
+		}
+		return result
+	}
+
+	// получаем приход в бригаду за неделю
+	static getBrigadeWeekReceive (weekNumber) {
+		const brigadeArr = LocalStorage.getOneWeek(weekNumber).brigade || []
+
+		// суммируем полученный бригадой вес
+		const brigadeWeekRecieve = brigadeArr.reduce((accum,curr) => {
+			return Math.round((accum + curr.value) * 1000) / 1000
+		}, 0)
+		console.log(brigadeWeekRecieve)
+		return brigadeWeekRecieve
+	}
+
 
 }

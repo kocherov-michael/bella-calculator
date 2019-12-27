@@ -8,6 +8,7 @@ export default class WeeksListPage extends DefaultPage {
 // export default class WeeksListPage extends PageHandler {
 	constructor (args = {}) {
 		super(args)
+		this.page = args.page
 
 		this.renderWeekListPage(args)
 	}
@@ -18,7 +19,7 @@ export default class WeeksListPage extends DefaultPage {
 		// this.addCreateButton(args)
 		super.addCreateButton({ text: 'Добавить неделю', ...args })
 		this.addFieldList(args)
-		// this.showFooterValues(page, name)
+		this.showFooterValues()
 	}
 
 	addForm (args) {
@@ -99,10 +100,16 @@ export default class WeeksListPage extends DefaultPage {
 		inputElement.value = WeeksListPage.getNextWeekNumber()
 	}
 
+	// показать остаток всех недель бригады
+	showFooterValues() {
+		const footerAllWorkersElement = document.querySelector(`[data-all-weeks-total="${this.page}"]`)
+		footerAllWorkersElement.textContent = LocalStorage.getAbsolutelyTotalWeight()
+	}
+
 	// высчитываем номер недели, следующий за последней в списке 
 	static getNextWeekNumber() {
 		const weeksArr = LocalStorage.read().weeks || []
-		console.log('weeksArr.length', weeksArr.length)
+		// console.log('weeksArr.length', weeksArr.length)
 		if (weeksArr.length) {
 			return +(weeksArr[weeksArr.length - 1].weekNumber) + 1
 		}

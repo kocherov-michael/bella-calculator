@@ -287,6 +287,7 @@ export default class DefaultPage extends PageHandler {
 		const inputOperationElement = document.createElement('input')
 		inputOperationElement.classList.add('week-orepations__input', 'input')
 		inputOperationElement.setAttribute('placeholder', 'Введите вес')
+		inputOperationElement.setAttribute('type', 'number')
 		formSingleOperationElement.append(inputOperationElement)
 
 		// кнопка Прибавить
