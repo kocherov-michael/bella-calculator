@@ -1,22 +1,18 @@
-// import Handler from './Handler'
 import PageHandler from './PageHandler'
 import Router from './Router'
 import LocalStorage from './LocalStorage'
 
-// export default class DefaultPage {
 export default class DefaultPage extends PageHandler {
 	constructor (args = {}) {
 		super(args)
 	}
 
 	createHeader (args) {
-		// console.log('createHeader', args)
-		args.workerName = args.name || ''
-		const {page, isBrigadier, workerName = '', weekNumber = ''} = args
-		// console.log(page)
+		
+		const {page, workerName = '', weekNumber = ''} = args
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
 		const checked = LocalStorage.isBrigadier() ? 'checked' : ''
-		// const checked = isBrigadier ? 'checked' : ''
+		
 		headerElement.innerHTML = ''
 		headerElement.innerHTML = 
 		`<div class="header__nav" data-header-nav="${page}">

@@ -72,6 +72,7 @@ export default class WeekItemsPage extends DefaultPage {
 	createSalaryItem (page, workerName, weekNumber) {
 		// const {workerName, weekNumber, page} = args
 		const salaryFieldElement = document.querySelector(`[data-salary-field="${page}"]`)
+		const isBrigadier = LocalStorage.isBrigadier()
 
 		// очищаем поле
 		salaryFieldElement.innerHTML = ''
@@ -88,7 +89,8 @@ export default class WeekItemsPage extends DefaultPage {
 
 		// получаем вес сдачи и зарплату
 		// const {price, weight} = this.getWeekBalance(workerName, weekNumber)
-		const {weekSalary, weight} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)
+		const {weekSalary, weight, bonus, totalBonus} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)
+
 
 		// const parentElement = args.field
 		const newElement = document.createElement('div')
@@ -97,6 +99,17 @@ export default class WeekItemsPage extends DefaultPage {
 		newElement.setAttribute('data-worker', workerName)
 		newElement.setAttribute('data-next', 'handOverItems')
 		newElement.setAttribute('data-week-number', weekNumber)
+		let nonBrigadierTemplate = ''
+		
+		// если не бригадир, то добавим поле с бонусами
+		if (!isBrigadier) {
+			nonBrigadierTemplate = 
+			`<div class="item__lower">
+			<span>Бонусные (всего):</span>
+			<span>${bonus} (${totalBonus})</span>&nbsp;
+			<span>₽</span>
+		</div>`
+		}
 
 		newElement.innerHTML = 
 		`<div class="item__header">
@@ -105,18 +118,17 @@ export default class WeekItemsPage extends DefaultPage {
 			<div class="chevron"></div>
 		</div>
 	</div>
-
 	<div class="item__uppper">
+		<span>Вес:</span>
+		<span data-week-weight>${weight}</span>
+		<span>&nbsp;г</span>
+	</div>
+	<div class="item__lower">
 		<span>Зарплата:</span>
 		<span data-week-salary>${weekSalary}</span>
 		<span>&nbsp;₽</span>
 	</div>
-
-	<div class="item__lower">
-		<span>Вес:</span>
-		<span data-week-weight>${weight}</span>
-		<span>&nbsp;г</span>
-	</div>`
+	${nonBrigadierTemplate}`
 		
 		salaryFieldElement.prepend(newElement)
 

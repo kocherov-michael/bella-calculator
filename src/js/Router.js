@@ -54,7 +54,8 @@ export default class Router {
 
 	// перелистываем страницу вперёд
 	static changeNextPage (args) {
-		let {currentPageAttr, nextPageAttr, weekNumber, workerName = 'Я'} = args
+		
+		const {currentPageAttr, nextPageAttr, weekNumber, workerName = 'Я'} = args
 		// если следующая страница и текущая - одна и та же, то отмена
 		if (currentPageAttr === nextPageAttr) {
 			return
@@ -65,7 +66,6 @@ export default class Router {
 			if (!isBrigadier) {
 				nextPageAttr = 'weekItems'
 			}
-
 		}
 
 		const containerElement = document.querySelector('[data-container]')
@@ -80,65 +80,77 @@ export default class Router {
 
 		let timeout = 400
 
-		// console.log('nextPageAttr', nextPageAttr)
-		// Router.renderPage(args)
-		if (nextPageAttr === 'weeksList') {
-			this.renderWeekListPage(nextPageAttr, name)
+		// console.log(workerName)
+		Router.loadPage ({
+			page: nextPageAttr,
+			nextPageAttr, 
+			weekNumber, 
+			workerName, 
+			previousAttr: currentPageAttr || '', 
+			currentPageAttr
+		})
 
-			// если не бригадир, то загружаем вторую страницу без задержки
-			// timeout = Storage.isBrigadier() ? 400 : 0
-		}
-		else if (nextPageAttr === 'brigade') {
-			// Router.renderBrigadePage({nextPageAttr, name, weekNumber, currentPageAttr})
-			console.log('nextPageAttr', nextPageAttr)
-			console.log('workerName', workerName)
-			Router.loadPage ({page: nextPageAttr, weekNumber})
-			// const newPage = new BrigadePage ({
-			// 	currentPageAttr,
-			// 	nextPageAttr,
-			// 	weekNumber
-			// })
-		}
-		else if (nextPageAttr === 'brigadeBalanceList') {
-			Router.loadPage ({page: nextPageAttr, weekNumber})
-		}
-		else if (nextPageAttr === 'weekItems') {
-			console.log('nextPageAttr', nextPageAttr)
-			console.log('workerName', workerName)
-			Router.loadPage ({page: nextPageAttr, weekNumber, workerName})
-			// this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
-		}
-		else if (nextPageAttr === 'handOverItems') {
-			Router.loadPage ({page: nextPageAttr, weekNumber, workerName})
-			// this.renderHandOverItemsPage(nextPageAttr, name, weekNumber)
-		}
-		else if (nextPageAttr === 'weavingList') {
-			// console.log('heere')
-			Router.loadPage ({page: nextPageAttr, weekNumber, workerName, previousAttr: currentPageAttr || ''})
-			// this.renderWeavingListPage(nextPageAttr, name, weekNumber, currentPageAttr)
-		}
-		else if (nextPageAttr === 'quotation') {
-			Router.loadPage ({
-				page: nextPageAttr,
-				nextPageAttr, 
-				weekNumber, 
-				workerName, 
-				previousAttr: currentPageAttr || '', 
-				currentPageAttr
-			})
-			// this.renderQuotationPage(nextPageAttr, name, weekNumber, currentPageAttr)
-		}
-		else if (nextPageAttr === 'garbageList') {
-			Router.loadPage ({
-				page: nextPageAttr,
-				nextPageAttr, 
-				weekNumber, 
-				workerName, 
-				previousAttr: currentPageAttr || '', 
-				currentPageAttr
-			})
-			// this.renderGarbageListPage(nextPageAttr, name, weekNumber, currentPageAttr)
-		}
+		// // console.log('nextPageAttr', nextPageAttr)
+		// // Router.renderPage(args)
+		// if (nextPageAttr === 'weeksList') {
+		// 	this.renderWeekListPage(nextPageAttr, name)
+
+		// 	// если не бригадир, то загружаем вторую страницу без задержки
+		// 	// timeout = Storage.isBrigadier() ? 400 : 0
+		// }
+		// else if (nextPageAttr === 'brigade') {
+		// 	// Router.renderBrigadePage({nextPageAttr, name, weekNumber, currentPageAttr})
+		// 	console.log('nextPageAttr', nextPageAttr)
+		// 	console.log('workerName', workerName)
+		// 	Router.loadPage ({page: nextPageAttr, weekNumber})
+		// 	// const newPage = new BrigadePage ({
+		// 	// 	currentPageAttr,
+		// 	// 	nextPageAttr,
+		// 	// 	weekNumber
+		// 	// })
+		// }
+		// else if (nextPageAttr === 'brigadeBalanceList') {
+		// 	Router.loadPage ({page: nextPageAttr, weekNumber})
+		// }
+		// else if (nextPageAttr === 'weekItems') {
+		// 	console.log('nextPageAttr', nextPageAttr)
+		// 	console.log('workerName', workerName)
+		// 	Router.loadPage ({page: nextPageAttr, weekNumber, workerName})
+		// 	// this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
+		// }
+		// else if (nextPageAttr === 'handOverItems') {
+		// 	Router.loadPage ({page: nextPageAttr, weekNumber, workerName})
+		// 	// this.renderHandOverItemsPage(nextPageAttr, name, weekNumber)
+		// }
+		// else if (nextPageAttr === 'weavingList') {
+		// 	// console.log('heere')
+		// 	console.log('nextPageAttr', nextPageAttr)
+		// 	console.log('workerName', workerName)
+		// 	Router.loadPage ({page: nextPageAttr, weekNumber, workerName, previousAttr: currentPageAttr || ''})
+		// 	// this.renderWeavingListPage(nextPageAttr, name, weekNumber, currentPageAttr)
+		// }
+		// else if (nextPageAttr === 'quotation') {
+		// 	Router.loadPage ({
+		// 		page: nextPageAttr,
+		// 		nextPageAttr, 
+		// 		weekNumber, 
+		// 		workerName, 
+		// 		previousAttr: currentPageAttr || '', 
+		// 		currentPageAttr
+		// 	})
+		// 	// this.renderQuotationPage(nextPageAttr, name, weekNumber, currentPageAttr)
+		// }
+		// else if (nextPageAttr === 'garbageList') {
+		// 	Router.loadPage ({
+		// 		page: nextPageAttr,
+		// 		nextPageAttr, 
+		// 		weekNumber, 
+		// 		workerName, 
+		// 		previousAttr: currentPageAttr || '', 
+		// 		currentPageAttr
+		// 	})
+		// 	// this.renderGarbageListPage(nextPageAttr, name, weekNumber, currentPageAttr)
+		// }
 		
 
 		// устанавливаем задержку для плавной прокрутки страниц

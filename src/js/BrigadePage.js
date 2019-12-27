@@ -8,7 +8,7 @@ export default class BrigadePage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
 
-		args.isBrigadier = true
+		// args.isBrigadier = true
 		args.page = 'brigade'
 		this.page = args.page
 		this.weekNumber = args.weekNumber
@@ -104,7 +104,7 @@ export default class BrigadePage extends DefaultPage {
 					// номер недели
 					weekNumber,
 					text: worker.workerName,
-					type: 'worker',
+					// type: 'worker',
 					workerName: worker.workerName,
 					id: worker.id
 				})
@@ -139,7 +139,7 @@ export default class BrigadePage extends DefaultPage {
 				<div class="chevron"></div>
 			</div>
 		</div>
-		<div class="item__lower">
+		<div class="item__uppper">
 			<span>Получено:</span>
 			<span>${brigadeReceiving ? brigadeReceiving : 0}</span>&nbsp;
 			<span>г</span>

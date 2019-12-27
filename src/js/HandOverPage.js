@@ -34,6 +34,8 @@ export default class HandOverPage extends DefaultPage {
 	}
 
 	addFieldList (page, workerName, weekNumber) {
+		console.log('workerName', workerName)
+		console.log('weekNumber', weekNumber)
 		// const { page, workerName = 'Я', weekNumber } = args
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
 	

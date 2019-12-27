@@ -40,7 +40,7 @@ export default class WorkerItem extends NewItem {
 			<span>г</span>
 		</div>
 
-		<div class="item__uppper">
+		<div class="item__lower">
 			<span>Зарплата:</span>
 			<span>${weekSalary}</span>&nbsp;
 			<span>₽</span>
