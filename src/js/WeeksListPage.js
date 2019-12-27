@@ -13,7 +13,7 @@ export default class WeeksListPage extends DefaultPage {
 		this.renderWeekListPage(args)
 	}
 	renderWeekListPage(args) {
-		args.isBrigadier = true
+		// args.isBrigadier = true
 		super.createHeader(args)
 		this.addForm(args)
 		// this.addCreateButton(args)
@@ -102,8 +102,19 @@ export default class WeeksListPage extends DefaultPage {
 
 	// показать остаток всех недель бригады
 	showFooterValues() {
+		const isBrigadier = LocalStorage.isBrigadier()
+		let weightTotal = 0
+		if (isBrigadier) {
+			// если бригадир, то вес всех работников
+			weightTotal = LocalStorage.getAbsolutelyTotalWeight()
+		}
+		else {
+			// если не бригадир, то вес всех недель только 1 работника 'Я'
+			const {summWeight} = LocalStorage.getWeightPreviousWeekItems('Я')
+			weightTotal = summWeight
+		}
 		const footerAllWorkersElement = document.querySelector(`[data-all-weeks-total="${this.page}"]`)
-		footerAllWorkersElement.textContent = LocalStorage.getAbsolutelyTotalWeight()
+		footerAllWorkersElement.textContent = weightTotal
 	}
 
 	// удаление элемента

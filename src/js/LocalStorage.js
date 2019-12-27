@@ -15,15 +15,16 @@ export default class LocalStorage {
 
 	// изменяем статус пользователя бригадиром 
 	static setBrigadier(isBrigadier) {
-		return
-		const dataObj = Storage.read() || {}
+		// return
+		// console.log('isBrigadier', isBrigadier)
+		const dataObj = LocalStorage.read() || {}
 		dataObj.isBrigadier = isBrigadier
 		LocalStorage.save(dataObj)
 	}
 
 	// узнаём бригадир ли пользователь
 	static isBrigadier() {
-		return true
+		// return true
 		const dataObj = LocalStorage.read() || {}
 
 		LocalStorage.saveWorker({workerName: 'Я'})
@@ -69,6 +70,14 @@ export default class LocalStorage {
 					id: ++workersId
 				})
 			}
+		}
+		else {
+			workersArr.push({
+				workerName: 'Я',
+				workerWeekItems: [], 
+				workerWeekHandOver: [],
+				id: ++workersId
+			})
 		}
 
 
@@ -644,6 +653,8 @@ export default class LocalStorage {
 			}
 
 		}
+		// если искомой недели не нашлось, то возвращаем что насуммировали
+		return {summWeight, summBonus}
 	}
 
 	// получаем зарплату и сдачу за неделю для одного работника

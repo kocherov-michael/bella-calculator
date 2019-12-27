@@ -6,6 +6,7 @@ import HandOverPage from './HandOverPage'
 import WeavingListPage from './WeavingListPage'
 import GarbageListPage from './GarbageListPage'
 import QuotationPage from './QuotationPage'
+import LocalStorage from './LocalStorage'
 
 export default class Router {
 	constructor (args = {}) {
@@ -53,11 +54,18 @@ export default class Router {
 
 	// перелистываем страницу вперёд
 	static changeNextPage (args) {
-		const {currentPageAttr, nextPageAttr, weekNumber = '', workerName = ''} = args
+		let {currentPageAttr, nextPageAttr, weekNumber, workerName = 'Я'} = args
 		// если следующая страница и текущая - одна и та же, то отмена
-		// console.log('changeNextPage :', args)
 		if (currentPageAttr === nextPageAttr) {
 			return
+		}
+
+		if (nextPageAttr === 'brigade' ) {
+			const isBrigadier = LocalStorage.isBrigadier()
+			if (!isBrigadier) {
+				nextPageAttr = 'weekItems'
+			}
+
 		}
 
 		const containerElement = document.querySelector('[data-container]')
@@ -82,6 +90,8 @@ export default class Router {
 		}
 		else if (nextPageAttr === 'brigade') {
 			// Router.renderBrigadePage({nextPageAttr, name, weekNumber, currentPageAttr})
+			console.log('nextPageAttr', nextPageAttr)
+			console.log('workerName', workerName)
 			Router.loadPage ({page: nextPageAttr, weekNumber})
 			// const newPage = new BrigadePage ({
 			// 	currentPageAttr,
@@ -93,6 +103,8 @@ export default class Router {
 			Router.loadPage ({page: nextPageAttr, weekNumber})
 		}
 		else if (nextPageAttr === 'weekItems') {
+			console.log('nextPageAttr', nextPageAttr)
+			console.log('workerName', workerName)
 			Router.loadPage ({page: nextPageAttr, weekNumber, workerName})
 			// this.renderWeekItemsPage(nextPageAttr, name, weekNumber)
 		}
@@ -138,11 +150,19 @@ export default class Router {
 	}
 
 	// перелистываем страницу назад
-	static changePreviousPage (currentPageAttr, previousPageAttr, weekNumber = '', workerName = '') {
+	static changePreviousPage (currentPageAttr, previousPageAttr, weekNumber, workerName = 'Я') {
 
 		// если предыдущая страница и текущая - одна и та же, то отмена
 		if (currentPageAttr === previousPageAttr) {
 			return
+		}
+
+		if (previousPageAttr === 'brigade' ) {
+			const isBrigadier = LocalStorage.isBrigadier()
+			if (!isBrigadier) {
+				previousPageAttr = 'weeksList'
+			}
+
 		}
 		
 		const containerElement = document.querySelector('[data-container]')

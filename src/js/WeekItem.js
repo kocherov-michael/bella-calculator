@@ -22,7 +22,7 @@ export default class WeekItem extends NewItem {
 		newElement.setAttribute('data-next', 'brigade')
 		newElement.innerHTML = 
 		`<div class="item__header">
-			<div class="item__header-text" data-item-name>Неделя ${args.text || 'дракона'}</div>
+			<div class="item__header-text" data-item-name>Неделя ${args.text}</div>
 			<div class="item__header-arrow">
 				<div class="chevron"></div>
 			</div>

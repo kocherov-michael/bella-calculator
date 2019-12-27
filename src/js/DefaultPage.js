@@ -15,8 +15,8 @@ export default class DefaultPage extends PageHandler {
 		const {page, isBrigadier, workerName = '', weekNumber = ''} = args
 		// console.log(page)
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
-		// const checked = Storage.isBrigadier() ? 'checked' : ''
-		const checked = isBrigadier ? 'checked' : ''
+		const checked = LocalStorage.isBrigadier() ? 'checked' : ''
+		// const checked = isBrigadier ? 'checked' : ''
 		headerElement.innerHTML = ''
 		headerElement.innerHTML = 
 		`<div class="header__nav" data-header-nav="${page}">
