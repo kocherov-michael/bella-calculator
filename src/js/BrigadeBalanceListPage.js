@@ -33,8 +33,6 @@ export default class BrigadeBalanceList extends DefaultPage {
 		itemFieldElement.innerHTML = ''
 
 		const brigadeArr = LocalStorage.getOneWeek(weekNumber).brigade
-		// const brigadeArr = LocalStorage.getOneWeek(weekNumber)
-		// console.log(brigadeArr)
 		brigadeArr.forEach( (brigadeItem) => {
 			
 			const weekItemButton = new OperationItem({
@@ -42,10 +40,8 @@ export default class BrigadeBalanceList extends DefaultPage {
 				field: itemFieldElement,
 				// вес
 				weight: brigadeItem.value,
-				// type: 'weekItem',
 				workerName,
 				weekNumber,
-				// previous: weekItem.isPrevious,
 				id: brigadeItem.id
 			})
 
@@ -54,8 +50,12 @@ export default class BrigadeBalanceList extends DefaultPage {
 		})
 	}
 
+	// удаление элемента
+	deleteElement(elementId, weekNumber) {
+		LocalStorage.deleteRecieving(elementId, weekNumber)
+	}
+
 	showFooterValues () {
-		// console.log('showFooterValues')
 	}
 
 	

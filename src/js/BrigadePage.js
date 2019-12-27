@@ -158,6 +158,11 @@ export default class BrigadePage extends DefaultPage {
 
 	}
 
+	// удаление элемента
+	deleteElement(elementId, weekNumber) {
+		LocalStorage.deleteWorker(elementId, weekNumber)
+	}
+
 	showFooterValues () {
 		const handOverElement = document.querySelector(`[data-brigade-week-hand-over=${this.page}]`)
 		const weightElement = document.querySelector(`[data-brigade-week-weight=${this.page}]`)

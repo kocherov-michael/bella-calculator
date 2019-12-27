@@ -52,28 +52,20 @@ export default class LocalStorage {
 
 		// создаём список работников из последней недели
 		const lastWeek = dataObj.weeks.length - 1
-		// console.log(lastWeek)
 
 		const workersArr = []
 		let workersId = 0
 
 		if (lastWeek >= 0) {
 
-			// console.log(dataObj.weeks[lastWeek].workers)
 			const lastWeekWorkewsArr = dataObj.weeks[lastWeek].workers
 			for (let i = 0; i < lastWeekWorkewsArr.length; i++) {
 				const workerName = lastWeekWorkewsArr[i].workerName
-				// console.log('workerName', workerName)
-				// workersArr.push(workerName)
-	
-				// dataObj.weeks[i].workersId = dataObj.weeks[i].workersId || 0
 					
 				workersArr.push({
 					workerName: workerName,
 					workerWeekItems: [], 
 					workerWeekHandOver: [],
-					// workerWeekWeight: 0,
-					// workerWeekSalary: 0,
 					id: ++workersId
 				})
 			}
@@ -88,9 +80,7 @@ export default class LocalStorage {
 			workers: workersArr,
 			brigade: [],
 			workersId,
-			// brigadeWeekWeight: 0
 		})
-		// }
 
 		LocalStorage.save(dataObj)
 		return true
@@ -98,7 +88,6 @@ export default class LocalStorage {
 
 	// загружаем 1 неделю
 	static getOneWeek(weekNumber) {
-		// console.log('weekNumber', weekNumber)
 		
 		const dataObj = LocalStorage.read() || {}
 
@@ -106,7 +95,6 @@ export default class LocalStorage {
 			// если номер недели совпадает
 			if (dataObj.weeks[i].weekNumber === weekNumber) {
 				// возвращаем елементы внутри недели
-				// console.log('если ошибка к БД, то в запросе LocalStorage добавить .workers ')
 				return dataObj.weeks[i]
 			}
 		}
@@ -130,18 +118,12 @@ export default class LocalStorage {
 					}
 				}
 				dataObj.weeks[i].workersId = dataObj.weeks[i].workersId || 0
-				// const workersArray = dataObj.weeks[i].workers
 				dataObj.weeks[i].workers.push({
 					workerName: data.workerName,
 					workerWeekItems: [], 
 					workerWeekHandOver: [],
-					// workerWeekWeight: 0,
-					// workerWeekSalary: 0,
-					// workerWeekHandOverWeight: 0,
 					id: ++dataObj.weeks[i].workersId,
-					// weekBonus: 0
 				})
-				// dataObj.weeks[i].workers = workersArray
 				break
 			}
 		}
@@ -158,25 +140,16 @@ export default class LocalStorage {
 		for (let i = 0; i < dataObj.weeks.length; i++) {
 			// если номер недели в массиве из памяти и из формы совпадают
 			if (dataObj.weeks[i].weekNumber === data.weekNumber) {
-				// проверка на существование имени работника
-				// for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
-					// if (dataObj.weeks[i].workers[j].workerName === data.workerName) {
+				// добавляем id
+				dataObj.weeks[i].brigadeId = dataObj.weeks[i].brigadeId || 0
 
-						// добавляем id
-						dataObj.weeks[i].brigadeId = dataObj.weeks[i].brigadeId || 0
+				// создаём объект новой операции
+				dataObj.weeks[i].brigade.push({
+					value: data.singleOperation,
+					id: ++dataObj.weeks[i].brigadeId,
+				})
 
-						// создаём объект новой операции
-						dataObj.weeks[i].brigade.push({
-							value: data.singleOperation,
-							id: ++dataObj.weeks[i].brigadeId,
-						})
-
-						// учитываем операцию в общем весе бригады
-						// плохая идея
-						// dataObj.weeks[i].brigadeWeekWeight += +data.singleOperation
-						break
-					// }
-				// }
+				break
 			}
 		}
 		LocalStorage.save(dataObj)
@@ -204,8 +177,6 @@ export default class LocalStorage {
 							id: ++dataObj.weeks[i].workers[j].operationId,
 						})
 
-						// учитываем операцию в общем весе недели
-						// dataObj.weeks[i].workers[j].workerWeekWeight += +data.singleOperation
 						break
 					}
 				}
@@ -226,22 +197,6 @@ export default class LocalStorage {
 				// проверка на существование номера недели
 				for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
 					if (dataObj.weeks[i].workers[j].workerName === data.workerName) {
-
-						// учитываем операцию сдачи в общем весе недели
-						// dataObj.weeks[i].workers[j].workerWeekWeight -= +data.handOverOperation.weightWithPercent
-
-						// суммируем вес всей сдачи за неделю
-						// dataObj.weeks[i].workers[j].workerWeekHandOverWeight += +data.handOverOperation.weightWithPercent
-
-						// учитываем операцию сдачи в общей сдаче недели
-						// const weekSalary = dataObj.weeks[i].workers[j].workerWeekSalary += +data.handOverOperation.price
-
-						// бонус за неделю
-						// let bonus = 0
-						// if (weekSalary > 6600) {
-						// 	bonus = Math.round((weekSalary - 6600) * 2) / 10
-						// }
-						// dataObj.weeks[i].workers[j].weekBonus = bonus
 
 						// добавляем id
 						dataObj.weeks[i].workers[j].handOverId = dataObj.weeks[i].workers[j].handOverId || 0
@@ -361,21 +316,13 @@ export default class LocalStorage {
 		// сохраняем удалённый злемент
 		const removedElement = dataObj.weeks.splice(index, 1)[0]
 
-		dataObj.removedElements = dataObj.removedElements || []
-
-		dataObj.removedId = dataObj.removedId || 0
-
-		const removedObj = {
-			element: removedElement,
-			time: LocalStorage.getTime(),
-			id: ++dataObj.removedId,
-			way: ['weeks'],
-			index
+		const args = {
+			dataObj,
+			removedElement, 
+			index, 
+			way: ['weeks']
 		}
-
-		dataObj.removedElements.push(removedObj)
-
-		LocalStorage.save(dataObj)
+		LocalStorage.saveRemovedElement(args)
 
 		return true
 	}
@@ -387,9 +334,6 @@ export default class LocalStorage {
 		
 		const dataObj = LocalStorage.read()
 		// находим индекс удаляемого элемента
-		// for( let i =0; i < dataObj.workers; i++) {
-
-		// }
 		const weeksIndex = dataObj
 			.weeks
 			.findIndex( (week) => week.weekNumber === weekNumber)
@@ -406,21 +350,46 @@ export default class LocalStorage {
 		// сохраняем удалённый злемент
 		const removedElement = dataObj.weeks[weeksIndex].workers.splice(index, 1)[0]
 
-		dataObj.removedElements = dataObj.removedElements || []
-
-		dataObj.removedId = dataObj.removedId || 0
-
-		const removedObj = {
-			element: removedElement,
-			time: LocalStorage.getTime(),
-			id: ++dataObj.removedId,
-			way: ['weeks', [weeksIndex], 'workers'],
-			index
+		const args = {
+			dataObj,
+			removedElement, 
+			index, 
+			way: ['weeks', weeksIndex, 'workers']
 		}
+		LocalStorage.saveRemovedElement(args)
 
-		dataObj.removedElements.push(removedObj)
+		return true
+	}
 
-		LocalStorage.save(dataObj)
+	// удаление прихода в бригаду за неделю
+	static deleteRecieving(elementId, weekNumber) {
+		// console.log(elementId, weekNumber)
+		
+		const dataObj = LocalStorage.read()
+		// находим индекс удаляемого элемента
+		const weeksIndex = dataObj
+			.weeks
+			.findIndex( (week) => week.weekNumber === weekNumber)
+
+		const index = dataObj
+			.weeks[weeksIndex]
+			.brigade
+			.findIndex( (item) => {
+
+			return item.id === +elementId
+		})
+		if (index < 0) return true
+
+		// сохраняем удалённый злемент
+		const removedElement = dataObj.weeks[weeksIndex].brigade.splice(index, 1)[0]
+
+		const args = {
+			dataObj,
+			removedElement, 
+			index, 
+			way: ['weeks', weeksIndex, 'brigade']
+		}
+		LocalStorage.saveRemovedElement(args)
 
 		return true
 	}
@@ -432,10 +401,6 @@ export default class LocalStorage {
 		// console.log(elementId, workerName, weekNumber)
 		const dataObj = LocalStorage.read()
 		// находим индекс удаляемого элемента
-		// for( let i =0; i < dataObj.workers; i++) {
-
-		// }
-
 		const weekIndex = dataObj
 			.weeks
 			.findIndex( (week) => week.weekNumber === weekNumber)
@@ -460,30 +425,15 @@ export default class LocalStorage {
 			.workers[workerIndex]
 			.workerWeekItems
 			.splice(index, 1)[0]
-		
-		// учитываем удаление элемента в общем весе недели
-		// dataObj
-		// 	.weeks[weekIndex]
-		// 	.workers[workerIndex]
-		// 	.workerWeekWeight -= removedElement.value
 
-		dataObj.removedElements = dataObj.removedElements || []
-
-		dataObj.removedId = dataObj.removedId || 0
-		
-		const removedObj = {
-			element: removedElement,
-			time: LocalStorage.getTime(),
-			id: ++dataObj.removedId,
-			// way: ['weeks', [weekIndex], 'workers', [workerIndex],  'weekItems'],
-			way: ['weeks', weekIndex, 'workers', workerIndex,  'workerWeekItems'],
-			index
+		const args = {
+			dataObj,
+			removedElement, 
+			index, 
+			way: ['weeks', weekIndex, 'workers', workerIndex,  'workerWeekItems']
 		}
-
-		dataObj.removedElements.push(removedObj)
-
-		LocalStorage.save(dataObj)
-
+		LocalStorage.saveRemovedElement(args)
+		
 		return true
 	}
 
@@ -508,23 +458,6 @@ export default class LocalStorage {
 			.workerWeekHandOver
 			.findIndex( (item) => item.id == elementId)
 		
-		
-		// const workersIndex = dataObj
-		// 	.workers
-		// 	.findIndex( (worker) => worker.workerName === workerName)
-
-		// const weekIndex = dataObj
-		// 	.workers[workersIndex]
-		// 	.weeks
-		// 	.findIndex( (week) => week.weekNumber == weekNumber)
-
-		// const index = dataObj
-		// 	.workers[workersIndex]
-		// 	.weeks[weekIndex]
-		// 	.weekHandOver
-		// 	.findIndex( (item) => item.id == elementId)
-
-
 		if (index < 0) return true
 
 		// сохраняем удалённый злемент
@@ -533,34 +466,15 @@ export default class LocalStorage {
 			.workers[workerIndex]
 			.workerWeekHandOver
 			.splice(index, 1)[0]
-		
-		// учитываем удаление элемента в общем весе недели
-		// dataObj
-		// 	.weeks[weekIndex]
-		// 	.workers[workerIndex]
-		// 	.workerWeekWeight += removedElement.weightWithPercent
 
-		// учитываем удаление элемента в общей сдаче недели
-		// dataObj
-		// 	.weeks[weekIndex]
-		// 	.workers[workerIndex]
-		// 	.workerWeekSalary -= removedElement.price
-
-		dataObj.removedElements = dataObj.removedElements || []
-		dataObj.removedId = dataObj.removedId || 0
-
-		const removedObj = {
-			element: removedElement,
-			time: LocalStorage.getTime(),
-			id: ++dataObj.removedId,
-			way: ['weeks', [weekIndex], 'workers', [workerIndex], 'workerWeekHandOver'],
-			index
+		const args = {
+			dataObj,
+			removedElement, 
+			index, 
+			way: ['weeks', weekIndex, 'workers', workerIndex, 'workerWeekHandOver']
 		}
-
-		dataObj.removedElements.push(removedObj)
-
-		LocalStorage.save(dataObj)
-
+		LocalStorage.saveRemovedElement(args)
+		
 		return true
 	}
 
@@ -577,6 +491,20 @@ export default class LocalStorage {
 		// сохраняем удалённый злемент
 		const removedElement = dataObj.weavings.splice(index, 1)[0]
 
+		const args = {
+			dataObj,
+			removedElement, 
+			index, 
+			way: ['weavings']
+		}
+		LocalStorage.saveRemovedElement(args)
+
+		return true
+	}
+
+	// сохранить удалённый элемент
+	static saveRemovedElement (args) {
+		const {dataObj, removedElement, index, way} = args
 		dataObj.removedElements = dataObj.removedElements || []
 
 		dataObj.removedId = dataObj.removedId || 0
@@ -585,15 +513,13 @@ export default class LocalStorage {
 			element: removedElement,
 			time: LocalStorage.getTime(),
 			id: ++dataObj.removedId,
-			way: ['weavings'],
+			way,
 			index
 		}
 
 		dataObj.removedElements.push(removedObj)
 
 		LocalStorage.save(dataObj)
-
-		return true
 	}
 
 	// получить сегодняшнюю дату
@@ -714,9 +640,6 @@ export default class LocalStorage {
 					}
 
 					summBonus += bonus
-					// summWeight += dataObj.weeks[i].workers[j].workerWeekWeight
-					// summBonus += dataObj.weeks[i].workers[j].weekBonus
-					// console.log('summWeight', summWeight)
 				}
 			}
 
@@ -731,8 +654,6 @@ export default class LocalStorage {
 		// если недель нет совсем, то возвращаем всё по нулям
 		if (!oneWeekObj) return {weekSalary: 0, weight: 0, weekTotalWeight: 0}
 
-		// const workerWeekHandOver = oneWeekObj.workerWeekHandOver
-		// const workerWeekWeight = oneWeekObj.workerWeekWeight
 
 		let weekSalary = 0
 		// вес сдачи за неделю с процентами
@@ -748,41 +669,19 @@ export default class LocalStorage {
 			weekSalary += oneWeekObj.workerWeekHandOver[i].price
 		}
 		
-		// зарплата за неделю
-		// const weekSalary = workerWeekHandOverArr.reduce((accum,curr) => {
-		// 	return Math.round((accum + curr.price) * 10) / 10
-		// }, 0)
-
 		// бонус за неделю
 		let bonus = 0
 		if (weekSalary > 6600) {
 			bonus = Math.round((weekSalary - 6600) * 2) / 10
 		}
-		// const totalBonus = workerWeekHandOver.reduce((accum,curr) => {
-		// 	return Math.round((accum + curr.weekBonus) * 10000) / 10000
-		// }, 0)
-		
-
-		// вес сдачи за неделю с процентами
-		// const weight = workerWeekHandOverArr.reduce((accum,curr) => {
-		// 	return Math.round((accum + curr.weightWithPercent) * 10000) / 10000
-		// }, 0)
 
 		// вес с предыдущих недель
-		// console.log('workerName', workerName)
-		// console.log('weekNumber', weekNumber)
 		const {summWeight, summBonus} = LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber)
-		// console.log(LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber))
 		const previousWeekWeight = summWeight
 		// Общий баланс к концу недели
 		const weekTotalWeight = Math.round((previousWeekWeight + weekWeight) * 10000) / 10000
-		// const weekTotalWeight = Math.round((previousWeekWeight + workerWeekWeight) * 10000) / 10000
 		// сумма бонусов за все предыдущие недели и текущую
-		// console.log('summBonus', summBonus)
-		// console.log('bonus', bonus)
 		const totalBonus = summBonus + bonus
-		// console.log('totalBonus', totalBonus)
-		// const price = weekSalary
 		return {weekSalary, weight, weekTotalWeight, bonus, totalBonus}
 	}
 
@@ -817,7 +716,7 @@ export default class LocalStorage {
 		let previousWeeksAllWorkersHandOverWeight = 0
 		for (let i = 0; i < dataObj.weeks.length; i++) {
 			if (dataObj.weeks[i].weekNumber === weekNumber) {
-				return previousWeeksAllWorkersHandOverWeight
+				return Math.round(previousWeeksAllWorkersHandOverWeight * 1000) / 1000
 			}
 
 			// суммируем приход в бригаду за конкретную неделю
@@ -885,7 +784,6 @@ export default class LocalStorage {
 		const brigadeWeekRecieve = brigadeArr.reduce((accum,curr) => {
 			return Math.round((accum + curr.value) * 1000) / 1000
 		}, 0)
-		console.log(brigadeWeekRecieve)
 		return brigadeWeekRecieve
 	}
 

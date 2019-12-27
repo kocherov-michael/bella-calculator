@@ -215,6 +215,11 @@ export default class WeekItemsPage extends DefaultPage {
 	// 	}
 	// }
 
+	// удаление элемента
+	deleteElement(elementId, weekNumber, elementWorker) {
+		LocalStorage.deleteWeekItem(elementId, elementWorker, weekNumber)
+	}
+
 	showFooterValues(page, workerName = this.workerName, weekNumber) {
 		// console.log(workerName)
 		// console.log('weekItemsPage showFooterValues:', page, workerName, weekNumber)

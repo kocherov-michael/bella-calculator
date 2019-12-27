@@ -199,6 +199,11 @@ export default class HandOverPage extends DefaultPage {
 		return Math.round(weight * 10000 + weight * percent * 10000 / 100) / 10000
 	}
 
+	// удаление элемента
+	deleteElement(elementId, weekNumber, elementWorker) {
+		LocalStorage.deleteHandOverItems(elementId, elementWorker, weekNumber)
+	}
+
 	// показываем вес в подвале
 	showFooterValues(page, workerName, weekNumber) {
 

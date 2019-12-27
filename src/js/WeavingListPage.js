@@ -94,4 +94,9 @@ export default class WeavingListPage extends DefaultPage {
 		})
 	}
 
+	// удаление элемента
+	deleteElement(elementId) {
+		LocalStorage.deleteWeaving(elementId)
+	}
+
 }

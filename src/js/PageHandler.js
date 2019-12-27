@@ -221,7 +221,8 @@ export default class PageHandler {
 
 					// console.log(elementId, pageAttr, elementWorker, weekNumber)
 					// удаляем элемент из памяти
-					PageHandler.deleteElement(elementId, pageAttr, elementWorker, weekNumber)
+					this.deleteElement(elementId, weekNumber, elementWorker )
+					// PageHandler.deleteElement(elementId, pageAttr, elementWorker, weekNumber)
 					draggedElement.classList.add('deleted')
 					
 					if (elementWorker) {
@@ -256,23 +257,23 @@ export default class PageHandler {
 	}
 
 	// удаление элемента
-	static deleteElement(elementId, pageAttr, elementWorker, weekNumber) {
-		if (pageAttr === 'weeksList') {
-			LocalStorage.deleteWeek(elementId)
-		}
-		else if ( pageAttr === 'brigade') {
-			LocalStorage.deleteWorker(elementId, weekNumber)
-		}
-		else if (pageAttr === 'weekItems') {
-			LocalStorage.deleteWeekItem(elementId, elementWorker, weekNumber)
-		}
-		else if (pageAttr === 'handOverItems') {
-			LocalStorage.deleteHandOverItems(elementId, elementWorker, weekNumber)
-		}
-		else if (pageAttr === 'weavingList') {
-			LocalStorage.deleteWeaving(elementId)
-		}
-	}
+	// static deleteElement(elementId, pageAttr, elementWorker, weekNumber) {
+	// 	// if (pageAttr === 'weeksList') {
+	// 	// 	LocalStorage.deleteWeek(elementId)
+	// 	// }
+	// 	// else if ( pageAttr === 'brigade') {
+	// 	// 	LocalStorage.deleteWorker(elementId, weekNumber)
+	// 	// }
+	// 	// else if (pageAttr === 'weekItems') {
+	// 	// 	LocalStorage.deleteWeekItem(elementId, elementWorker, weekNumber)
+	// 	// }
+	// 	// else if (pageAttr === 'handOverItems') {
+	// 	// 	LocalStorage.deleteHandOverItems(elementId, elementWorker, weekNumber)
+	// 	// }
+	// 	else if (pageAttr === 'weavingList') {
+	// 		LocalStorage.deleteWeaving(elementId)
+	// 	}
+	// }
 
 
 

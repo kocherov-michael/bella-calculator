@@ -106,6 +106,11 @@ export default class WeeksListPage extends DefaultPage {
 		footerAllWorkersElement.textContent = LocalStorage.getAbsolutelyTotalWeight()
 	}
 
+	// удаление элемента
+	deleteElement(elementId) {
+		LocalStorage.deleteWeek(elementId)
+	}
+
 	// высчитываем номер недели, следующий за последней в списке 
 	static getNextWeekNumber() {
 		const weeksArr = LocalStorage.read().weeks || []
