@@ -37,6 +37,20 @@ export default class LocalStorage {
 		return dataObj.isBrigadier = dataObj.isBrigadier || false
 	}
 
+	// установить либо получить fontSize
+	static fontSize (fontSize) {
+		const dataObj = LocalStorage.read() || {}
+		if (fontSize) {
+			console.log('сохраняем fontSize', fontSize)
+			dataObj.fontSize = fontSize
+			LocalStorage.save(dataObj)
+		} else {
+			console.log('читаем fontSize')
+			dataObj.fontSize = dataObj.fontSize || 18
+			return dataObj.fontSize
+		}
+	}
+
 	// сохраняем 1 неделю
 	static saveOneWeek (data) {
 		// console.log('LocalStorage', data)

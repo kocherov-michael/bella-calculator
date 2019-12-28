@@ -12,6 +12,18 @@ export default class DefaultPage extends PageHandler {
 		const {page, workerName = '', weekNumber = ''} = args
 		const headerElement = document.querySelector(`[data-header="${page}"]`)
 		const checked = LocalStorage.isBrigadier() ? 'checked' : ''
+
+		let optionTemplate = ''
+		const fontSize = LocalStorage.fontSize()
+		document.body.style = `font-size: ${fontSize}px`
+
+		for (let size = 10; size <= 22; size += 2 ) {
+			let selected = ''
+			if ( size === fontSize ) {
+				selected = 'selected'
+			}
+			optionTemplate += `<option class="option" value="${size}" ${selected}>${size}</option>`
+		}
 		
 		headerElement.innerHTML = ''
 		headerElement.innerHTML = 
@@ -24,17 +36,11 @@ export default class DefaultPage extends PageHandler {
 			</div>
 		</div>
 		<div class="menu" data-menu-list>
-			<label class="menu__item font-select">
-				<div class="font-select__text">Размер шрифта</div>
+			<label class="menu__item font-select" data-font-size-label>
 				<select class="font-select__select" type="select" data-font-size>
-					<option class="option" value="10">10</option>
-					<option class="option" value="12">12</option>
-					<option class="option" value="14">14</option>
-					<option class="option" value="16" selected="">16</option>
-					<option class="option" value="18">18</option>
-					<option class="option" value="20">20</option>
-					<option class="option" value="22">22</option>
+					${optionTemplate}
 				</select>
+				<div class="font-select__text">Размер шрифта</div>
 			</label>
 			<button class="menu__item" data-next="quotation" data-quotation-link="${page}">Котировки</button>
 			<button class="menu__item" data-next="weavingList"
@@ -59,6 +65,8 @@ export default class DefaultPage extends PageHandler {
 		const quotationLinkElement = sectionElement.querySelector('[data-quotation-link]')
 		const garbageLinkElement = sectionElement.querySelector('[data-garbage-link]')
 		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
+		const fontSizeElement = sectionElement.querySelector('[data-font-size]')
+		const fontSizeLabelElement = sectionElement.querySelector('[data-font-size-label]')
 
 		// прослушка кнопки гамбургера
 		headerMenuElement.addEventListener('click', () => {
@@ -119,6 +127,14 @@ export default class DefaultPage extends PageHandler {
 		brigadierCheckBoxElement.addEventListener('click', () => {
 			// изменяем статус бригадир / не бригадир
 			LocalStorage.setBrigadier(brigadierCheckBoxElement.checked)
+		})
+
+		// селект font-size
+		fontSizeElement.addEventListener('change', () => {
+			console.log(fontSizeElement.value)
+			console.log(document.body)
+			document.body.style = `font-size: ${fontSizeElement.value}px`
+			LocalStorage.fontSize(fontSizeElement.value)
 		})
 
 	}

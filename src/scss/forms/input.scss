@@ -1,9 +1,9 @@
 .input {
 	padding: 1em;
-	border-radius: 10px;
+	border-radius: 0.6em;
 	border: 1px solid $border-secondary;
 	color: $mainFontColor;
-	font-size: 18px;
+	font-size: 1em;
 	transition: all 0.4s ease;
 }
 
@@ -48,7 +48,7 @@ input:-moz-placeholder {
 /* Check */
 
 .check {
-	padding-left: 2.8em;
+	padding-left: 2.6em;
 }
 
 .check__input {
