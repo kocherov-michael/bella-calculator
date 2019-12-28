@@ -4,16 +4,16 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Balance calculator</title>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=cyrillic-ext" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap&subset=cyrillic-ext,latin-ext" rel="stylesheet">
 	<link rel="shortcut icon" type="image/png" href="favicon.png" sizes="16x16">
-<link href="assets/css/app5.css" rel="stylesheet"></head>
+<link href="assets/css/app.v6.css" rel="stylesheet"></head>
 <body>
 	<div class="wrapper">
 		<div class="container" data-container>
 
 			<!-- ==================================================================================== -->
 
-			<section class="page start" data-page="start">
+			<section class="page start hide" data-page="start">
 				<div class="form-container opacity hide" data-add-form="start"></div>
 		
 				<header class="header" data-header="start"></header>
@@ -39,29 +39,106 @@
 
 			<!-- ==================================================================================== -->
 
-			<section class="page worker hide" data-page="weeksList">
+			<section class="page worker" data-page="weeksList">
 
 					<div class="form-container opacity hide"  data-add-form="weeksList"></div>
 
 					<header class="header" data-header="weeksList"></header>
 		
-					<div class="item-field" data-field="weeksList"></div>
+					<div class="item-field" data-field="weeksList">
+						<div class="item-field__items" data-item-field="weeksList"></div>
+						<div class="item-field__items" data-add-item="weeksList"></div>
+					</div>
 		
 					<footer class="footer" data-footer="weeksList">
 
 						<div class="footer__result">
 							<div class="footer__result-item">
 								<span class="footer__text">Остаток:</span>
-								<span class="footer__value" data-all-weeks-total>5678.56</span>
+								<span class="footer__value" data-all-weeks-total="weeksList">5678.56</span>
 								<span class="footer__nominal">г</span>
 							</div>
 
-							<div class="footer__result-item hide">
+							<!-- <div class="footer__result-item hide"> -->
 
-							</div>
+							<!-- </div> -->
 						</div>
 					</footer>
 		
+			</section>
+
+			<!-- ==================================================================================== -->
+
+			<section class="page brigade hide" data-page="brigade">
+
+				<div class="form-container opacity hide"  data-add-form="brigade"></div>
+
+				<header class="header" data-header="brigade"></header>
+	
+				<div class="item-field" data-field="brigade">
+					<div class="item previous-week">
+
+						<div class="item__header">
+							<div class="item__header-text" data-brigade-previous-weight="brigade">+ 123</div>
+							<div class="item__header-previous-week">
+								Прежний остаток
+							</div>
+						</div>
+
+					</div>
+					<div class="brigade-field" data-brigade-field="brigade"></div>
+
+					<div class="item-field__items" data-item-field="brigade"></div>
+					<div class="item-field__items" data-add-item="brigade"></div>
+				</div>
+	
+				<footer class="footer" data-footer="brigade">
+
+					<div class="footer__result">
+						<div class="footer__result-item">
+							<span class="footer__text">Сдано:</span>
+							<span class="footer__value" data-brigade-week-hand-over="brigade"></span>
+							<span class="footer__nominal">г</span>
+						</div>
+
+						<div class="footer__result-item">
+							<span class="footer__text">Остаток:</span>
+							<span class="footer__value" data-brigade-week-weight="brigade"></span>
+							<span class="footer__nominal">г</span>
+						</div>
+
+						<div class="footer__result-item">
+							<span class="footer__text">Зарплата:&nbsp;</span>
+
+								<span class="footer__value" data-brigade-week-salary="brigade"></span>
+								<span class="footer__value" >&nbsp; + 7% =&nbsp;</span>
+								<span class="footer__value" data-brigade-week-percent-salary="brigade"></span>
+								<span class="footer__nominal">₽</span>
+
+						</div>
+					</div>
+				</footer>
+	
+			</section>
+
+			<!-- ==================================================================================== -->
+
+			<section class="page hide" data-page="brigadeBalanceList">
+
+				<div class="form-container opacity hide"  data-add-form="brigadeBalanceList"></div>
+
+				<header class="header" data-header="brigadeBalanceList"></header>
+	
+				<div class="item-field" data-field="brigadeBalanceList">
+					
+					<div class="item-field__items" data-item-field="brigadeBalanceList"></div>
+
+					<div class="item-field__items" data-add-item="brigadeBalanceList"></div>
+				</div>
+
+				<footer class="footer" data-footer="brigadeBalanceList"></footer>
+	
+	
 			</section>
 
 			<!-- ==================================================================================== -->
@@ -74,7 +151,7 @@
 						<div class="item previous-week">
 
 							<div class="item__header">
-								<div class="item__header-text" data-previous-weight>+ 4829.45</div>
+								<div class="item__header-text" data-previous-weight="weekItems">+ 4829.45</div>
 								<div class="item__header-previous-week">
 									Прежний остаток
 								</div>
@@ -149,6 +226,8 @@
 
 					<div class="item-field__items" data-item-field="weavingList"></div>
 
+					<div class="item-field__items" data-add-item="weavingList"></div>
+
 				</div>
 
 			</section>
@@ -218,5 +297,5 @@
 
 	</div>
 	
-<script type="text/javascript" src="assets/js/app.js"></script></body>
+<script type="text/javascript" src="assets/js/app.v6.js"></script></body>
 </html>
