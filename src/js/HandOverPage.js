@@ -1,15 +1,12 @@
 import DefaultPage from './DefaultPage'
-// import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
-import WorkerItem from './WorkerItem'
-import Router from './Router'
-// import OperationItem from './OperationItem'
 import HandOverItem from './HandOverItem'
 
 
 export default class HandOverPage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
+		this.page = 'handOverItems'
 		this.workerName = args.workerName
 		this.weekNumber = args.weekNumber
 		this.renderWeekItemsPage(args)
@@ -17,40 +14,31 @@ export default class HandOverPage extends DefaultPage {
 
 	// отрисовываем страницу сдачи
 	renderWeekItemsPage(args) {
-		// console.log('WeekItemsPage args:', args)
 		args.page = 'handOverItems'
 		const {page, workerName, weekNumber} = args
-		args.isBrigadier = true
 		super.createHeader(args)
 		super.createHeaderBackArrow(page, 'weekItems', weekNumber, workerName)
-		// this.showPreviousWeight(page, name, weekNumber)
-		this.addFieldList(page, workerName, weekNumber)
+		this.addFieldList()
 		super.showHeaderName(page, workerName, weekNumber)
-		this.createAddHandOverForm(page, workerName, weekNumber)
-		// this.createSalaryItem(page, workerName, weekNumber)
-		// this.showSalaryValues(args.page, args.workerName, args.weekNumber)
-		// this.createFormAddSingleOperation(page, workerName, weekNumber)
-		this.showFooterValues(page, workerName, weekNumber)
+		this.createAddHandOverForm()
+		this.showFooterValues()
 	}
 
-	addFieldList (page, workerName, weekNumber) {
-		console.log('workerName', workerName)
-		console.log('weekNumber', weekNumber)
-		// const { page, workerName = 'Я', weekNumber } = args
-		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
+	addFieldList () {
+		const itemFieldElement = document.querySelector(`[data-item-field="${this.page}"]`)
 	
 		itemFieldElement.innerHTML = ''
 
-		const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
-		// console.log(oneWeekObj)
+		const oneWeekObj = LocalStorage.getOneWorkerWeek(this.workerName, this.weekNumber)
+
 		oneWeekObj.workerWeekHandOver.forEach( (handOverItem) => {
 			
 			const handOverItemButton = new HandOverItem({
 				// родительский элемент
 				field: itemFieldElement,
 				// type: 'handOverItem',
-				workerName,
-				weekNumber,
+				workerName: this.workerName,
+				weekNumber: this.weekNumber,
 				// вес
 				weight: handOverItem.weight,
 				weightWithPercent: handOverItem.weightWithPercent,
@@ -69,8 +57,8 @@ export default class HandOverPage extends DefaultPage {
 	}
 
 	// создаём форму добавления сдачи
-	createAddHandOverForm (page, workerName = name, weekNumber) {
-		const footerActionElement = document.querySelector(`[data-footer-action="${page}"]`)
+	createAddHandOverForm () {
+		const footerActionElement = document.querySelector(`[data-footer-action="${this.page}"]`)
 
 		let optionTemplate = ''
 		const weavingArr = LocalStorage.getWeavingArray()
@@ -151,10 +139,10 @@ export default class HandOverPage extends DefaultPage {
 		handOverButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
 
-			// если какое-то полу не заполнено, то предупреждаем пользователя
-			const weightIsEmpty = DefaultPage.showError(weightInputElement, weightInputElement.value, '')
-			const countIsEmpty = DefaultPage.showError(countInputElement, countInputElement.value, '')
-			const weavingIsEmpty = DefaultPage.showError(weavingSelectElement, weavingSelectElement.value, 'choose')
+			// если какое-то полe не заполнено, то предупреждаем пользователя
+			const weightIsEmpty = this.showError(weightInputElement, weightInputElement.value, '')
+			const countIsEmpty = this.showError(countInputElement, countInputElement.value, '')
+			const weavingIsEmpty = this.showError(weavingSelectElement, weavingSelectElement.value, 'choose')
 			if (weightIsEmpty || countIsEmpty || weavingIsEmpty) return
 
 			// получаем параметры плетения для вычисления сдачи
@@ -179,15 +167,14 @@ export default class HandOverPage extends DefaultPage {
 			}
 
 			const newHandOverValues = {
-				workerName,
-				weekNumber,
+				workerName: this.workerName,
+				weekNumber: this.weekNumber,
 				handOverOperation: handOverObj
 			}
 			
 			LocalStorage.saveHandOverOperation(newHandOverValues)
-			// console.log(this.page)
-			this.addFieldList(page, workerName, weekNumber)
-			this.showFooterValues(page, workerName, weekNumber)
+			this.addFieldList()
+			this.showFooterValues()
 
 			// после ввода операции сбрасываем вес и количество
 			weightInputElement.value = ''
@@ -207,9 +194,9 @@ export default class HandOverPage extends DefaultPage {
 	}
 
 	// показываем вес в подвале
-	showFooterValues(page, workerName, weekNumber) {
+	showFooterValues() {
 
-		const footerElement = document.querySelector(`[data-footer="${page}"]`)
+		const footerElement = document.querySelector(`[data-footer="${this.page}"]`)
 		
 		// const {price, weight, weekTotalWeight} = this.getWeekBalance(workerName, weekNumber)
 		const {weekSalary, weight, weekTotalWeight} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)

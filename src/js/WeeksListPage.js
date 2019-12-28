@@ -1,22 +1,17 @@
 import DefaultPage from './DefaultPage'
-// import Handler from './Handler'
 import LocalStorage from './LocalStorage'
-// import NewItem from './NewItem'
 import WeekItem from './WeekItem'
 
 export default class WeeksListPage extends DefaultPage {
-// export default class WeeksListPage extends PageHandler {
 	constructor (args = {}) {
 		super(args)
 		this.page = args.page
-
 		this.renderWeekListPage(args)
 	}
+
 	renderWeekListPage(args) {
-		// args.isBrigadier = true
 		super.createHeader(args)
 		this.addForm(args)
-		// this.addCreateButton(args)
 		super.addCreateButton({ text: 'Добавить неделю', ...args })
 		this.addFieldList(args)
 		this.showFooterValues()
@@ -120,6 +115,15 @@ export default class WeeksListPage extends DefaultPage {
 	// удаление элемента
 	deleteElement(elementId) {
 		LocalStorage.deleteWeek(elementId)
+	}
+
+	// сохраняем неделю в память
+	savePageItem(newItemValues) {
+		const result = LocalStorage.saveOneWeek(newItemValues)
+		if (!result) return
+		this.closeForm()
+
+		this.addFieldList({page: 'weeksList'})
 	}
 
 	// высчитываем номер недели, следующий за последней в списке 

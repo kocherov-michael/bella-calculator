@@ -1,16 +1,21 @@
 import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
 import WeavingItem from './WeavingItem'
+import Router from './Router'
 
 export default class WeavingListPage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
+		this.page = args.page
+		this.workerName = args.workerName
+		this.weekNumber = args.weekNumber
+		this.previousAttr = args.previousAttr
 
 		this.renderWeavingListPage(args)
 	}
 
 	renderWeavingListPage(args) {
-		console.log('WeavingListPage args', args)
+		// console.log('WeavingListPage args', args)
 		args.page = 'weavingList'
 		if (args.previousAttr === 'quotation' || args.previousAttr === 'garbageList') {
 			args.previousAttr = 'weeksList'
@@ -70,7 +75,7 @@ export default class WeavingListPage extends DefaultPage {
 	}
 
 	addFieldList (page, workerName, weekNumber) {
-		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
+		const itemFieldElement = document.querySelector(`[data-item-field="${this.page}"]`)
 
 		itemFieldElement.innerHTML = ''
 
@@ -97,6 +102,18 @@ export default class WeavingListPage extends DefaultPage {
 	// удаление элемента
 	deleteElement(elementId) {
 		LocalStorage.deleteWeaving(elementId)
+	}
+
+	// сохраняем плетение в память
+	savePageItem(newItemValues) {
+		const result = LocalStorage.saveWeavingItem(newItemValues)
+
+		// если уже есть такое название плетения, то отмена
+		if (!result) return
+		
+		this.closeForm()
+		// Router.loadPage({page: 'weavingList'})
+		this.addFieldList()
 	}
 
 }

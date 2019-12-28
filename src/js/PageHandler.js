@@ -1,31 +1,17 @@
 import LocalStorage from './LocalStorage'
-import Router from './Router'
-// import DefaultPage from './DefaultPage'
 
 export default class PageHandler {
-// export default class PageHandler extends DefaultPage {
 	constructor (args = {}) {
-		// super(args)
-		// this.args = args
-
-		// if (args.addItem) {
-		// 	this.addItemHandler(args.addItem)
-		// }
 	}
 
 	// Обработчик кнопки Добавить сотрудника / неделю / плетение
+	// 
 	addItemHandler (args) {
 		const { page, workerName, addButtonElement } = args
 		this.handlerArgs = args
-		// console.log(addButtonElement)
 		// текущая страница
 		const sectionElement =  document.querySelector(`[data-page="${page}"]`)
 		// кнопка Добавить
-		// const addButtonElement = sectionElement.querySelector(`[data-add="${page}"]`)
-		// addButtonElement.setAttribute('data-current-worker', this.args.workerName)
-		// if ( workerName) {
-		// 	addButtonElement.setAttribute('data-current-worker', workerName)
-		// }
 
 		// Обёртка с затемнением
 		const addFormElement =  document.querySelector(`[data-add-form="${page}"]`)
@@ -79,7 +65,6 @@ export default class PageHandler {
 	// закрываем форму
 	closeForm () {
 		// очищаем все инпуты при закрытии формы
-		// const inputsList = this.formElement.querySelectorAll('input')
 		const inputsList = this.addFormElement.querySelectorAll('input')
 		for (let i = 0; i < inputsList.length; i++) {
 			inputsList[i].value = ''
@@ -88,7 +73,6 @@ export default class PageHandler {
 		this.activeFormElement.classList.add('opacity')
 		this.addFormElement.classList.add('opacity')
 		setTimeout( () => {
-			// this.formElement.classList.add('hide')
 			this.addFormElement.classList.add('hide')
 		}, 400)
 
@@ -97,93 +81,38 @@ export default class PageHandler {
 	// Сохраняем введённые значения формы
 	saveFormValues() {
 
-		// кнопка Добавить, берём у неё имя работника
-		// const addButtonElement =  document.querySelector(`[data-add="${this.args.addItem}"]`)
-
 		const newItemValues = {}
-		// console.log('this.handlerArgs', this.handlerArgs)
 
 		// если сохраняем работника, то номер недели уже должен быть
 		if (this.handlerArgs.weekNumber) {
 			newItemValues.weekNumber = this.handlerArgs.weekNumber
 		}
 
-		// if (this.args.workerName) {
-		// 	newItemValues.workerName = this.args.workerName
-		// }
-		// сохраняем имя, если работник уже создан
-		// const nameForRender = this.args.workerName
-
-		// const inputsList = this.formElement.querySelectorAll('input')
 		const inputsList = this.addFormElement.querySelectorAll('input')
 
 		// проходимся по всем инпутам
+		let checkFieldEmpty = 1
 		for (let i = 0; i < inputsList.length; i++) {
+
 			// если инпут пустой - отмена
-			if (!inputsList[i].value.trim()) {
-				inputsList[i].value = ''
-				return inputsList[i]
+			const fieldIsEmpty = this.showError(inputsList[i], inputsList[i].value, '')
+			if (fieldIsEmpty) {
+				checkFieldEmpty *= 0
+				// продолжаем цикл чтобы проверить все поля
+				continue
 			}
 			// по ключу инпута записываем его значение
 			newItemValues[inputsList[i].name] = inputsList[i].value
 		}
+		// если какой либо из полей было пустым, то значение будет = 0
+		if (!checkFieldEmpty) return
 
-		// если страница добавления плетения
-		// if (this.args.page === 'weavingList') {
-		if (this.handlerArgs.page === 'weavingList') {
-			const result = LocalStorage.saveWeavingItem(newItemValues)
-
-			// если уже есть такое название плетения, то отмена
-			if (!result) return
-			
-			this.closeForm()
-			// this.page.addFieldList('weavingList')
-			console.log('добавили плетение, а предыдущая страница не сохранилась в атрибутах')
-			Router.loadPage({page: 'weavingList'})
-
-		// } else if (this.args.page === 'start') {
-		} else if (this.handlerArgs.page === 'start') {
-
-			const result = Storage.saveWorker(newItemValues)
-			if (!result) return
-			this.closeForm()
-			// this.page.addFieldList(this.args.addItem, nameForRender)
-		}
-
-
-		// else if (this.args.page === 'weeksList') {
-		else if (this.handlerArgs.page === 'weeksList') {
-			// если сохраняем неделю
-			// const result = Storage.saveOneWeek(newItemValues)
-
-			// newoop
-			const result = LocalStorage.saveOneWeek(newItemValues)
-			if (!result) return
-			this.closeForm()
-			// this.page.addFieldList(this.args.addItem, nameForRender)
-
-			//newoop
-			// Router.loadPage({page: 'weeksList'})
-			
-			this.addFieldList({page: 'weeksList'})
-		}
-		// else if (this.args.page === 'brigade') {
-		else if (this.handlerArgs.page === 'brigade') {
-			const result = LocalStorage.saveWorker(newItemValues)
-			if (!result) return
-			this.closeForm()
-			// Router.loadPage({page: 'brigade', weekNumber: this.args.weekNumber})
-			// Router.loadPage({page: 'brigade', weekNumber: this.handlerArgs.weekNumber})
-			this.addFieldList({page: 'brigade', weekNumber: this.handlerArgs.weekNumber})
-		}
-
-		else {
-
-			console.log('ошибка в обработчике')
-		}
+		// сохраняем новые элементы
+		this.savePageItem(newItemValues)
 	}
 
 	// обработчик перетаскивания обычного элемента
+	// 
 	itemTouchHandler (element) {
 		const touchArray = []
 		let firstTapPosition = null
@@ -256,24 +185,49 @@ export default class PageHandler {
 		} )
 	}
 
-	// удаление элемента
-	// static deleteElement(elementId, pageAttr, elementWorker, weekNumber) {
-	// 	// if (pageAttr === 'weeksList') {
-	// 	// 	LocalStorage.deleteWeek(elementId)
-	// 	// }
-	// 	// else if ( pageAttr === 'brigade') {
-	// 	// 	LocalStorage.deleteWorker(elementId, weekNumber)
-	// 	// }
-	// 	// else if (pageAttr === 'weekItems') {
-	// 	// 	LocalStorage.deleteWeekItem(elementId, elementWorker, weekNumber)
-	// 	// }
-	// 	// else if (pageAttr === 'handOverItems') {
-	// 	// 	LocalStorage.deleteHandOverItems(elementId, elementWorker, weekNumber)
-	// 	// }
-	// 	else if (pageAttr === 'weavingList') {
-	// 		LocalStorage.deleteWeaving(elementId)
-	// 	}
-	// }
+	// обработка нажатий Прибавить и Вычесть в Операции
+	// 
+	addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
+
+		// Если ничего не введено, то предупреждаем пользователя
+		const ifEmpty = this.showError(inputOperationElement, operationValue, '')
+		if (ifEmpty) return
+		
+		const newItemValues = {
+			workerName,
+			weekNumber,
+			singleOperation: operationValue
+		}
+
+		if (this.page === 'weekItems') {
+			LocalStorage.saveOperation(newItemValues)
+		}
+		else if (this.page === 'brigadeBalanceList') {
+			LocalStorage.saveBrigadeOperation(newItemValues)
+		}
+		
+		// добавляем элемент на страницу
+
+		this.addFieldList(this.page, workerName, weekNumber)
+
+		// обновляем показания в футуре
+		this.showFooterValues(this.page, workerName, weekNumber)
+		// очищаем инпут после ввода цифры
+		inputOperationElement.value = ''
+	}
+
+	// показать, что инпут пустой
+	// 
+	showError (element, currentValue, falseValue) {
+		
+		if (currentValue == falseValue) {
+			element.classList.add('warning-input')
+			setTimeout(() => {
+				element.classList.remove('warning-input')
+			}, 2000)
+			return true
+		}
+	}
 
 
 

@@ -1,15 +1,6 @@
-import NewItem from './NewItem'
-import LocalStorage from './LocalStorage'
-import Router from './Router'
-// import Handler from './Handler'
-
-export default class GarbageItem extends NewItem {
-// export default class WeeksListItem {
+export default class GarbageItem {
 	constructor (args = {}) {
-		super(args)
 		this.element = this.create(args)
-		this.itemHandler(this.element)
-		// console.log('ok')
 	}
 	create (args) {
 		
@@ -40,21 +31,4 @@ export default class GarbageItem extends NewItem {
 
 		return newElement
 	}
-
-	itemHandler (element) {
-		// element.addEventListener('click', () => {
-			
-		// 	let nextPageAttr = element.getAttribute('data-next')
-		// 	const currentPageAttr = 'weeksList'
-		// 	const weekNumber = element.getAttribute('data-week-number')
-
-		// 	// если кликаем на неделю, но не бригадир - идём в неделю работника "Я"
-		// 	if (nextPageAttr === 'brigade' && !LocalStorage.isBrigadier()) {
-		// 		nextPageAttr = 'weekItems'
-		// 	}
-
-		// 	Router.changeNextPage({currentPageAttr, nextPageAttr, weekNumber})
-		// })
-	}
-
 }

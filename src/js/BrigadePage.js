@@ -8,7 +8,6 @@ export default class BrigadePage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
 
-		// args.isBrigadier = true
 		args.page = 'brigade'
 		this.page = args.page
 		this.weekNumber = args.weekNumber
@@ -17,7 +16,6 @@ export default class BrigadePage extends DefaultPage {
 
 	// отрисовываем страницу бригады
 	renderBrigadePage(args) {
-		// console.log('brigade args:', args)
 		super.createHeader(args)
 		this.addForm(args)
 		this.showPreviousBrigadeWeight()
@@ -119,15 +117,10 @@ export default class BrigadePage extends DefaultPage {
 		const { page, workerName , weekNumber } = args
 		const itemBrigadeElement = document.querySelector(`[data-brigade-field="${this.page}"]`)
 
-		// const brigadeReceiving = LocalStorage.getOneWeek(weekNumber).brigadeWeekWeight
+		// получаем данные из памяти
 		const brigadeReceiving = LocalStorage.getBrigadeWeekReceive(this.weekNumber)
 
 		itemBrigadeElement.innerHTML = ''
-
-		// получаем данные из памяти
-		// const weekArr = LocalStorage.getOneWeek(weekNumber) || []
-
-		// weekArr.brigade
 
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
@@ -147,7 +140,6 @@ export default class BrigadePage extends DefaultPage {
 		itemBrigadeElement.appendChild(newElement)
 
 		newElement.addEventListener('click', () => {
-			// console.log({currentPageAttr: page, nextPageAttr: 'brigadeBalanceList', weekNumber, brigade: true})
 			Router.changeNextPage({
 				currentPageAttr: page, 
 				nextPageAttr: 'brigadeBalanceList', 
@@ -163,6 +155,15 @@ export default class BrigadePage extends DefaultPage {
 		LocalStorage.deleteWorker(elementId, weekNumber)
 	}
 
+	// сохраняем работника в память
+	savePageItem(newItemValues) {
+		const result = LocalStorage.saveWorker(newItemValues)
+			if (!result) return
+			this.closeForm()
+			this.addFieldList({page: 'brigade', weekNumber: this.handlerArgs.weekNumber})
+	}
+
+	// показать данный в футере
 	showFooterValues () {
 		const handOverElement = document.querySelector(`[data-brigade-week-hand-over=${this.page}]`)
 		const weightElement = document.querySelector(`[data-brigade-week-weight=${this.page}]`)

@@ -7,6 +7,8 @@ export default class DefaultPage extends PageHandler {
 		super(args)
 	}
 
+	// создаём шапку
+	// 
 	createHeader (args) {
 		
 		const {page, workerName = '', weekNumber = ''} = args
@@ -36,7 +38,7 @@ export default class DefaultPage extends PageHandler {
 			</div>
 		</div>
 		<div class="menu" data-menu-list>
-			<label class="menu__item font-select" data-font-size-label>
+			<label class="menu__item font-select">
 				<select class="font-select__select" type="select" data-font-size>
 					${optionTemplate}
 				</select>
@@ -66,7 +68,6 @@ export default class DefaultPage extends PageHandler {
 		const garbageLinkElement = sectionElement.querySelector('[data-garbage-link]')
 		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
 		const fontSizeElement = sectionElement.querySelector('[data-font-size]')
-		const fontSizeLabelElement = sectionElement.querySelector('[data-font-size-label]')
 
 		// прослушка кнопки гамбургера
 		headerMenuElement.addEventListener('click', () => {
@@ -131,31 +132,20 @@ export default class DefaultPage extends PageHandler {
 
 		// селект font-size
 		fontSizeElement.addEventListener('change', () => {
-			console.log(fontSizeElement.value)
-			console.log(document.body)
 			document.body.style = `font-size: ${fontSizeElement.value}px`
 			LocalStorage.fontSize(fontSizeElement.value)
 		})
 
 	}
 
+	// создаём кнопку добавления
+	// 
 	addCreateButton(args) {
 		const { page, workerName = name, text, weekNumber } = args
-		// console.log('addCreateButton', args)
 
 		const fieldElement = document.querySelector(`[data-add-item="${page}"]`)
 
 		fieldElement.innerHTML = ''
-		// fieldElement.innerHTML = 
-		// // <div class="item-field__items" data-item-field="${page}"></div>
-		// `<div class="item item_warning item_add" data-add="${page}">
-		// 	<div class="item__header">
-		// 		<div class="item__header-text">${text}</div>
-		// 		<div class="item__header-arrow">
-		// 			<div class="chevron"></div>
-		// 		</div>
-		// 	</div>
-		// </div>`
 
 		// кнопка Добавить
 		const addButtonElement = document.createElement('div')
@@ -173,41 +163,24 @@ export default class DefaultPage extends PageHandler {
 		</div>`
 		fieldElement.append(addButtonElement)
 
-
 		super.addItemHandler({
 			page,
 			name,
 			weekNumber,
-			// addItem: page,
-			workerName: name,
+			workerName,
 			addButtonElement
 		})
-
-		// const handler = new PageHandler({
-		// 	page,
-		// 	name,
-		// 	weekNumber,
-		// 	// menu: page,
-		// 	addItem: page,
-		// 	workerName: name,
-		// 	// backButton: page
-		// })
 	}
 
 	// добавляем в шапку стрелку назад
+	// 
 	createHeaderBackArrow (page, previousPage = '', weekNumber = '', workerName = '') {
-		// console.log('createHeaderBackArrow', page)
 		const headerNavElement = document.querySelector(`[data-header-nav="${page}"]`)
-		// // если предыдущая страница не обозначена, значит она идёт по порядку
-		// if(!previousPage) {
-		// 	previousPage = this.getPreviousPage(page)
-		// }
 
 		// создаём элемент стрелки назад в шапке
 		const arrowBackElement = document.createElement('div')
 		
 		arrowBackElement.classList.add('header__arrow')
-		// arrowBackElement.setAttribute('data-header-back', previousPage)
 		if (workerName !== '') {
 
 			arrowBackElement.setAttribute('data-header-back-worker', workerName)
@@ -227,24 +200,13 @@ export default class DefaultPage extends PageHandler {
 		// обработчик кнопка назад
 		arrowBackElement.addEventListener('click', () => {
 
-			// console.log('back')
 			Router.changePreviousPage(page, previousPage, weekNumber, workerName)
-			// let targetPageAttr = backButtonElement.getAttribute('data-header-back')
-			// const targetPageWeekAttr = backButtonElement.getAttribute('data-header-back-week')
-			// let targetPageWorkerAttr = backButtonElement.getAttribute('data-header-back-worker')
-
-			// if (targetPageAttr === 'start' && !Storage.isBrigadier()) {
-			// 	targetPageAttr = 'weeksList'
-			// 	targetPageWorkerAttr = 'Я'
-			// }
-
-			// this.page.changePreviousPage(page, targetPageAttr, targetPageWorkerAttr, targetPageWeekAttr)
-			// // backButtonElement = null
 		})
 
 	}
 
 	// показать текст в шапке
+	// 
 	showHeaderName (page, name, weekNumber = '') {
 		// console.log(page, name, weekNumber)
 		const headerTextElement = document.querySelector(`[data-header-text="${page}"]`)
@@ -271,19 +233,10 @@ export default class DefaultPage extends PageHandler {
 		}
 	}
 
-	// показать, что инпут пустой
-	static showError (element, currentValue, falseValue) {
-		
-		if (currentValue == falseValue) {
-			element.classList.add('warning-input')
-			setTimeout(() => {
-				element.classList.remove('warning-input')
-			}, 2000)
-			return true
-		}
-	}
+	
 
 	// создаём форму добавления простой операции в футере
+	// 
 	createFormAddSingleOperation (page, workerName, weekNumber) {
 		const footerElement = document.querySelector(`[data-footer="${page}"]`)
 		// если элемент уже есть, то удаляем его
@@ -332,82 +285,4 @@ export default class DefaultPage extends PageHandler {
 			this.addSingleOperationHandler(inputOperationElement, operationValue, workerName, weekNumber)
 		})
 	}
-
-	// обработка нажатий Прибавить и Вычесть в Операции
-	addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
-
-		// Если ничего не введено, то предупреждаем пользователя
-		// const ifEmpty = WeekItemsPage.showError(inputOperationElement, operationValue, '')
-		const ifEmpty = DefaultPage.showError(inputOperationElement, operationValue, '')
-		if (ifEmpty) return
-		
-		const newItemValues = {
-			workerName,
-			weekNumber,
-			singleOperation: operationValue
-		}
-
-		// console.log('this.page', this.page)
-
-		if (this.page === 'weekItems') {
-			LocalStorage.saveOperation(newItemValues)
-		}
-		else if (this.page === 'brigadeBalanceList') {
-			LocalStorage.saveBrigadeOperation(newItemValues)
-		}
-		
-		// добавляем элемент на страницу
-
-		// this.addFieldList('weekItems', workerName, weekNumber)
-
-		this.addFieldList(this.page, workerName, weekNumber)
-
-		// обновляем показания в футуре
-		this.showFooterValues(this.page, workerName, weekNumber)
-		// очищаем инпут после ввода цифры
-		inputOperationElement.value = ''
-	}
-
-	// // показать, что инпут пустой
-	// static showError (element, currentValue, falseValue) {
-		
-	// 	if (currentValue == falseValue) {
-	// 		element.classList.add('warning-input')
-	// 		setTimeout(() => {
-	// 			element.classList.remove('warning-input')
-	// 		}, 2000)
-	// 		return true
-	// 	}
-	// }
-
-
-	// получаем зарплату и сдачу за неделю
-	// getWeekBalance(workerName = this.workerName, weekNumber = this.weekNumber) {
-	// 	// console.log(workerName, weekNumber)
-	// 	const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
-	// 	// console.log(oneWeekObj)
-	// 	// если недель нет совсем, то возвращаем всё по нулям
-	// 	if (!oneWeekObj) return {weekSalary: 0, weight: 0, weekTotalWeight: 0}
-
-	// 	const workerWeekHandOver = oneWeekObj.workerWeekHandOver
-	// 	const workerWeekWeight = oneWeekObj.workerWeekWeight
-		
-	// 	// зарплата за неделю
-	// 	const weekSalary = workerWeekHandOver.reduce((accum,curr) => {
-	// 		return Math.round((accum + curr.weekSalary) * 10) / 10
-	// 	}, 0)
-
-	// 	// вес сдачи за неделю с процентами
-	// 	const weight = workerWeekHandOver.reduce((accum,curr) => {
-	// 		return Math.round((accum + curr.weightWithPercent) * 10000) / 10000
-	// 	}, 0)
-
-	// 	// вес с предыдущих недель
-	// 	const previousWeekWeight = LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber)
-	// 	// Общий баланс к концу недели
-	// 	const weekTotalWeight = Math.round((previousWeekWeight + workerWeekWeight) * 10000) / 10000
-	// 	return {weekSalary, weight, weekTotalWeight}
-	// }
-
-
 }

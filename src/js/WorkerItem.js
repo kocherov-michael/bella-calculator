@@ -1,21 +1,16 @@
-import NewItem from './NewItem'
 import LocalStorage from './LocalStorage'
 import Router from './Router'
 
-export default class WorkerItem extends NewItem {
+export default class WorkerItem {
 	constructor (args = {}) {
-		super(args)
-		// console.log('workerItem:', args)
 		this.args = args
 		this.workerName = args.workerName
 		this.weekNumber = args.weekNumber
 		this.element = this.create(args)
 		this.itemHandler(this.element)
-		// console.log('ok')
 	}
 
 	create (args) {
-		// console.log('workerItem', args)
 		const parentElement = args.field
 		let newElement = document.createElement('div')
 		newElement.classList.add('item')
@@ -25,7 +20,6 @@ export default class WorkerItem extends NewItem {
 
 		const {weekSalary, weight, weekTotalWeight, bonus, totalBonus} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)
 
-		// newElement.setAttribute('data-next', 'weekItems')
 		this.args.nextPageAttr = 'weekItems'
 		newElement.innerHTML = 
 		`<div class="item__header">
@@ -66,11 +60,6 @@ export default class WorkerItem extends NewItem {
 			
 			// let nextPageAttr = element.getAttribute('data-next')
 			const currentPageAttr = 'brigade'
-
-			// если кликаем на неделю, но не бригадир - идём в неделю работника "Я"
-			// if (nextAttr === 'brigade' && !LocalStorage.isBrigadier()) {
-			// 	nextAttr = 'weekItems'
-			// }
 
 			Router.changeNextPage({
 				currentPageAttr, 

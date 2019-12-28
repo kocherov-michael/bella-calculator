@@ -1,7 +1,5 @@
 import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
-import WorkerItem from './WorkerItem'
-import Router from './Router'
 import OperationItem from './OperationItem'
 
 export default class BrigadeBalanceList extends DefaultPage {
@@ -13,7 +11,6 @@ export default class BrigadeBalanceList extends DefaultPage {
 
 	// отрисовываем страницу бригады
 	renderBrigadeBalanceListPage(args) {
-		// console.log('BalanceList args:', args)
 		args.isBrigadier = true
 		this.page = args.page = 'brigadeBalanceList'
 		const {page, workerName, weekNumber} = args
@@ -24,10 +21,7 @@ export default class BrigadeBalanceList extends DefaultPage {
 		super.createFormAddSingleOperation(page, workerName, weekNumber)
 	}
 
-	
-
 	addFieldList (page, workerName, weekNumber) {
-		// const {page, weekNumber} = args
 		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
 	
 		itemFieldElement.innerHTML = ''
@@ -54,10 +48,5 @@ export default class BrigadeBalanceList extends DefaultPage {
 	deleteElement(elementId, weekNumber) {
 		LocalStorage.deleteRecieving(elementId, weekNumber)
 	}
-
-	showFooterValues () {
-	}
-
-	
 
 }

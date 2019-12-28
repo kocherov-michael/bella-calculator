@@ -1,16 +1,12 @@
-import NewItem from './NewItem'
 import LocalStorage from './LocalStorage'
 import Router from './Router'
-// import Handler from './Handler'
 
-export default class WeekItem extends NewItem {
-// export default class WeeksListItem {
+export default class WeekItem {
 	constructor (args = {}) {
-		super(args)
 		this.element = this.create(args)
 		this.itemHandler(this.element)
-		// console.log('ok')
 	}
+	
 	create (args) {
 		
 		const parentElement = args.field
@@ -30,11 +26,6 @@ export default class WeekItem extends NewItem {
 
 		parentElement.appendChild(newElement)
 	
-		// const handler = new Handler({
-		// 	itemHandler: newElement,
-		// 	deleteable: newElement
-		// })
-
 		// прокручиваем до последнего добавленного элемента
 		setTimeout(()=> {newElement.scrollIntoView()},400)
 		// console.log('WeekItem return:', newElement)

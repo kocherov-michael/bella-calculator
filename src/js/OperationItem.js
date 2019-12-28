@@ -1,15 +1,7 @@
-import NewItem from './NewItem'
-import LocalStorage from './LocalStorage'
-import Router from './Router'
-
-export default class OperationItem extends NewItem {
+export default class OperationItem {
 	constructor (args = {}) {
-		super(args)
-		// console.log(args)
 		this.args = args
 		this.element = this.create(args)
-		// this.itemHandler(this.element)
-		// console.log('ok')
 	}
 
 	create (args) {
@@ -46,21 +38,4 @@ export default class OperationItem extends NewItem {
 		
 		return newElement
 	}
-
-	// itemHandler (element) {
-	// 	const {workerName, nextPageAttr, weekNumber} = this.args
-	// 	// console.log('itemHandler', this.args)
-	// 	element.addEventListener('click', () => {
-			
-	// 		// let nextPageAttr = element.getAttribute('data-next')
-	// 		const currentPageAttr = 'brigade'
-
-	// 		// если кликаем на неделю, но не бригадир - идём в неделю работника "Я"
-	// 		// if (nextAttr === 'brigade' && !LocalStorage.isBrigadier()) {
-	// 		// 	nextAttr = 'weekItems'
-	// 		// }
-
-	// 	})
-	// }
-
 }

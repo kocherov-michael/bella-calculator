@@ -5,11 +5,10 @@ import GarbageItem from './GarbageItem'
 export default class GarbageListPage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
-
+		this.page = 'garbageList'
 		this.renderWeekListPage(args)
 	}
 	renderWeekListPage(args) {
-		args.isBrigadier = true
 		if (args.previousAttr === 'weavingList' || args.previousAttr === 'quotation') {
 			args.previousAttr = 'weeksList'
 		}
@@ -17,16 +16,12 @@ export default class GarbageListPage extends DefaultPage {
 		super.createHeader(args)
 		super.createHeaderBackArrow(page, previousAttr, weekNumber, workerName)
 		super.showHeaderName(page, workerName, weekNumber)
-		this.addForm(page)
-		// this.addCreateButton(args)
-		// super.addCreateButton({ text: 'Добавить неделю', ...args })
-		this.addFieldList(args)
-		// this.showFooterValues(page, name)
+		this.addForm()
+		this.addFieldList()
 	}
 
-	addFieldList (args) {
-		const { page } = args
-		const itemFieldElement = document.querySelector(`[data-item-field="${page}"]`)
+	addFieldList () {
+		const itemFieldElement = document.querySelector(`[data-item-field="${this.page}"]`)
 	
 		itemFieldElement.innerHTML = ''
 	
@@ -49,7 +44,6 @@ export default class GarbageListPage extends DefaultPage {
 				const removedItemButton = new GarbageItem({
 					// родительский элемент
 					field: itemFieldElement,
-					type: 'removedItem',
 					removedItemName: 
 						removedArr[i].element.value 
 						|| removedArr[i].element.weavingName 
@@ -66,8 +60,8 @@ export default class GarbageListPage extends DefaultPage {
 
 	
 
-	addForm (page) {
-		const formContainerElement = document.querySelector(`[data-add-form="${page}"]`)
+	addForm () {
+		const formContainerElement = document.querySelector(`[data-add-form="${this.page}"]`)
 
 		formContainerElement.innerHTML = ''
 		formContainerElement.innerHTML = 
@@ -100,7 +94,6 @@ export default class GarbageListPage extends DefaultPage {
 			</div>
 		</div>`
 
-		// this.formRestoreHandler (formContainerElement, args)
 	}
 
 	// обработчик восстановления элемента

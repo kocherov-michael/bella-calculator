@@ -176,6 +176,10 @@ export default class Router {
 			}
 
 		}
+		// если предыдущая страница не сохранилась, то возвращаемся в самое начало
+		if (!previousPageAttr) {
+			previousPageAttr = 'weeksList'
+		}
 		
 		const containerElement = document.querySelector('[data-container]')
 		const currentPageElement = document.querySelector(`[data-page=${currentPageAttr}]`)

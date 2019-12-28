@@ -16,7 +16,6 @@ export default class LocalStorage {
 	// изменяем статус пользователя бригадиром 
 	static setBrigadier(isBrigadier) {
 		// return
-		// console.log('isBrigadier', isBrigadier)
 		const dataObj = LocalStorage.read() || {}
 		dataObj.isBrigadier = isBrigadier
 		LocalStorage.save(dataObj)
@@ -41,11 +40,9 @@ export default class LocalStorage {
 	static fontSize (fontSize) {
 		const dataObj = LocalStorage.read() || {}
 		if (fontSize) {
-			console.log('сохраняем fontSize', fontSize)
 			dataObj.fontSize = fontSize
 			LocalStorage.save(dataObj)
 		} else {
-			console.log('читаем fontSize')
 			dataObj.fontSize = dataObj.fontSize || 18
 			return dataObj.fontSize
 		}
@@ -53,7 +50,6 @@ export default class LocalStorage {
 
 	// сохраняем 1 неделю
 	static saveOneWeek (data) {
-		// console.log('LocalStorage', data)
 		const dataObj = LocalStorage.read() || {}
 		
 		dataObj.weeks = dataObj.weeks || []
@@ -124,7 +120,6 @@ export default class LocalStorage {
 	}
 
 	static saveWorker(data) {
-		// console.log('идёт сохранение работника data:', data)
 		const dataObj = LocalStorage.read() || {}
 		dataObj.weeks = dataObj.weeks || []
 
@@ -134,9 +129,7 @@ export default class LocalStorage {
 			if (dataObj.weeks[i].weekNumber === data.weekNumber) {
 				// проверка на существование имени работника
 				for (let j = 0; j < dataObj.weeks[i].workers.length; j++) {
-					// console.log(dataObj.workers[i].workers)
 					if (dataObj.weeks[i].workers[j].workerName === data.workerName) {
-						console.log('имена совпадают - отмена')
 						return false
 					}
 				}
@@ -211,7 +204,6 @@ export default class LocalStorage {
 
 	// сохранить операцию сдачи
 	static saveHandOverOperation (data) {
-		// console.log(data)
 		const dataObj = LocalStorage.read() || {}
 
 		for (let i = 0; i < dataObj.weeks.length; i++) {
@@ -353,7 +345,6 @@ export default class LocalStorage {
 	
 	// удаление работника
 	static deleteWorker(elementId, weekNumber) {
-		// console.log(elementId, weekNumber)
 		
 		const dataObj = LocalStorage.read()
 		// находим индекс удаляемого элемента
@@ -386,7 +377,6 @@ export default class LocalStorage {
 
 	// удаление прихода в бригаду за неделю
 	static deleteRecieving(elementId, weekNumber) {
-		// console.log(elementId, weekNumber)
 		
 		const dataObj = LocalStorage.read()
 		// находим индекс удаляемого элемента
@@ -421,7 +411,6 @@ export default class LocalStorage {
 	// удаление операции недели
 	static deleteWeekItem(elementId, workerName, weekNumber) {
 		
-		// console.log(elementId, workerName, weekNumber)
 		const dataObj = LocalStorage.read()
 		// находим индекс удаляемого элемента
 		const weekIndex = dataObj
@@ -567,37 +556,28 @@ export default class LocalStorage {
 
 	// восстановить удалённый элемент
 	static restoreElement(id) {
-		// console.log('id', id)
 		const dataObj = LocalStorage.read() || {}
 		const removedArray = dataObj.removedElements || []
 
 		for (let i = 0; i < removedArray.length; i++) {
-			// console.log(removedArray[i].id)
 			if (removedArray[i].id === +id) {
 				// читаем сохранённый путь в элементе
 				const wayArr = removedArray[i].way
 
 				// получаем путь до массива, из которого удаляли
 				let restoreWay = dataObj
-				// console.log('restoreWay', restoreWay)
 
 				for (let j = 0; j < wayArr.length; j+=2) {
 					if (wayArr[j+1] === undefined) {
-						// console.log(wayArr[j])
 						restoreWay = restoreWay[`${wayArr[j]}`]
-						// console.log('restoreWay', restoreWay)
 					} else {
-						// console.log(wayArr[j], wayArr[j+1])
 						restoreWay = restoreWay[`${wayArr[j]}`][`${wayArr[j+1]}`]
-						// console.log('restoreWay', restoreWay)
 					}
 				}
-				// console.log('restoreWay', restoreWay)
 				const index = restoreWay.findIndex( (elem) => {
 					
 					return elem.id > removedArray[i].element.id
 				})
-				// console.log(index)
 				// удаляем элемент из корзины
 				const restoredElement = removedArray.splice(i, 1)[0].element
 				// вставляем элемент обратно в используемую часть БД
@@ -617,8 +597,6 @@ export default class LocalStorage {
 	// получить вес всех предыдущих недель работника
 	// или вес всех недель, если конкретная неделя не указана
 	static getWeightPreviousWeekItems(workerName, weekNumber) {
-		// console.log('workerName', workerName)
-		// console.log('weekNumber', weekNumber)
 		const dataObj = LocalStorage.read() || {}
 		// строка нужна для правильной работы кнопки Назад при отсутствии работников
 		dataObj.weeks = dataObj.weeks || []
@@ -630,12 +608,10 @@ export default class LocalStorage {
 		
 		// обходим все недели, ищем в них работника по имени
 		for (let i = 0; i < dataObj.weeks.length; i++) {
-			// console.log('dataObj.weeks[i]', dataObj.weeks[i])
 
 			// находим неделю, до которой будем считать
 			if (dataObj.weeks[i].weekNumber === weekNumber) {
 
-				// console.log('getWeightPreviousWeekItems возвращает:', Math.round(summWeight * 10000) / 10000)
 				summWeight = Math.round(summWeight * 10000) / 10000
 				return {summWeight, summBonus}
 
@@ -673,9 +649,7 @@ export default class LocalStorage {
 
 	// получаем зарплату и сдачу за неделю для одного работника
 	static getWeekBalance(workerName, weekNumber) {
-		// console.log(workerName, weekNumber)
 		const oneWeekObj = LocalStorage.getOneWorkerWeek(workerName, weekNumber)
-		// console.log(oneWeekObj)
 		// если недель нет совсем, то возвращаем всё по нулям
 		if (!oneWeekObj) return {weekSalary: 0, weight: 0, weekTotalWeight: 0}
 
