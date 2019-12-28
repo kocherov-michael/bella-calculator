@@ -46,8 +46,8 @@ export default class WeavingListPage extends DefaultPage {
 		<div class="form__inputs">
 			<input type="text" class="input" placeholder="Название" value="" name="weavingName">
 			<input type="number" class="input" placeholder="Угар %" name="percent">
-			<input type="number" class="input" placeholder="Цепь ₽" name="chain">
-			<input type="number" class="input" placeholder="Браслет ₽" name="bracelet">
+			<input type="number" class="input" placeholder="Цепь руб" name="chain">
+			<input type="number" class="input" placeholder="Браслет руб" name="bracelet">
 		</div>
 		<div class="form__buttons">
 			<div class="form__buttons-save">

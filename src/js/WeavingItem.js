@@ -21,13 +21,13 @@ export default class WeavingItem{
 <div class="item__uppper">
 	<span>Цепь:</span>
 	<span>${args.chain}</span>
-	<span>&nbsp;₽</span>
+	<span>&nbsp;руб</span>
 </div>
 
 <div class="item__lower">
 	<span>Браслет:</span>
 	<span>${args.bracelet}</span>
-	<span>&nbsp;₽</span>
+	<span>&nbsp;руб</span>
 </div>`
 
 	parentElement.append(newElement)

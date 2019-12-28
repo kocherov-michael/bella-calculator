@@ -37,12 +37,12 @@ export default class WorkerItem {
 		<div class="item__lower">
 			<span>Зарплата:</span>
 			<span>${weekSalary}</span>&nbsp;
-			<span>₽</span>
+			<span>руб</span>
 		</div>
 		<div class="item__lower">
 			<span>Бонусные (всего):</span>
 			<span>${bonus} (${totalBonus})</span>&nbsp;
-			<span>₽</span>
+			<span>руб</span>
 		</div>`
 
 		parentElement.appendChild(newElement)

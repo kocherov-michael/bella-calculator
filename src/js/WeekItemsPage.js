@@ -84,7 +84,7 @@ export default class WeekItemsPage extends DefaultPage {
 			`<div class="item__lower">
 			<span>Бонусные (всего):</span>
 			<span>${bonus} (${totalBonus})</span>&nbsp;
-			<span>₽</span>
+			<span>руб</span>
 		</div>`
 		}
 
@@ -103,7 +103,7 @@ export default class WeekItemsPage extends DefaultPage {
 	<div class="item__lower">
 		<span>Зарплата:</span>
 		<span data-week-salary>${weekSalary}</span>
-		<span>&nbsp;₽</span>
+		<span>&nbsp;руб</span>
 	</div>
 	${nonBrigadierTemplate}`
 		

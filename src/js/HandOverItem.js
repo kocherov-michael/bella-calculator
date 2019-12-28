@@ -44,7 +44,7 @@ export default class HandOverItem {
 		<div class="item__lower">
 			<span>Сумма:</span>
 			<span>${args.price}</span>&nbsp;
-			<span>₽</span>
+			<span>руб</span>
 		</div>`
 
 		parentElement.append(newElement)
