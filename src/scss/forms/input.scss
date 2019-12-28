@@ -1,6 +1,6 @@
 .input {
 	padding: 1em;
-	border-radius: 0.6em;
+	border-radius: 0.55em;
 	border: 1px solid $border-secondary;
 	color: $mainFontColor;
 	font-size: 1em;
@@ -29,7 +29,7 @@
 	}
 }
 .option {
-	font-size: 24px;
+	font-size: 0.75em;
 }
 input::-webkit-input-placeholder {
 	color: $neutral-placeholder;

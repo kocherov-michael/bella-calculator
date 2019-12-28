@@ -26,7 +26,7 @@
 }
 .header__menu, .header__arrow {
 	min-width: 50px;
-	min-height: 50px;
+	min-height: calc(25px+1.5em);
 	padding-right: 24px;
 	padding-left: 24px;
 	display: flex;

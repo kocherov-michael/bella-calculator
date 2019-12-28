@@ -4,7 +4,7 @@
 	align-items: stretch;
 	padding: 1em 28px 1em 24px;
 	background-color: $default-color;
-	border-radius: 10px;
+	border-radius: .55em;
 	border: none;
 	font-size: inherit;
 	font-family: $mainFont;
@@ -13,7 +13,7 @@
 }
 
 .item-field .item {
-	margin-top: 16px;
+	margin-top: .9em;
 	// margin-bottom: 16px;
 	
 	&.deleted {
@@ -37,6 +37,10 @@
 	flex: 1;
 	text-align: start;
 	line-height: 1.2;
+}
+
+.garbage .item__header-text {
+	margin-bottom: 0.5em;
 }
 
 .item__header-arrow {
@@ -131,7 +135,7 @@
 }
 
 .cross {
-	font-size: 16px;
+	font-size: 0.9em;
 }
 
 .symbol {
@@ -148,7 +152,7 @@
 	width: 0.625em;
 	height: 0.3125em;
 	top: 50%;
-	border-bottom: 3px solid #fff;
-	border-left: 3px solid #fff;
+	border-bottom: .17em solid #fff;
+	border-left: .17em solid #fff;
 	transform: rotate(-45deg) translateY(-50%);
 }

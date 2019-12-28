@@ -17,9 +17,9 @@ export default class DefaultPage extends PageHandler {
 		const fontSize = LocalStorage.fontSize()
 		document.body.style = `font-size: ${fontSize}px`
 
-		for (let size = 10; size <= 22; size += 2 ) {
+		for (let size = 10; size <= 20; size += 2 ) {
 			let selected = ''
-			if ( size === fontSize ) {
+			if ( size == fontSize ) {
 				selected = 'selected'
 			}
 			optionTemplate += `<option class="option" value="${size}" ${selected}>${size}</option>`

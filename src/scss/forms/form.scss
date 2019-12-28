@@ -19,16 +19,16 @@
 }
 
 .form {
-	border-radius: 10px;
+	border-radius: 0.55em;
 	border: 1px solid $border-secondary;
 	color: $mainFontColor;
-	font-size: 18px;
+	font-size: 1em;
 	background-color: $default-color;
 }
 
 .form__heading {
 	display: flex;
-	padding: 21px 24px;
+	padding: 1.16em 24px;
 	font-weight: bold;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .form__heading-close {
-	font-size: 16px;
+	font-size: .9em;
 	color: $neutral-primary;
 	cursor: pointer;
 }
@@ -46,18 +46,18 @@
 .form__inputs {
 	display: flex;
 	flex-direction: column;
-	padding: 3px 24px 0;
+	padding: .17em 24px 0;
 	input {
-		margin-bottom: 16px;
+		margin-bottom: .9em;
 	}
 }
 
 .form__buttons {
-	padding: 0 24px 24px;
+	padding: 0 24px 1.33em;
 }
 
 .form__buttons-save {
-	margin-bottom: 16px;
+	margin-bottom: .9em;
 
 	// .item__header-arrow {
 	// 	height: 1em;
