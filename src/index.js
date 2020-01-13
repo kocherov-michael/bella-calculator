@@ -19,18 +19,7 @@ window.addEventListener('resize', () => {
 // 	return true
 // }
 
-
-
-// import './js/common'
-// import './css/main.css'
 import './scss/main.scss'
-
-
-
-// import Page from './js/Page'
-// const page = new Page({
-// 	start: 'start'
-// })
 
 import Router from './js/Router'
 
