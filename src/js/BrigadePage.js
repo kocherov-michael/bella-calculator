@@ -168,6 +168,7 @@ export default class BrigadePage extends DefaultPage {
 		const handOverElement = document.querySelector(`[data-brigade-week-hand-over=${this.page}]`)
 		const weightElement = document.querySelector(`[data-brigade-week-weight=${this.page}]`)
 		const salaryElement = document.querySelector(`[data-brigade-week-salary=${this.page}]`)
+		const percent7Element = document.querySelector(`[data-brigade-week-7-percent=${this.page}]`)
 		const salaryPercentElement = document.querySelector(`[data-brigade-week-percent-salary=${this.page}]`)
 		// получаем для всех работников вес сдачи и зарплату
 		const {workersWeekHandOverWeight, workersWeekSalary} = LocalStorage.weekHandOverAllWorkers(this.weekNumber)
@@ -175,6 +176,7 @@ export default class BrigadePage extends DefaultPage {
 
 		handOverElement.textContent = workersWeekHandOverWeight
 		salaryElement.textContent = workersWeekSalary
+		percent7Element.textContent = Math.round(workersWeekSalary * 7 /10) / 10
 		salaryPercentElement.textContent = Math.round(workersWeekSalary * 107 /10) / 10
 		weightElement.textContent = currentBrigadeWeight
 	}
