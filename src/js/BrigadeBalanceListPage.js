@@ -49,4 +49,9 @@ export default class BrigadeBalanceList extends DefaultPage {
 		LocalStorage.deleteRecieving(elementId, weekNumber)
 	}
 
+	// заглушка, не удалять
+	showFooterValues() {
+		
+	}
+
 }
