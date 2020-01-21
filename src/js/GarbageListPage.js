@@ -6,9 +6,9 @@ export default class GarbageListPage extends DefaultPage {
 	constructor (args = {}) {
 		super(args)
 		this.page = 'garbageList'
-		this.renderWeekListPage(args)
+		this.renderGarbageListPage(args)
 	}
-	renderWeekListPage(args) {
+	renderGarbageListPage(args) {
 		if (args.previousAttr === 'weavingList' || args.previousAttr === 'quotation') {
 			args.previousAttr = 'weeksList'
 		}
@@ -38,9 +38,10 @@ export default class GarbageListPage extends DefaultPage {
 				else if (place === 'workers') {
 					text = removedArr[i].element.workerName
 				}
-				else if (place === 'weekHandOver') {
-					text = `${removedArr[i].element.weightWithPercent} ${removedArr[i].element.weaving} ${removedArr[i].element.count}шт.`
+				else if (place === 'workerWeekHandOver') {
+					text = `${removedArr[i].element.weight} ${removedArr[i].element.weaving} ${removedArr[i].element.count}шт.`
 				}
+				console.log(removedArr[i])
 				const removedItemButton = new GarbageItem({
 					// родительский элемент
 					field: itemFieldElement,

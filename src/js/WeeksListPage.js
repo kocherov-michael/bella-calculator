@@ -109,7 +109,8 @@ export default class WeeksListPage extends DefaultPage {
 			weightTotal = summWeight
 		}
 		const footerAllWorkersElement = document.querySelector(`[data-all-weeks-total="${this.page}"]`)
-		footerAllWorkersElement.textContent = weightTotal
+		footerAllWorkersElement.textContent = Math.round(weightTotal * 1000) / 1000
+		
 	}
 
 	// удаление элемента
