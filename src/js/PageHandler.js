@@ -214,6 +214,8 @@ export default class PageHandler {
 		this.showFooterValues(this.page, workerName, weekNumber)
 		// очищаем инпут после ввода цифры
 		inputOperationElement.value = ''
+		// фокус на инпут чтобы клавиатура не пропадала
+		inputOperationElement.focus()
 	}
 
 	// показать, что инпут пустой
