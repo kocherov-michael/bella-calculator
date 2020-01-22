@@ -303,6 +303,23 @@ export default class LocalStorage {
 
 		dataObj.weavings.push(data)
 
+		// сортируем названия по алфавиту
+		dataObj.weavings.sort((a,b) =>
+		{
+			const aName = a.weavingName.toLowerCase()
+			const	bName = b.weavingName.toLowerCase()
+			
+			if (aName < bName) {
+				return -1
+			}
+			else if (aName > bName) {
+				return 1
+			}
+			else {
+				return 0
+			}
+		})
+
 		LocalStorage.save(dataObj)
 
 		return true

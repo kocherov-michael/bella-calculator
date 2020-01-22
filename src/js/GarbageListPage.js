@@ -41,7 +41,7 @@ export default class GarbageListPage extends DefaultPage {
 				else if (place === 'workerWeekHandOver') {
 					text = `${removedArr[i].element.weight} ${removedArr[i].element.weaving} ${removedArr[i].element.count}шт.`
 				}
-				console.log(removedArr[i])
+				
 				const removedItemButton = new GarbageItem({
 					// родительский элемент
 					field: itemFieldElement,
