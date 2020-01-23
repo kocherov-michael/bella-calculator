@@ -20,6 +20,9 @@ export default class WorkerItem {
 
 		const {weekSalary, weight, weekTotalWeight, bonus, totalBonus} = LocalStorage.getWeekBalance(this.workerName, this.weekNumber)
 
+		// запоминаем остаток работника для подсчёта остатка бригадира 
+		this.weekTotalWeight = weekTotalWeight
+
 		this.args.nextPageAttr = 'weekItems'
 		newElement.innerHTML = 
 		`<div class="item__header">
@@ -30,7 +33,7 @@ export default class WorkerItem {
 		</div>
 		<div class="item__uppper">
 			<span>Остаток:</span>
-			<span>${weekTotalWeight}</span>&nbsp;
+			<span data-worker-week-total-weight>${weekTotalWeight}</span>&nbsp;
 			<span>г</span>
 		</div>
 

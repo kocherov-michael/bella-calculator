@@ -25,6 +25,7 @@ export default class BrigadePage extends DefaultPage {
 		super.createHeaderBackArrow(args.page, 'weeksList', args.weekNumber)
 		super.showHeaderName(args.page, args.workerName, args.weekNumber)
 		this.showFooterValues(args.page, name)
+		this.showBrigadierResidue()
 	}
 
 	addForm (args) {
@@ -93,6 +94,9 @@ export default class BrigadePage extends DefaultPage {
 		// получаем данные из памяти
 		const weekArr = LocalStorage.getOneWeek(weekNumber).workers || []
 
+		// переменная для остатка всех работников кроме бригадира
+		this.workersResidue = 0
+
 		// const workerWeeks = LocalStorage.getWorkerWeeks(name)
 		weekArr.forEach( (worker) => {
 				
@@ -108,6 +112,12 @@ export default class BrigadePage extends DefaultPage {
 
 				// вешаем прослушку перетаскивания для удаления
 				super.itemTouchHandler(workerButton.element)
+
+				// суммируем остатки всех работников чтобы посчитать остаток бригадира
+				if (worker.workerName !== 'Я') {
+					this.workersResidue += workerButton.weekTotalWeight
+				}
+
 			})
 	}
 
@@ -173,11 +183,26 @@ export default class BrigadePage extends DefaultPage {
 		const {workersWeekHandOverWeight, workersWeekSalary} = LocalStorage.weekHandOverAllWorkers(this.weekNumber)
 		const currentBrigadeWeight = LocalStorage.getCurrentBrigadeWeekWeight(this.weekNumber)
 
+		// сохраняем недельный остаток чтобы посчитать остаток бригадира
+		this.currentBrigadeWeight = currentBrigadeWeight
+
 		handOverElement.textContent = Math.round(workersWeekHandOverWeight * 1000) / 1000
 		salaryElement.textContent = workersWeekSalary
 		percent7Element.textContent = Math.round(workersWeekSalary * 7 /10) / 10
 		salaryPercentElement.textContent = Math.round(workersWeekSalary * 107 /10) / 10
 		weightElement.textContent = currentBrigadeWeight
+	}
+
+	// показываем остаток бригадира в его поле работника
+	showBrigadierResidue () {
+		const pageElement = document.querySelector(`[data-page="${this.page}"]`)
+		const brigadierElement = pageElement.querySelector(`[data-worker='Я']`)
+		const brigadierWeekTotalWeightElement = brigadierElement.querySelector(`[data-worker-week-total-weight]`)
+
+		// считаем остаток бригадира = остаток бригады - остатки всех работников
+		const brigadierResidue = Math.round((this.currentBrigadeWeight - this.workersResidue) * 1000) / 1000
+
+		brigadierWeekTotalWeightElement.textContent = brigadierResidue
 	}
 
 }
