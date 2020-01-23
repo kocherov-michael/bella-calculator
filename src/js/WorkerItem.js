@@ -58,10 +58,9 @@ export default class WorkerItem {
 
 	itemHandler (element) {
 		const {workerName, nextPageAttr, weekNumber} = this.args
-		// console.log('itemHandler', this.args)
+		
 		element.addEventListener('click', () => {
 			
-			// let nextPageAttr = element.getAttribute('data-next')
 			const currentPageAttr = 'brigade'
 
 			Router.changeNextPage({
