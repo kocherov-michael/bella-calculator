@@ -102,7 +102,6 @@ export default class BrigadePage extends DefaultPage {
 					// номер недели
 					weekNumber,
 					text: worker.workerName,
-					// type: 'worker',
 					workerName: worker.workerName,
 					id: worker.id
 				})
@@ -174,7 +173,7 @@ export default class BrigadePage extends DefaultPage {
 		const {workersWeekHandOverWeight, workersWeekSalary} = LocalStorage.weekHandOverAllWorkers(this.weekNumber)
 		const currentBrigadeWeight = LocalStorage.getCurrentBrigadeWeekWeight(this.weekNumber)
 
-		handOverElement.textContent = workersWeekHandOverWeight
+		handOverElement.textContent = Math.round(workersWeekHandOverWeight * 1000) / 1000
 		salaryElement.textContent = workersWeekSalary
 		percent7Element.textContent = Math.round(workersWeekSalary * 7 /10) / 10
 		salaryPercentElement.textContent = Math.round(workersWeekSalary * 107 /10) / 10

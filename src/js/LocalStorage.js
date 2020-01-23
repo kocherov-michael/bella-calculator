@@ -695,7 +695,7 @@ export default class LocalStorage {
 		const {summWeight, summBonus} = LocalStorage.getWeightPreviousWeekItems(workerName, weekNumber)
 		const previousWeekWeight = summWeight
 		// Общий баланс к концу недели
-		const weekTotalWeight = Math.round((previousWeekWeight + weekWeight) * 10000) / 10000
+		const weekTotalWeight = Math.round((previousWeekWeight + weekWeight) * 1000) / 1000
 		// сумма бонусов за все предыдущие недели и текущую
 		const totalBonus = summBonus + bonus
 		return {weekSalary, weight, weekTotalWeight, bonus, totalBonus}
