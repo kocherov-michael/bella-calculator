@@ -33,8 +33,37 @@ export default class LoginPage extends DefaultPage {
 			// Router.openFirstPage({page: 'login'})
 			const currentPageElement = document.querySelector(`[data-page="login"]`)
 			currentPageElement.classList.remove('hide')
+			this.renderLoginPage()
 			this.listenLoginPage()
 		}
+	}
+
+	// отрисовываем страницу входа
+	renderLoginPage() {
+		const currentPageElement = document.querySelector(`[data-page="${this.page}"]`)
+
+		currentPageElement.innerHTML = ""
+		currentPageElement.innerHTML = 
+		`<form class="start-form">
+		<div class="start-form__logo"></div>
+
+		<div class="start-form__input email" data-error="Данная почта не зарегистрирована">
+			<input type="email" class="email__text" placeholder="Почта" value="" name="email" data-email-login>
+		</div>
+
+		<div class="start-form__input password">
+			<input type="password" class="password__text" placeholder="Пароль" value="" name="password" data-password-login>
+			<div class="password__eye">
+				<img src="assets/img/open_eye.svg" class="password-is-hidden" alt="show">
+				<img src="assets/img/closed_eye.svg" class="password-is-visible" alt="hide">
+			</div>
+		</div>
+
+		<button class="start-form__login login-button" data-login-button>Войти</button>
+		
+		<div class="start-form__forgot" data-forgot-button>Забыли пароль?</div>
+	</form>
+	<button class="start-form__registration login-button login-button_color_secondary" data-registration-button>Зарегистрироваться</button>`
 	}
 
 	listenLoginPage() {
