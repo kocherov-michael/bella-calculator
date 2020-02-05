@@ -45,29 +45,32 @@ export default class RegistrationPage extends DefaultPage {
 
 		registrationButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
-			// console.log(registrationEmailElement.value)
-			// console.log(registrationPasswordElement.value)
-			const correctEmail = LoginPage.validate(registrationEmailElement.value)
+			
+			const userEmail = LoginPage.validate(registrationEmailElement)
+			if (!userEmail) {
+				return
+			}
 
-			if (!correctEmail) {
-				const registrationContainerElement = registrationEmailElement.closest('.email')
-				registrationContainerElement.setAttribute('data-error', 'Адрес почты не корректен')
-				registrationContainerElement.classList.add('error')
+			const userPassword = LoginPage.isNotEmpty(registrationPasswordElement)
+			// console.log(userPassword)
+			if (!userPassword) {
+				return
+			}
+			const userObj = {userEmail, userPassword}
+			// console.log(userObj)
+			const result = LocalStorage.registerUser(userObj)
 
-				// прослушиваем ввод текста в инпут чтобы убрать ошибку
-				registrationEmailElement.addEventListener('input', () => {
-					registrationContainerElement.classList.remove('error')
+			if (result) {
+				
+				Router.changeNextPage({
+					currentPageAttr: this.page, 
+					nextPageAttr: 'weeksList', 
+					weekNumber: ''
 				})
 			}
-			// registrationEmailElement.value
 
 			// localStorage.setItem('bella-user', JSON.stringify(dataObj))
 
-			// Router.changeNextPage({
-			// 	currentPageAttr: this.page, 
-			// 	nextPageAttr: 'weeksList', 
-			// 	weekNumber: ''
-			// })
 		})
 	}
 

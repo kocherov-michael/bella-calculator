@@ -71,10 +71,43 @@ export default class LoginPage extends DefaultPage {
 		const loginButtonElement = currentPageElement.querySelector(`[data-login-button]`)
 		const forgotButtonElement = currentPageElement.querySelector(`[data-forgot-button]`)
 		const registrationButtonElement = currentPageElement.querySelector(`[data-registration-button]`)
+		const loginEmailElement = currentPageElement.querySelector(`[data-email-login]`)
+		const loginPasswordElement = currentPageElement.querySelector(`[data-password-login]`)
 
 		loginButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
 			// console.log('login')
+			const userEmail = LoginPage.validate(loginEmailElement)
+
+			if (!userEmail) {
+				return
+			}
+
+			const userPassword = LoginPage.isNotEmpty(loginPasswordElement)
+
+			if (!userPassword) {
+				return
+			}
+
+			const userObj = {userEmail, userPassword}
+
+			const result = LocalStorage.login(userObj)
+
+			// проверяем результаты запроса
+			if (result === true) {
+				Router.changeNextPage({
+					currentPageAttr: this.page, 
+					nextPageAttr: 'weeksList', 
+					weekNumber: ''
+				})
+			} else if (result === 'wrong password') {
+				// console.log('result:', result)
+				LoginPage.showInputError(loginPasswordElement, 'Пароль введён неверно')
+			} else if (result === 'wrong email') {
+				// console.log('result:', result)
+				LoginPage.showInputError(loginEmailElement, 'Данная почта не зарегистрирована')
+			}
+
 		})
 
 		forgotButtonElement.addEventListener('click', (event) => {
@@ -102,18 +135,45 @@ export default class LoginPage extends DefaultPage {
 
 	}
 
+	// показать ошибку Input
+	static showInputError (inputElement, errorText) {
+		const inputContainerElement = inputElement.closest('.start-form__input')
+			inputContainerElement.setAttribute('data-error', errorText)
+			inputContainerElement.classList.add('error')
+	
+			// прослушиваем ввод текста в инпут чтобы убрать ошибку
+			inputElement.addEventListener('input', () => {
+				inputContainerElement.classList.remove('error')
+			})
+	}
+
 	// проверка валидности email
-	static validate(email) {
+	static validate(inputElement) {
 		const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-		// const address = document.forms[form_id].elements[email].value;
-		if(reg.test(email) == false) {
-			console.log('Введите корректный e-mail');
-			return false;
+		const email = inputElement.value.trim()
+
+		if(reg.test(email) === false) {
+			LoginPage.showInputError(inputElement, 'Адрес почты не корректен')
+
+			return false
 		}
 		else {
-			console.log('корректен')
-			return true
+			return email
 		}
  }
+
+ // проверка пустой ли пароль
+ static isNotEmpty(inputElement) {
+	const password = inputElement.value.trim()
+
+	if (password.length === 0) {
+		LoginPage.showInputError(inputElement, 'Пароль пустой')
+		return false
+	}
+	else {
+		return password
+	}
+ }
+
 
 }

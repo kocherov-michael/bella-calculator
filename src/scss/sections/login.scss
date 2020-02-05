@@ -1,36 +1,16 @@
 .start {
-	// padding: 24px;
 	background-color: $danger-color;
-	// flex-direction: column-reverse;
 	position: relative;
 
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-	// flex-basis: 50%;
-	// flex-shrink: 1;
-	// border: 1px solid black;
 }
 
 .start__logo {
-	// flex-basis: 50%;
-	// display: flex;
-	// justify-content: space-around;
-	// align-content: flex-end;
-	// margin-bottom: 50px;
-	// & img {
-		// align-self: flex-end;
-		// margin-bottom: 40px;
-	// }
 }
 
 .start__content {
-	// display: flex;
-	// flex-direction: column;
-	// justify-content: space-between;
-	// flex-basis: 50%;
-	// flex-shrink: 1;
-	// border: 1px solid black;
 }
 
 .start-form {
@@ -38,13 +18,11 @@
 	padding-left: 24px;
 	padding-right: 24px;
 	top: 50%;
-	// transform: translateY(-50%);
 	transform: translateY(-160px);
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 
-	// position: relative;
 
 	input::-webkit-input-placeholder {
 		color: $login-main;
@@ -70,26 +48,6 @@
 	}
 }
 
-// .start-form__email {
-	// display: block;
-	// width: 100%;
-	// height: 55px;
-	// // padding: 15px;
-	// padding-left: 24px;
-	// padding-right: 24px;
-	// border-radius: 0.55em;
-	// border: 1px solid $default-color;
-	// box-shadow: $login-shadow;
-	// margin-bottom: 16px;
-	// font: 700 1em $mainFont;
-	// line-height: 1.5;
-
-	// &:focus, &:active {
-	// 	border: 1px solid black;
-	// 	outline: none;
-	// }
-// }
-
 .start-form__input {
 	margin-bottom: 16px;
 }
@@ -107,11 +65,11 @@
 	box-shadow: $login-shadow;
 	overflow: hidden;
 	position: relative;
+	transition: all .4s ease;
 	
 	&__text {
 		font: 700 1em $mainFont;
 		line-height: 1.5;
-		// padding: 15px;
 		height: 55px;
 		padding-left: 24px;
 
@@ -121,9 +79,11 @@
 		border-radius: 0.55em;
 		border: 1px solid $default-color;
 		background-color: $default-color;
+
+		transition: all .4s ease;
 		
 		&:focus, &:active {
-			border: 1px solid black;
+			border: 1px solid $login-main;
 		}
 	}
 	&__eye {
@@ -163,6 +123,34 @@
 		}
 	}
 
+	&:before {
+		display: block;
+		content: url('/assets/img/error.svg');
+		position: absolute;
+		bottom: 2px;
+		left: 24px;
+		width: 10px;
+		height: 20px;
+		opacity: 0;
+		transition: opacity .4s ease;
+		z-index: -1;
+	}
+
+	&:after {
+		display: block;
+		content: attr(data-error);
+		position: absolute;
+		bottom: 2px;
+		left: 45px;
+		width: 100%;
+		height: 20px;
+		color: $danger-color;
+		font-size: 12px;
+		opacity: 0;
+		transition: opacity .4s ease;
+		z-index: -1;
+	}
+
 	&.error {
 
 		.password__text, .email__text {
@@ -170,25 +158,13 @@
 		}
 
 		&:before {
-			display: block;
-			content: url('/assets/img/error.svg');
-			position: absolute;
-			bottom: 2px;
-			left: 24px;
-			width: 10px;
-			height: 20px;
+			opacity: 1;
+			z-index: 0;
 		}
 
 		&:after {
-			display: block;
-			content: attr(data-error);
-			position: absolute;
-			bottom: 2px;
-			left: 45px;
-			width: 100%;
-			height: 20px;
-			color: $danger-color;
-			font-size: 12px;
+			opacity: 1;
+			z-index: 0;
 		}
 	}
 }

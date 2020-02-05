@@ -2,6 +2,44 @@ export default class LocalStorage {
 	constructor (args = {}) {
 
 	}
+	static login(user) {
+		// const loggedUser = JSON.parse(localStorage.getItem('bella-user')) || {}
+		const usersList = JSON.parse(localStorage.getItem('bella-users-list')) || []
+		// console.log(usersList)
+		for ( let i = 0; i < usersList.length; i++ ) {
+			// console.log(usersList[i].userEmail, '===', user.userEmail)
+			if (usersList[i].userEmail === user.userEmail) {
+				// console.log('email совпадает')
+				
+				if (usersList[i].userPassword === user.userPassword) {
+					// console.log('пароль совпадает')
+					window.userEmail = user.userEmail
+					return true
+				} else {
+					return 'wrong password'
+				}
+			} 
+		}
+		return 'wrong email'
+
+	}
+
+	// регистрируем нового пользователя
+	static registerUser(user) {
+		const usersList = JSON.parse(localStorage.getItem('bella-users-list')) || []
+		for ( let i = 0; i < usersList.length; i++ ) {
+			if (usersList[i].userEmail === user.userEmail) {
+				console.log('email уже занят')
+				return
+			}
+		}
+		// const userList = []
+		usersList.push(user)
+		localStorage.setItem('bella-users-list', JSON.stringify(usersList))
+		console.log('сохранили', usersList)
+		window.userEmail = user.userEmail
+		return true
+	}
 
 	static read () {
 		const dataObj = JSON.parse(localStorage.getItem('bella-calculator')) || {}
