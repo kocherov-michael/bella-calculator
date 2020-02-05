@@ -23,4 +23,4 @@ import './scss/main.scss'
 
 import Router from './js/Router'
 
-Router.loadPage({page: 'weeksList'})
+Router.loadPage({page: 'login'})

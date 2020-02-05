@@ -7,19 +7,36 @@ import WeavingListPage from './WeavingListPage'
 import GarbageListPage from './GarbageListPage'
 import QuotationPage from './QuotationPage'
 import LocalStorage from './LocalStorage'
+import LoginPage from './LoginPage'
+import RegistrationPage from './RegistrationPage'
+import RestorePasswordPage from './RestorePasswordPage'
 
 export default class Router {
 	constructor (args = {}) {
 
-		if (args.page === 'weeksList') {
-			const page = new WeeksListPage ()
-		}
+		// if (args.page === 'weeksList') {
+		// 	const page = new WeeksListPage ()
+		// }
+		Router.loadPage(args)
 	}
 
 	static loadPage (args) {
 		const {page} = args
 
-		if (page === 'weeksList') {
+
+		if (page === 'login') {
+			const newPage = new LoginPage(args)
+		}
+
+		else if (page === 'registration') {
+			const newPage = new RegistrationPage(args)
+		}
+
+		else if (page === 'restorePassword') {
+			const newPage = new RestorePasswordPage(args)
+		}
+
+		else if (page === 'weeksList') {
 			const newPage = new WeeksListPage(args)
 		}
 
@@ -52,6 +69,16 @@ export default class Router {
 		}
 	}
 
+	// открываем первую страницу без прокрутки
+	static openFirstPage (args) {
+		const {page} = args
+
+		const currentPageElement = document.querySelector(`[data-page="${page}"]`)
+		currentPageElement.classList.remove('hide')
+
+		Router.loadPage({page: page})
+	}
+
 
 	// перелистываем страницу вперёд
 	static changeNextPage (args) {
@@ -73,7 +100,8 @@ export default class Router {
 		const currentPageElement = document.querySelector(`[data-page="${currentPageAttr}"]`)
 		const nextPageElement = document.querySelector(`[data-page="${nextPageAttr}"]`)
 
-		if (currentPageAttr === 'quotation' && nextPageAttr === 'weavingList') {
+		if ((currentPageAttr === 'quotation' && nextPageAttr === 'weavingList') ||
+			(currentPageAttr === 'registration' && nextPageAttr === 'login')) {
 			currentPageElement.classList.add('order-previous')
 		}
 		nextPageElement.classList.remove('hide')
