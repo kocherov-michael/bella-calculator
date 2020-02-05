@@ -53,7 +53,7 @@ export default class LoginPage extends DefaultPage {
 
 		<div class="start-form__input password">
 			<input type="password" class="password__text" placeholder="Пароль" value="" name="password" data-password-login>
-			<div class="password__eye">
+			<div class="password__eye hide-password" data-eye>
 				<img src="assets/img/open_eye.svg" class="password-is-hidden" alt="show">
 				<img src="assets/img/closed_eye.svg" class="password-is-visible" alt="hide">
 			</div>
@@ -73,6 +73,7 @@ export default class LoginPage extends DefaultPage {
 		const registrationButtonElement = currentPageElement.querySelector(`[data-registration-button]`)
 		const loginEmailElement = currentPageElement.querySelector(`[data-email-login]`)
 		const loginPasswordElement = currentPageElement.querySelector(`[data-password-login]`)
+		const eyePasswordElement = currentPageElement.querySelector(`[data-eye]`)
 
 		loginButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
@@ -131,6 +132,30 @@ export default class LoginPage extends DefaultPage {
 				weekNumber: '', 
 				workerName: ''
 			})
+		})
+
+		LoginPage.showHidePassword(eyePasswordElement, loginPasswordElement)
+		
+	}
+	
+	// скрыть / показать пароль
+	static showHidePassword (eyePasswordElement, loginPasswordElement) {
+		eyePasswordElement.addEventListener('click', (event) => {
+			event.stopPropagation()
+			// console.log(eyePasswordElement)
+			const attribute = loginPasswordElement.getAttribute('type')
+			if (attribute === 'password') {
+				loginPasswordElement.setAttribute('type', 'text')
+				eyePasswordElement.classList.remove('hide-password')
+				eyePasswordElement.classList.add('show-password')
+				loginPasswordElement.focus()
+			} else if (attribute === 'text') {
+				loginPasswordElement.setAttribute('type', 'password')
+				eyePasswordElement.classList.remove('show-password')
+				eyePasswordElement.classList.add('hide-password')
+				loginPasswordElement.focus()
+			}
+	
 		})
 
 	}

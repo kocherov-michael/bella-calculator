@@ -9,8 +9,8 @@ export default class RegistrationPage extends DefaultPage {
 		this.page = 'registration'
 		// this.checkLoggedUser()
 		this.renderRegistrationPage()
-		this.listenRegistrationButton()
-		this.listenLoginButton()
+		// this.listenRegistrationButton()
+		this.listenLoginPage()
 	}
 
 	// отрисовываем страницу регистрации
@@ -27,7 +27,7 @@ export default class RegistrationPage extends DefaultPage {
 
 		<div class="start-form__input password">
 			<input type="password" class="password__text" placeholder="Пароль" value="" name="password" data-password-registration>
-			<div class="password__eye" data-eye>
+			<div class="password__eye hide-password" data-eye>
 				<img src="assets/img/open_eye.svg" class="password-is-hidden" alt="show">
 				<img src="assets/img/closed_eye.svg" class="password-is-visible" alt="hide">
 			</div>
@@ -37,11 +37,13 @@ export default class RegistrationPage extends DefaultPage {
 	<button class="start-form__registration login-button login-button_color_secondary" data-login-button>Войти</button>`
 	}
 
-	listenRegistrationButton () {
+	listenLoginPage () {
 		const currentPageElement = document.querySelector(`[data-page="${this.page}"]`)
 		const registrationButtonElement = currentPageElement.querySelector(`[data-registration-button]`)
 		const registrationEmailElement = currentPageElement.querySelector(`[data-email-registration]`)
 		const registrationPasswordElement = currentPageElement.querySelector(`[data-password-registration]`)
+		const loginButtonElement = currentPageElement.querySelector(`[data-login-button]`)
+		const eyePasswordElement = currentPageElement.querySelector(`[data-eye]`)
 
 		registrationButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
@@ -72,20 +74,17 @@ export default class RegistrationPage extends DefaultPage {
 			// localStorage.setItem('bella-user', JSON.stringify(dataObj))
 
 		})
-	}
-
-	listenLoginButton () {
-		const currentPageElement = document.querySelector(`[data-page="${this.page}"]`)
-		const loginButtonElement = currentPageElement.querySelector(`[data-login-button]`)
 
 		loginButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
-			// console.log('login')
 			Router.changeNextPage({
 				currentPageAttr: this.page, 
 				nextPageAttr: 'login', 
 				weekNumber: ''
 			})
 		})
+
+		LoginPage.showHidePassword(eyePasswordElement, registrationPasswordElement)
 	}
+
 }
