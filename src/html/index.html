@@ -13,33 +13,33 @@
 
 			<!-- ==================================================================================== -->
 
-			<section class="page start hide" data-page="start">
-				<div class="form-container opacity hide" data-add-form="start"></div>
-		
-				<header class="header" data-header="start"></header>
-		
-				<div class="item-field" data-field="start"></div>
-		
-				<footer class="footer" data-footer="start">
-
-					<div class="footer__result">
-							<div class="footer__result-item">
-									<span class="footer__text">Общий остаток:</span>
-									<span class="footer__value" data-all-workers-total></span>
-									<span class="footer__nominal">г</span>
+			<section class="page start" data-page="start">
+				<!-- <div class="start__logo"> -->
+					<!-- <img src="assets/img/icon_login.svg" alt="вход"> -->
+				<!-- </div> -->
+				<!-- <div class="start__content"> -->
+					
+					<form action="" class="start-form" >
+						<div class="start-form__logo"></div>
+						<input type="email" class="start-form__email" placeholder="Почта" value="" name="email" data-email-login>
+						<div class="start-form__password password">
+							<input type="password" class="password__text" placeholder="Пароль" value="" name="password" data-password-login>
+							<div class="password__eye">
+								<img src="assets/img/open_eye.svg" class="password-is-hidden" alt="show">
+								<img src="assets/img/closed_eye.svg" class="password-is-visible" alt="hide">
 							</div>
-
-							<div class="footer__result-item hide">
-
-							</div> 
 						</div>
-				</footer>
+						<button class="start-form__login login-button" data-save-button>Войти</button>
+						<div class="start-form__forgot">Забыли пароль?</div>
+					</form>
+					<button class="start-form__registration login-button login-button_color_secondary" data-save-button>Зарегистрироваться</button>
+				<!-- </div> -->
 
 			</section>
 
 			<!-- ==================================================================================== -->
 
-			<section class="page worker" data-page="weeksList">
+			<section class="page worker hide" data-page="weeksList">
 
 					<div class="form-container opacity hide"  data-add-form="weeksList"></div>
 

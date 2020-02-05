@@ -1,0 +1,183 @@
+.start {
+	// padding: 24px;
+	background-color: $danger-color;
+	// flex-direction: column-reverse;
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	// flex-basis: 50%;
+	// flex-shrink: 1;
+	border: 1px solid black;
+}
+
+.start__logo {
+	// flex-basis: 50%;
+	// display: flex;
+	// justify-content: space-around;
+	// align-content: flex-end;
+	// margin-bottom: 50px;
+	// & img {
+		// align-self: flex-end;
+		// margin-bottom: 40px;
+	// }
+}
+
+.start__content {
+	// display: flex;
+	// flex-direction: column;
+	// justify-content: space-between;
+	// flex-basis: 50%;
+	// flex-shrink: 1;
+	// border: 1px solid black;
+}
+
+.start-form {
+	position: absolute;
+	padding-left: 24px;
+	padding-right: 24px;
+	top: 50%;
+	// transform: translateY(-50%);
+	transform: translateY(-160px);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+
+	// position: relative;
+
+	input::-webkit-input-placeholder {
+		color: $login-main;
+	}
+	input:-moz-placeholder {
+		color: $login-main;
+	}
+
+}
+
+.start-form__logo {
+	height: 60px;
+
+	&:before {
+		display: block;
+		content: url('/assets/img/icon_login.svg');
+		width: 65px;
+		height: 65px;
+		position: absolute;
+		left: 50%;
+		top: -55px;
+		transform: translateX(-50%);
+	}
+}
+
+.start-form__email {
+	display: block;
+	width: 100%;
+	padding: 15px;
+	border-radius: 0.55em;
+	border: 1px solid $default-color;
+	box-shadow: $login-shadow;
+	margin-bottom: 16px;
+	font: 700 1em $mainFont;
+	line-height: 1.5;
+
+	&:focus, &:active {
+		border: 1px solid black;
+		outline: none;
+	}
+}
+
+.start-form__password {
+	margin-bottom: 16px;
+}
+
+.password-is-visible {
+	opacity: 0;
+}
+
+.password-is-hidden {
+	opacity: 1;
+}
+
+.password {
+	border-radius: 0.55em;
+	box-shadow: $login-shadow;
+	overflow: hidden;
+	position: relative;
+
+
+	&__text {
+		font: 700 1em $mainFont;
+		line-height: 1.5;
+		padding: 15px;
+		border: none;
+		display: block;
+		width: 100%;
+		border-radius: 0.55em;
+		border: 1px solid $default-color;
+		background-color: $default-color;
+		
+		&:focus, &:active {
+			border: 1px solid black;
+		}
+	}
+	&__eye {
+		position: absolute;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		width: 60px;
+		height: 100%;
+		cursor: pointer;
+
+		& img {
+			position: absolute;
+			top: 50%;
+			right: 50%;
+			transform: translate(50%, -50%);
+		}
+
+		&.show-pass {
+			.password-is-visible {
+				opacity: 1;
+			}
+			
+			.password-is-hidden {
+				opacity: 0;
+			}
+		}
+	}
+}
+
+
+.start-form__forgot {
+	color: $default-color;
+	line-height: 1.5;
+	padding: 17px;
+	width: auto;
+	align-self: center;
+	cursor: pointer;
+	// visibility: hidden;
+}
+
+
+.login-button {
+	padding: 16px;
+	border-radius: 0.55em;
+	font-weight: bold;
+	font-size: 1em;
+	line-height: 1.5;
+	color: $default-color;
+	background-color: $login-main;
+	box-shadow: $login-shadow;
+	cursor: pointer;
+
+	&_color_secondary {
+		background-color: $login-secondary;
+	}
+}
+
+.start-form__registration {
+	width: auto;
+	margin: 24px;
+}
