@@ -9,7 +9,7 @@
 	justify-content: flex-end;
 	// flex-basis: 50%;
 	// flex-shrink: 1;
-	border: 1px solid black;
+	// border: 1px solid black;
 }
 
 .start__logo {
@@ -96,7 +96,7 @@
 }
 
 .password-is-hidden {
-	opacity: 1;
+	opacity: 0;
 }
 
 .password {
@@ -135,6 +135,16 @@
 			top: 50%;
 			right: 50%;
 			transform: translate(50%, -50%);
+		}
+
+		&.hide-pass {
+			.password-is-visible {
+				opacity: 0;
+			}
+			
+			.password-is-hidden {
+				opacity: 1;
+			}
 		}
 
 		&.show-pass {
