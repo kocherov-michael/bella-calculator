@@ -11,8 +11,8 @@ export default class LoginPage extends DefaultPage {
 
 	checkLoggedUser () {
 		const checkObj = JSON.parse(localStorage.getItem('bella-user')) || {}
-		if ( checkObj.userMail && checkObj.userPassword) {
-			window.userMail = checkObj.userMail
+		if ( checkObj.userEmail && checkObj.userPassword) {
+			window.userEmail = checkObj.userEmail
 			window.userPassword = checkObj.userPassword
 
 			fetch('assets/php/dataRead.php', {
@@ -63,7 +63,28 @@ export default class LoginPage extends DefaultPage {
 		registrationButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
 			// console.log('login')
+			Router.changeNextPage({
+				currentPageAttr: this.page, 
+				nextPageAttr: 'registration', 
+				weekNumber: '', 
+				workerName: ''
+			})
 		})
 
 	}
+
+	// проверка валидности email
+	static validate(email) {
+		const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+		// const address = document.forms[form_id].elements[email].value;
+		if(reg.test(email) == false) {
+			console.log('Введите корректный e-mail');
+			return false;
+		}
+		else {
+			console.log('корректен')
+			return true
+		}
+ }
+
 }

@@ -11,6 +11,7 @@ export default class RestorePasswordPage extends DefaultPage {
 		this.listenBackButton()
 	}
 
+	// прослушка кнопки Восстановить
 	listenRestoreButton () {
 		const currentPageElement = document.querySelector(`[data-page="${this.page}"]`)
 		const restoreButtonElement = currentPageElement.querySelector(`[data-restore-button]`)
@@ -27,12 +28,15 @@ export default class RestorePasswordPage extends DefaultPage {
 				let result = await promise;
 				console.log('закрываем окно')
 
+				showNotice(currentPageElement)
+
 				// databaseRequest()
 			})()
 			Router.changePreviousPage(this.page, 'login', '')
 		})
 	}
 
+	// прослушка кнопки Назад
 	listenBackButton () {
 		// console.log(this.page)
 		const currentPageElement = document.querySelector(`[data-page="${this.page}"]`)
@@ -42,5 +46,11 @@ export default class RestorePasswordPage extends DefaultPage {
 
 			Router.changePreviousPage(this.page, 'login', '')
 		})
+	}
+
+	// показать уведомление, что пароль отправлен на почту
+	showNotice (currentPageElement) {
+		// const currentPageElement = document.querySelector(`[data-page="${this.page}"]`)
+		
 	}
 }
