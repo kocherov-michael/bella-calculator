@@ -73,6 +73,7 @@ export default class DefaultPage extends PageHandler {
 		const garbageLinkElement = sectionElement.querySelector('[data-garbage-link]')
 		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
 		const fontSizeElement = sectionElement.querySelector('[data-font-size]')
+		const logoutElement = sectionElement.querySelector('[data-logout-link]')
 
 		// прослушка кнопки гамбургера
 		headerMenuElement.addEventListener('click', () => {
@@ -139,6 +140,13 @@ export default class DefaultPage extends PageHandler {
 		fontSizeElement.addEventListener('change', () => {
 			document.body.style = `font-size: ${fontSizeElement.value}px`
 			LocalStorage.fontSize(fontSizeElement.value)
+		})
+
+		// выход из профиля
+		logoutElement.addEventListener('click', () => {
+			
+			LocalStorage.logout()
+			Router.changePreviousPage( page, 'login')
 		})
 
 	}

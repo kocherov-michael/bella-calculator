@@ -25,6 +25,13 @@ export default class LocalStorage {
 
 	}
 
+	// выход из профиля
+	static logout() {
+		localStorage.removeItem('bella-user')
+		window.userEmail = null
+		return true
+	}
+
 	// регистрируем нового пользователя
 	static registerUser(user) {
 		const usersList = JSON.parse(localStorage.getItem('bella-users-list')) || []
