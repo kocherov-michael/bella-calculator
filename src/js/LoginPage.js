@@ -11,6 +11,7 @@ export default class LoginPage extends DefaultPage {
 
 	checkLoggedUser () {
 		const checkObj = JSON.parse(localStorage.getItem('bella-user')) || {}
+
 		if ( checkObj.userEmail && checkObj.userPassword) {
 			window.userEmail = checkObj.userEmail
 			window.userPassword = checkObj.userPassword
@@ -18,7 +19,7 @@ export default class LoginPage extends DefaultPage {
 			fetch('assets/php/dataRead.php', {
 				method: 'post', 
 				// body: JSON.stringify({mail: 'kocoer@mail'}),
-				body: JSON.stringify(userMail),
+				body: JSON.stringify(checkObj),
 				// body: 'kocherov@mail.ru',
 				headers: {
 					'content-type': 'application/json'

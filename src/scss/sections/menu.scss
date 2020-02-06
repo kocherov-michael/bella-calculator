@@ -9,12 +9,22 @@
 	transition: height .4s ease 0s;
 	overflow: hidden;
 
+	display: flex;
+	flex-direction: column;
+
 	.menu__item {
 		opacity: 0;
 		transition: opacity .4s ease .2s;
 		display: block;
 		cursor: pointer;
 		text-align: left;
+	}
+
+	.logout {
+		flex-grow: 1;
+		display: flex;
+		align-items: flex-end;
+		cursor: auto;
 	}
 	
 }
@@ -26,7 +36,7 @@
 }
 
 .menu__item:first-child {
-	margin-top: 160px;
+	margin-top: 4em;
 
 }
 .menu.menu-show {
@@ -40,5 +50,17 @@
 	}
 
 	
+}
+
+.logged-user {
+	font-weight: bold;
+}
+
+
+.logout__link {
+	font-size: inherit;
+	color: $danger-color;
+	text-align: left;
+	cursor: pointer;
 }
 

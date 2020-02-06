@@ -26,6 +26,8 @@ export default class DefaultPage extends PageHandler {
 			}
 			optionTemplate += `<option class="option" value="${size}" ${selected}>${size}</option>`
 		}
+
+		const loggedUser = window.userEmail || ''
 		
 		headerElement.innerHTML = ''
 		headerElement.innerHTML = 
@@ -38,6 +40,7 @@ export default class DefaultPage extends PageHandler {
 			</div>
 		</div>
 		<div class="menu" data-menu-list>
+			<div class="menu__item logged-user">${loggedUser}</div>
 			<label class="menu__item font-select">
 				<select class="font-select__select" type="select" data-font-size>
 					${optionTemplate}
@@ -45,8 +48,7 @@ export default class DefaultPage extends PageHandler {
 				<div class="font-select__text">Размер шрифта</div>
 			</label>
 			<button class="menu__item" data-next="quotation" data-quotation-link="${page}">Котировки</button>
-			<button class="menu__item" data-next="weavingList"
-			data-weaving-link="${page}">Плетения</button>
+			<button class="menu__item" data-next="weavingList" data-weaving-link="${page}">Плетения</button>
 			<button class="menu__item" data-garbage-link="${page}">Восстановить удаления</button>
 			<label class="menu__item check">
 				<input class="check__input" type="checkbox" data-check-brigadier ${checked}>
@@ -55,6 +57,9 @@ export default class DefaultPage extends PageHandler {
 				</div>
 				Я бригадир
 			</label>
+			<div class="menu__item logout">
+				<button class="logout__link" data-next="login" data-logout-link="${page}">Выйти</button>
+			</div>
 			
 		</div>
 	</div>`

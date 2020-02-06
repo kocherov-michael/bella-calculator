@@ -14,6 +14,7 @@ export default class LocalStorage {
 				if (usersList[i].userPassword === user.userPassword) {
 					// console.log('пароль совпадает')
 					window.userEmail = user.userEmail
+					localStorage.setItem('bella-user', JSON.stringify(user))
 					return true
 				} else {
 					return 'wrong password'
