@@ -1,37 +1,22 @@
-import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
 import Router from './Router'
 
-export default class LoginPage extends DefaultPage {
+export default class LoginPage {
+
 	constructor (args = {}) {
-		super(args)
 		this.page = 'login'
 		this.checkLoggedUser()
 	}
 
 	checkLoggedUser () {
 		const checkObj = JSON.parse(localStorage.getItem('bella-user')) || {}
-
 		if ( checkObj.userEmail && checkObj.userPassword) {
 			window.userEmail = checkObj.userEmail
 			window.userPassword = checkObj.userPassword
 
-			fetch('assets/php/dataRead.php', {
-				method: 'post', 
-				// body: JSON.stringify({mail: 'kocoer@mail'}),
-				body: JSON.stringify(checkObj),
-				// body: 'kocherov@mail.ru',
-				headers: {
-					'content-type': 'application/json'
-				}
-			})
-				.then(response => response.json())
-				.then(result => console.log(result))
-	
 			Router.openFirstPage({page: 'weeksList'})
 				
 		} else {
-			// Router.openFirstPage({page: 'login'})
 			const currentPageElement = document.querySelector(`[data-page="login"]`)
 			currentPageElement.classList.remove('hide')
 			this.renderLoginPage()
@@ -78,43 +63,78 @@ export default class LoginPage extends DefaultPage {
 
 		loginButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
-			// console.log('login')
+
+			// проверяем корректность email
 			const userEmail = LoginPage.validate(loginEmailElement)
 
 			if (!userEmail) {
 				return
 			}
 
-			const userPassword = LoginPage.isNotEmpty(loginPasswordElement)
+			// проверяем заполнен ли пароль
+			const userPassword = LoginPage.isNotEmpty(loginPasswordElement, "Введите пароль")
 
 			if (!userPassword) {
 				return
 			}
 
-			const userObj = {userEmail, userPassword}
+			// const userObj = {userEmail, userPassword}
+			// console.log(userObj)
 
-			const result = LocalStorage.login(userObj)
+			fetch('assets/php/login.php', {
+				method: 'post', 
+				// body: JSON.stringify(`${userEmail}%%${userPassword}`),
+				body: JSON.stringify({userEmail, userPassword}),
+				headers: {
+					'content-type': 'application/json'
+				}
+			})
+				// .then(response => response.text())
+				// .then(text => console.log(text))
+				.then(response => response.json() || response.text())
+				.then(result => {
+					// console.log(result)
 
-			// проверяем результаты запроса
-			if (result === true) {
-				Router.changeNextPage({
-					currentPageAttr: this.page, 
-					nextPageAttr: 'weeksList', 
-					weekNumber: ''
+					
+					// проверяем результаты запроса
+					if (result === 'wrong password') {
+						LoginPage.showInputError(loginPasswordElement, 'Пароль введён неверно')
+					} 
+
+					else if (result === 'wrong email') {
+						LoginPage.showInputError(loginEmailElement, 'Данная почта не зарегистрирована')
+					}
+
+					else if (!result.trim()){
+						// если данные у пользователя пустая строка
+						LocalStorage.login({userEmail, userPassword})
+						Router.changeNextPage({
+							currentPageAttr: 'login', 
+							nextPageAttr: 'weeksList', 
+							weekNumber: ''
+						})
+					}
+
+					else if ( JSON.parse(result) instanceof Object) {
+						
+						LocalStorage.login({userEmail, userPassword})
+						LocalStorage.save(JSON.parse(result))
+
+						Router.changeNextPage({
+							currentPageAttr: 'login', 
+							nextPageAttr: 'weeksList', 
+							weekNumber: ''
+						})
+					} 
+
+					else  {
+						console.log('непредвиденная ошибка')
+					}
 				})
-			} else if (result === 'wrong password') {
-				// console.log('result:', result)
-				LoginPage.showInputError(loginPasswordElement, 'Пароль введён неверно')
-			} else if (result === 'wrong email') {
-				// console.log('result:', result)
-				LoginPage.showInputError(loginEmailElement, 'Данная почта не зарегистрирована')
-			}
-
 		})
 
 		forgotButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
-			// console.log('login')
 
 			Router.changeNextPage({
 				currentPageAttr: this.page, 
@@ -126,7 +146,7 @@ export default class LoginPage extends DefaultPage {
 
 		registrationButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
-			// console.log('login')
+			
 			Router.changeNextPage({
 				currentPageAttr: this.page, 
 				nextPageAttr: 'registration', 
@@ -136,6 +156,8 @@ export default class LoginPage extends DefaultPage {
 		})
 
 		LoginPage.showHidePassword(eyePasswordElement, loginPasswordElement)
+
+		// RestorePasswordPage.showNotice()
 		
 	}
 	
@@ -175,8 +197,14 @@ export default class LoginPage extends DefaultPage {
 
 	// проверка валидности email
 	static validate(inputElement) {
+		// проверяем пустой ли email
+		let email = LoginPage.isNotEmpty(inputElement, 'Введите email')
+		if (!email) {
+			return false
+		}
+
 		const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-		const email = inputElement.value.trim()
+		email = inputElement.value.trim()
 
 		if(reg.test(email) === false) {
 			LoginPage.showInputError(inputElement, 'Адрес почты не корректен')
@@ -186,20 +214,20 @@ export default class LoginPage extends DefaultPage {
 		else {
 			return email
 		}
- }
-
- // проверка пустой ли пароль
- static isNotEmpty(inputElement) {
-	const password = inputElement.value.trim()
-
-	if (password.length === 0) {
-		LoginPage.showInputError(inputElement, 'Пароль пустой')
-		return false
 	}
-	else {
-		return password
+
+	// проверка пустое ли поле ввода
+	static isNotEmpty(inputElement, text) {
+		const val = inputElement.value.trim()
+
+		if (val.length === 0) {
+			LoginPage.showInputError(inputElement, text)
+			return false
+		}
+		else {
+			return val
+		}
 	}
- }
 
 
 }

@@ -14,9 +14,6 @@ import RestorePasswordPage from './RestorePasswordPage'
 export default class Router {
 	constructor (args = {}) {
 
-		// if (args.page === 'weeksList') {
-		// 	const page = new WeeksListPage ()
-		// }
 		Router.loadPage(args)
 	}
 
