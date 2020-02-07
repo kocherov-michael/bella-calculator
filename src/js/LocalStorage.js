@@ -2,61 +2,71 @@ export default class LocalStorage {
 	constructor (args = {}) {
 
 	}
+
 	static login(user) {
-		// const loggedUser = JSON.parse(localStorage.getItem('bella-user')) || {}
-		const usersList = JSON.parse(localStorage.getItem('bella-users-list')) || []
-		// console.log(usersList)
-		for ( let i = 0; i < usersList.length; i++ ) {
-			// console.log(usersList[i].userEmail, '===', user.userEmail)
-			if (usersList[i].userEmail === user.userEmail) {
-				// console.log('email совпадает')
-				
-				if (usersList[i].userPassword === user.userPassword) {
-					// console.log('пароль совпадает')
-					window.userEmail = user.userEmail
-					localStorage.setItem('bella-user', JSON.stringify(user))
-					return true
-				} else {
-					return 'wrong password'
-				}
-			} 
-		}
-		return 'wrong email'
+		// пользователь уже залогинился
+		window.userEmail = user.userEmail
+		localStorage.setItem('bella-user', JSON.stringify(user))
 
 	}
 
 	// выход из профиля
 	static logout() {
 		localStorage.removeItem('bella-user')
+		localStorage.removeItem('bella-calculator')
 		window.userEmail = null
 		return true
 	}
 
 	// регистрируем нового пользователя
 	static registerUser(user) {
-		const usersList = JSON.parse(localStorage.getItem('bella-users-list')) || []
-		for ( let i = 0; i < usersList.length; i++ ) {
-			if (usersList[i].userEmail === user.userEmail) {
-				console.log('email уже занят')
-				return
-			}
-		}
-		// const userList = []
-		usersList.push(user)
-		localStorage.setItem('bella-users-list', JSON.stringify(usersList))
-		console.log('сохранили', usersList)
+		localStorage.setItem('bella-user', JSON.stringify(user))
 		window.userEmail = user.userEmail
 		return true
 	}
 
 	static read () {
 		const dataObj = JSON.parse(localStorage.getItem('bella-calculator')) || {}
-
 		return dataObj
 	}
 
 	static save(dataObj) {
 		localStorage.setItem('bella-calculator', JSON.stringify(dataObj))
+
+		const userEmail = window.userEmail
+
+		// сохраняем объект глобальным, чтобы перезаписать его на новый
+		window.dataObj = dataObj
+
+		;(async () => {
+			let promise = new Promise((resolve, reject) => {
+				setTimeout(() => resolve("ждём"), 1000)
+			});
+			let result = await promise;
+
+			databaseRequest()
+		})()
+
+		function databaseRequest () {
+			if (window.dataObj !== null) {
+
+				const userData = JSON.stringify(window.dataObj)
+				const data = {userEmail, userData}
+
+				fetch('assets/php/data.php', {
+					method: 'post', 
+					body: JSON.stringify(data),
+					headers: {
+						'content-type': 'application/json'
+					}
+				})
+					// .then(response => response.json())
+					// .then(result => console.log(result))
+				window.dataObj = null
+			} 
+		}
+
+
 	}
 
 	// изменяем статус пользователя бригадиром 
