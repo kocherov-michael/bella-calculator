@@ -179,6 +179,9 @@ export default class HandOverPage extends DefaultPage {
 			// после ввода операции сбрасываем вес и количество
 			weightInputElement.value = ''
 			countInputElement.value = ''
+
+			// переносим курсор в поле веса
+			weightInputElement.focus()
 		})
 
 	}
