@@ -4,11 +4,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+require('babel-polyfill')
 
 module.exports = {
 	entry: {
 		// путь до входного файла от файла конфигурации webpack
-		app: './src/index.js'
+		// app: './src/index.js'
+		app: ['babel-polyfill', './src/index.js']
 	},
 	output: {
 		// текущий [name] берётся из ярлыка entry (app), на выходе файл будет app.js
@@ -16,6 +18,7 @@ module.exports = {
 		// как будет называться папка, где будет собираться проект
 		path: path.join(__dirname, '/dist'),
 		// publicPath нужен для корректной работы devServer
+		// добавляется этот путь в ссылках в html на подключаемяе скрипты и стили
 		publicPath: ''
 	},
 	module: {
@@ -86,6 +89,7 @@ module.exports = {
 		}),
 		new CopyWebpackPlugin([
 			{ from: path.join(__dirname, './src/img'), to: 'assets/img'},
+			{ from: path.join(__dirname, './src/php'), to: 'assets/php'},
 			{ from: path.join(__dirname, './static'), to: ''}
 		]),
 		new webpack.SourceMapDevToolPlugin({
