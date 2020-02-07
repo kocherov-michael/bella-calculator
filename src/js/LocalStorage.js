@@ -37,14 +37,15 @@ export default class LocalStorage {
 
 		// сохраняем объект глобальным, чтобы перезаписать его на новый
 		window.dataObj = dataObj
-
+		
 		;(async () => {
-			let promise = new Promise((resolve, reject) => {
-				setTimeout(() => resolve("ждём"), 1000)
-			});
-			let result = await promise;
-
-			databaseRequest()
+			
+				let promise = new Promise((resolve, reject) => {
+					setTimeout(() => resolve("ждём"), 1000)
+				});
+				let result = await promise;
+	
+				databaseRequest()
 		})()
 
 		function databaseRequest () {
@@ -53,6 +54,7 @@ export default class LocalStorage {
 				const userData = JSON.stringify(window.dataObj)
 				const data = {userEmail, userData}
 
+				
 				fetch('assets/php/data.php', {
 					method: 'post', 
 					body: JSON.stringify(data),
@@ -60,8 +62,9 @@ export default class LocalStorage {
 						'content-type': 'application/json'
 					}
 				})
-					// .then(response => response.json())
-					// .then(result => console.log(result))
+				// .then(response => response.json())
+				// .then(result => console.log(result))
+				
 				window.dataObj = null
 			} 
 		}
@@ -736,9 +739,10 @@ export default class LocalStorage {
 			weekWeight += oneWeekObj.workerWeekItems[i].value
 		}
 		for (let i = 0; i < oneWeekObj.workerWeekHandOver.length; i++) {
-			weight += oneWeekObj.workerWeekHandOver[i].weightWithPercent
-			weekWeight -= oneWeekObj.workerWeekHandOver[i].weightWithPercent
-			weekSalary += oneWeekObj.workerWeekHandOver[i].price
+			// weight += oneWeekObj.workerWeekHandOver[i].weightWithPercent
+			weight += round(oneWeekObj.workerWeekHandOver[i].weightWithPercent)
+			weekWeight -= round(oneWeekObj.workerWeekHandOver[i].weightWithPercent)
+			weekSalary += round(oneWeekObj.workerWeekHandOver[i].price)
 		}
 		
 		// бонус за неделю
@@ -753,8 +757,13 @@ export default class LocalStorage {
 		// Общий баланс к концу недели
 		const weekTotalWeight = Math.round((previousWeekWeight + weekWeight) * 1000) / 1000
 		// сумма бонусов за все предыдущие недели и текущую
-		const totalBonus = summBonus + bonus
-		return {weekSalary, weight, weekTotalWeight, bonus, totalBonus}
+		const totalBonus = (summBonus * 10 + bonus * 10) / 10
+
+		return {weekSalary: round(weekSalary), weight: round(weight), weekTotalWeight, bonus, totalBonus}
+
+		function round(number) {
+			return Math.round(number * 1000) / 1000
+		}
 	}
 
 	// получаем сдачу всех работников за 1 неделю

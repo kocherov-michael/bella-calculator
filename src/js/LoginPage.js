@@ -1,5 +1,6 @@
 import LocalStorage from './LocalStorage'
 import Router from './Router'
+import BrigadeBalanceList from './BrigadeBalanceListPage'
 
 export default class LoginPage {
 
@@ -80,31 +81,26 @@ export default class LoginPage {
 
 			// const userObj = {userEmail, userPassword}
 			// console.log(userObj)
-
-			fetch('assets/php/login.php', {
-				method: 'post', 
-				// body: JSON.stringify(`${userEmail}%%${userPassword}`),
-				body: JSON.stringify({userEmail, userPassword}),
-				headers: {
-					'content-type': 'application/json'
-				}
-			})
-				// .then(response => response.text())
-				// .then(text => console.log(text))
-				.then(response => response.json() || response.text())
-				.then(result => {
-					// console.log(result)
-
+			;(async () => {
+				try {
+					let response = await fetch('assets/php/login.php', {
+						method: 'post', 
+						body: JSON.stringify({userEmail, userPassword}),
+						headers: {
+							'content-type': 'application/json'
+						}
+					})
 					
+					let result = await response.json()
 					// проверяем результаты запроса
 					if (result === 'wrong password') {
 						LoginPage.showInputError(loginPasswordElement, 'Пароль введён неверно')
 					} 
-
+	
 					else if (result === 'wrong email') {
 						LoginPage.showInputError(loginEmailElement, 'Данная почта не зарегистрирована')
 					}
-
+	
 					else if (!result.trim()){
 						// если данные у пользователя пустая строка
 						LocalStorage.login({userEmail, userPassword})
@@ -114,23 +110,91 @@ export default class LoginPage {
 							weekNumber: ''
 						})
 					}
-
+	
 					else if ( JSON.parse(result) instanceof Object) {
 						
 						LocalStorage.login({userEmail, userPassword})
 						LocalStorage.save(JSON.parse(result))
-
+	
 						Router.changeNextPage({
 							currentPageAttr: 'login', 
 							nextPageAttr: 'weeksList', 
 							weekNumber: ''
 						})
 					} 
-
+	
 					else  {
 						console.log('непредвиденная ошибка')
 					}
-				})
+					this.error = false
+				} catch(error) {
+					console.log(error)
+					this.error = true
+				} finally {
+					if (this.error) {
+						LocalStorage.login({userEmail: 'test@bella.ru', userPassword: 'password'})
+
+						Router.changeNextPage({
+							currentPageAttr: 'login', 
+							nextPageAttr: 'weeksList', 
+							weekNumber: ''
+						})
+					}
+					
+				}
+			})()
+				
+				
+
+			// fetch('assets/php/login.php', {
+			// 	method: 'post', 
+			// 	body: JSON.stringify({userEmail, userPassword}),
+			// 	headers: {
+			// 		'content-type': 'application/json'
+			// 	}
+			// })
+			// 	// .then(response => response.text())
+			// 	// .then(text => console.log(text))
+			// 	.then(response => {response.json()})
+			// 	.then(result => {
+			// 		console.log(result)
+
+					
+			// 		// проверяем результаты запроса
+			// 		if (result === 'wrong password') {
+			// 			LoginPage.showInputError(loginPasswordElement, 'Пароль введён неверно')
+			// 		} 
+
+			// 		else if (result === 'wrong email') {
+			// 			LoginPage.showInputError(loginEmailElement, 'Данная почта не зарегистрирована')
+			// 		}
+
+			// 		else if (!result.trim()){
+			// 			// если данные у пользователя пустая строка
+			// 			LocalStorage.login({userEmail, userPassword})
+			// 			Router.changeNextPage({
+			// 				currentPageAttr: 'login', 
+			// 				nextPageAttr: 'weeksList', 
+			// 				weekNumber: ''
+			// 			})
+			// 		}
+
+			// 		else if ( JSON.parse(result) instanceof Object) {
+						
+			// 			LocalStorage.login({userEmail, userPassword})
+			// 			LocalStorage.save(JSON.parse(result))
+
+			// 			Router.changeNextPage({
+			// 				currentPageAttr: 'login', 
+			// 				nextPageAttr: 'weeksList', 
+			// 				weekNumber: ''
+			// 			})
+			// 		} 
+
+			// 		else  {
+			// 			console.log('непредвиденная ошибка')
+			// 		}
+			// 	})
 		})
 
 		forgotButtonElement.addEventListener('click', (event) => {

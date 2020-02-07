@@ -51,7 +51,7 @@ export default class WeekItemsPage extends DefaultPage {
 
 	}
 
-	// показываем остаток с предфдущих недель
+	// показываем остаток с предыдущих недель
 	showPreviousWeight() {
 		const previousWeightElement = document.querySelector('[data-previous-weight="weekItems"]')
 		const {summWeight} = LocalStorage.getWeightPreviousWeekItems(this.workerName, this.weekNumber)
