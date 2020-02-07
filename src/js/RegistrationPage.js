@@ -1,15 +1,12 @@
-import DefaultPage from './DefaultPage'
 import LocalStorage from './LocalStorage'
 import Router from './Router'
 import LoginPage from './LoginPage'
 
-export default class RegistrationPage extends DefaultPage {
+export default class RegistrationPage {
 	constructor (args = {}) {
-		super(args)
+		
 		this.page = 'registration'
-		// this.checkLoggedUser()
 		this.renderRegistrationPage()
-		// this.listenRegistrationButton()
 		this.listenLoginPage()
 	}
 
@@ -47,31 +44,52 @@ export default class RegistrationPage extends DefaultPage {
 
 		registrationButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
-			
+			// проверка валидности и заполненности почты
 			const userEmail = LoginPage.validate(registrationEmailElement)
 			if (!userEmail) {
 				return
 			}
-
-			const userPassword = LoginPage.isNotEmpty(registrationPasswordElement)
-			// console.log(userPassword)
+			// проверка заполненности пароля
+			const userPassword = LoginPage.isNotEmpty(registrationPasswordElement, 'Введите пароль')
 			if (!userPassword) {
 				return
 			}
+			
 			const userObj = {userEmail, userPassword}
-			// console.log(userObj)
-			const result = LocalStorage.registerUser(userObj)
+			
+			fetch('assets/php/registration.php', {
+				method: 'post', 
+				body: JSON.stringify(userObj),
+				headers: {
+					'content-type': 'application/json'
+				}
+			})
+			// .then(response => response.text())
+			// .then(text => console.log(text))
+				.then(response => response.json())
+				.then(result => {
+					
+					if (result === 'exist') {
+						LoginPage.showInputError(registrationEmailElement, 'Почта уже зарегистрирована')
+					}
+					
+					else if (result === 'success') {
+						const result = LocalStorage.registerUser(userObj)
+						
+						Router.changeNextPage({
+							currentPageAttr: 'registration', 
+							nextPageAttr: 'weeksList', 
+							weekNumber: ''
+						})
+					}
+					// читаем объект, который был до регистрации
+					const dataObj = LocalStorage.read()
+					// Сохраняем его в облако
+					LocalStorage.save(dataObj)
 
-			if (result) {
-				
-				Router.changeNextPage({
-					currentPageAttr: this.page, 
-					nextPageAttr: 'weeksList', 
-					weekNumber: ''
 				})
-			}
-
-			// localStorage.setItem('bella-user', JSON.stringify(dataObj))
+				
+				
 
 		})
 
