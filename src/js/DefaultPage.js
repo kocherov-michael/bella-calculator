@@ -162,6 +162,7 @@ export default class DefaultPage extends PageHandler {
 			//пытаемся скопировать текст в буфер обмена
 			try { 
 				document.execCommand('copy'); 
+				alert('данные скопированы в буфер обмена')
 			} catch(err) { 
 				console.log('Can`t copy, boss'); 
 			} 
@@ -180,9 +181,27 @@ export default class DefaultPage extends PageHandler {
 			document.body.append(wrapperElement)
 
 			inputElement.addEventListener('input', () => {
-				localStorage.setItem('bella-calculator', inputElement.value)
-				wrapperElement.parentNode.removeChild(wrapperElement)
-				Router.loadPage({page: 'weeksList'})
+				const baseString = inputElement.value
+				try {
+					
+					if (typeof JSON.parse(baseString) === 'object') {
+						console.log('object')
+						localStorage.setItem('bella-calculator', inputElement.value)
+						alert('данные обновлены')
+					}
+				}
+				catch(err) {
+					console.log('ошибка', err)
+					alert('неправильный формат данных')
+				}
+				finally {
+					
+					wrapperElement.parentNode.removeChild(wrapperElement)
+					Router.loadPage({page: 'weeksList'})
+				}
+				
+				// console.log(base)
+				
 			})
 		})
 
