@@ -720,7 +720,7 @@ export default class LocalStorage {
 
 		}
 		// если искомой недели не нашлось, то возвращаем что насуммировали
-		return {summWeight, summBonus}
+		return {summWeight:  Math.round(summWeight * 10000) / 10000, summBonus: Math.round(summBonus * 10) / 10}
 	}
 
 	// получаем зарплату и сдачу за неделю для одного работника
@@ -757,7 +757,7 @@ export default class LocalStorage {
 		// Общий баланс к концу недели
 		const weekTotalWeight = Math.round((previousWeekWeight + weekWeight) * 1000) / 1000
 		// сумма бонусов за все предыдущие недели и текущую
-		const totalBonus = (summBonus * 10 + bonus * 10) / 10
+		const totalBonus = Math.round(summBonus * 10 + bonus * 10) / 10
 
 		return {weekSalary: round(weekSalary), weight: round(weight), weekTotalWeight, bonus, totalBonus}
 
