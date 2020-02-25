@@ -48,6 +48,7 @@ export default class DefaultPage extends PageHandler {
 			<button class="menu__item" data-next="weavingList"
 			data-weaving-link="${page}">Плетения</button>
 			<button class="menu__item" data-garbage-link="${page}">Восстановить удаления</button>
+			<button class="menu__item" data-copy-base>Копировать базу данных</button>
 			<label class="menu__item check">
 				<input class="check__input" type="checkbox" data-check-brigadier ${checked}>
 				<div class="check__box">
@@ -68,6 +69,7 @@ export default class DefaultPage extends PageHandler {
 		const garbageLinkElement = sectionElement.querySelector('[data-garbage-link]')
 		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
 		const fontSizeElement = sectionElement.querySelector('[data-font-size]')
+		const copyBaseElement = sectionElement.querySelector('[data-copy-base]')
 
 		// прослушка кнопки гамбургера
 		headerMenuElement.addEventListener('click', () => {
@@ -134,6 +136,38 @@ export default class DefaultPage extends PageHandler {
 		fontSizeElement.addEventListener('change', () => {
 			document.body.style = `font-size: ${fontSizeElement.value}px`
 			LocalStorage.fontSize(fontSizeElement.value)
+		})
+
+		// копируем базу данных
+		copyBaseElement.addEventListener('click', function () {
+			//нашли наш контейнер
+			const string = localStorage.getItem('bella-calculator')
+			const textareaElement = document.createElement('textarea')
+			textareaElement.innerHTML = string
+			textareaElement.style = 'position: absolute; top: 0; left: 0; z-index: -999;'
+			document.body.append(textareaElement)
+
+			let selection = window.getSelection()
+
+			if (selection.rangeCount > 0) {
+				selection.removeAllRanges();
+			}
+
+			//производим выделение
+			let range = document.createRange();
+			range.selectNode(textareaElement);
+			selection.addRange(range);
+
+			//пытаемся скопировать текст в буфер обмена
+			try { 
+				document.execCommand('copy'); 
+				alert('данные скопированы в буфер обмена')
+			} catch(err) { 
+				console.log('Can`t copy, boss'); 
+			} 
+			//очистим выделение текста, чтобы пользователь "не парился"
+			window.getSelection().removeAllRanges();
+			textareaElement.parentNode.removeChild(textareaElement)
 		})
 
 	}
