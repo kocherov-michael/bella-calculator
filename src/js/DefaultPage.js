@@ -50,6 +50,7 @@ export default class DefaultPage extends PageHandler {
 			<button class="menu__item" data-next="quotation" data-quotation-link="${page}">Котировки</button>
 			<button class="menu__item" data-next="weavingList" data-weaving-link="${page}">Плетения</button>
 			<button class="menu__item" data-garbage-link="${page}">Восстановить удаления</button>
+			<button class="menu__item" data-paste-data-base="${page}">Вставить базу данных</button>
 			<label class="menu__item check">
 				<input class="check__input" type="checkbox" data-check-brigadier ${checked}>
 				<div class="check__box">
@@ -74,6 +75,7 @@ export default class DefaultPage extends PageHandler {
 		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
 		const fontSizeElement = sectionElement.querySelector('[data-font-size]')
 		const logoutElement = sectionElement.querySelector('[data-logout-link]')
+		const pasteBaseElement = sectionElement.querySelector('[data-paste-data-base]')
 
 		// прослушка кнопки гамбургера
 		headerMenuElement.addEventListener('click', () => {
@@ -147,6 +149,44 @@ export default class DefaultPage extends PageHandler {
 			
 			LocalStorage.logout()
 			Router.changePreviousPage( page, 'login')
+		})
+
+		// вставить базу данных
+		pasteBaseElement.addEventListener('click', () => {
+			const wrapperElement = document.createElement('div')
+			wrapperElement.style = 'position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-color: rgba(58,58,58,.9); z-index: 999;'
+			const inputElement = document.createElement('input')
+			inputElement.style = 'position: absolute; top: 50px; left: 10%; height: 40px; width: 80%;'
+			inputElement.placeholder = 'вставить скопированную базу сюда'
+			wrapperElement.append(inputElement)
+			document.body.append(wrapperElement)
+
+			inputElement.addEventListener('input', () => {
+				try {
+					const base = JSON.parse(inputElement.value)
+					
+					if (typeof base === 'object') {
+						
+						LocalStorage.save(base)
+						
+						setTimeout(() => {
+							Router.loadPage({page: 'weeksList'})
+						}, 1500)
+
+						alert('данные обновлены')
+						// localStorage.setItem('bella-calculator', inputElement.value)
+					}
+				}
+				catch(err) {
+					console.log('ошибка', err)
+					alert('неправильный формат данных')
+				}
+				finally {
+					wrapperElement.parentNode.removeChild(wrapperElement)
+					
+				}
+				
+			})
 		})
 
 	}

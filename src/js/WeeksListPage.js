@@ -9,12 +9,39 @@ export default class WeeksListPage extends DefaultPage {
 		this.renderWeekListPage(args)
 	}
 
+	// renderWeekListPage(args) {
+	// 	super.createHeader(args)
+	// 	this.addForm(args)
+	// 	super.addCreateButton({ text: 'Добавить неделю', ...args })
+	// 	this.addFieldList(args)
+	// 	this.showFooterValues()
+	// }
+
 	renderWeekListPage(args) {
-		super.createHeader(args)
-		this.addForm(args)
-		super.addCreateButton({ text: 'Добавить неделю', ...args })
-		this.addFieldList(args)
-		this.showFooterValues()
+		// почта залогинившегося пользователя
+		const userEmail = window.userEmail
+		// каждый раз при загрузке стартовой страницы обновляем из облака
+		fetch('assets/php/dataRead.php', {
+			method: 'post', 
+			body: JSON.stringify({userEmail}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		})
+		.then(response => response.json())
+		.then(result => {
+			// полученные данные сначала сохраняем в локальное хранилище
+			localStorage.setItem('bella-calculator', JSON.stringify(result))
+		})
+		.then(() => {
+			// только после загрузки данных из облака в локальное хранилище начинаем отрисовку страницы
+			super.createHeader(args)
+			this.addForm(args)
+			super.addCreateButton({ text: 'Добавить неделю', ...args })
+			this.addFieldList(args)
+			this.showFooterValues()
+		})
+
 	}
 
 	addForm (args) {
