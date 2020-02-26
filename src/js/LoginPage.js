@@ -1,6 +1,6 @@
 import LocalStorage from './LocalStorage'
 import Router from './Router'
-import BrigadeBalanceList from './BrigadeBalanceListPage'
+// import BrigadeBalanceList from './BrigadeBalanceListPage'
 
 export default class LoginPage {
 
@@ -15,7 +15,9 @@ export default class LoginPage {
 			window.userEmail = checkObj.userEmail
 			window.userPassword = checkObj.userPassword
 
-			Router.openFirstPage({page: 'weeksList'})
+			// обновление данных в localStorage и загрузка страницы с неделями
+			this.loadDataFromDB()
+			// Router.openFirstPage({page: 'weeksList'})
 				
 		} else {
 			const currentPageElement = document.querySelector(`[data-page="login"]`)
@@ -23,6 +25,48 @@ export default class LoginPage {
 			this.renderLoginPage()
 			this.listenLoginPage()
 		}
+	}
+
+	// показать сообщение о загрузке страницы
+	preloader() {
+		// если сообщения нет, то создаём его
+		if ( !this.icon) {
+			this.icon = document.createElement('div')
+			this.icon.style = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);'
+			this.icon.textContent = 'Загрузка...'
+			document.body.append(this.icon)
+		}
+		// если сообщение есть, то удаляем
+		else if (this.icon) {
+			this.icon.parentNode.removeChild(this.icon)
+		}
+	}
+
+	// загрузка данных из облака
+	loadDataFromDB () {
+		// почта залогинившегося пользователя
+		const userEmail = window.userEmail
+		// показать сообщение о загрузке
+		this.preloader()
+		// каждый раз при обновлении страницы обновляем из облака
+		fetch('assets/php/dataRead.php', {
+			method: 'post', 
+			body: JSON.stringify({userEmail}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		})
+		.then(response => response.json())
+		.then(result => {
+			// полученные данные сначала сохраняем в локальное хранилище
+			localStorage.setItem('bella-calculator', JSON.stringify(result))
+		})
+		.then(() => {
+			// убрать сообщение о загрузке
+			this.preloader()
+			// только после загрузки данных из облака в локальное хранилище начинаем отрисовку страницы
+			Router.openFirstPage({page: 'weeksList'})
+		})
 	}
 
 	// отрисовываем страницу входа
@@ -64,6 +108,8 @@ export default class LoginPage {
 
 		loginButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
+			// проверяем не нажали ли ещё кнопку
+			if (this.busyButton) return
 
 			// проверяем корректность email
 			const userEmail = LoginPage.validate(loginEmailElement)
@@ -81,6 +127,11 @@ export default class LoginPage {
 
 			// const userObj = {userEmail, userPassword}
 			// console.log(userObj)
+
+			// если нажали на кнопку - сообщаем пользователю
+			loginButtonElement.textContent = 'Загрузка...'
+			// и блокируем дальнейшия нажатия в ожидании ответа
+			this.busyButton = true
 			;(async () => {
 				try {
 					let response = await fetch('assets/php/login.php', {
@@ -92,6 +143,14 @@ export default class LoginPage {
 					})
 					
 					let result = await response.json()
+
+					// когда получили ответ
+					if (result) {
+						// разблокируем кнопку
+						loginButtonElement.textContent = 'Войти'
+						this.busyButton = false
+					}
+
 					// проверяем результаты запроса
 					if (result === 'wrong password') {
 						LoginPage.showInputError(loginPasswordElement, 'Пароль введён неверно')
