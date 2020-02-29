@@ -22,7 +22,7 @@ $userEmail = $data -> {'userEmail'};
 $userData = $data -> {'userData'};
 
 
-$query = "UPDATE `users` SET `data` = '" . mysqli_real_escape_string($link, $userData) . "' WHERE `mail` = '" . $userEmail . "' LIMIT 1 ";
+$query = "UPDATE `users` SET `data` = '" . mysqli_real_escape_string($link, $userData) . "' WHERE `mail` = '" . mysqli_real_escape_string($link, $userEmail) . "' LIMIT 1 ";
 $result = mysqli_query($link, $query);
 // если запрос удачный, отправляем ответ
 if ($result) {

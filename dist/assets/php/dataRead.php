@@ -7,7 +7,7 @@ $incoming = file_get_contents('php://input');
 $user = json_decode($incoming);
 $userEmail = $user -> {'userEmail'};
 
-$query = "SELECT * FROM `users` WHERE `mail` = '" . $userEmail . "'";
+$query = "SELECT * FROM `users` WHERE `mail` = '" . mysqli_real_escape_string($link, $userEmail) . "'";
 
 if ( $result = mysqli_query($link, $query) ) {
 	$row = mysqli_fetch_array($result);
