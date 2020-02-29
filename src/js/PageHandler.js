@@ -95,7 +95,7 @@ export default class PageHandler {
 		for (let i = 0; i < inputsList.length; i++) {
 
 			// если инпут пустой - отмена
-			const fieldIsEmpty = this.showError(inputsList[i], inputsList[i].value, '')
+			const fieldIsEmpty = this.showError(inputsList[i], inputsList[i].value)
 			if (fieldIsEmpty) {
 				checkFieldEmpty *= 0
 				// продолжаем цикл чтобы проверить все поля
@@ -190,7 +190,7 @@ export default class PageHandler {
 	addSingleOperationHandler (inputOperationElement, operationValue, workerName, weekNumber) {
 
 		// Если ничего не введено, то предупреждаем пользователя
-		const ifEmpty = this.showError(inputOperationElement, operationValue, '')
+		const ifEmpty = this.showError(inputOperationElement, operationValue)
 		if (ifEmpty) return
 		
 		const newItemValues = {
@@ -220,9 +220,10 @@ export default class PageHandler {
 
 	// показать, что инпут пустой
 	// 
-	showError (element, currentValue, falseValue) {
-		
-		if (currentValue == falseValue) {
+	showError (element, currentValue) {
+		const regular = /[\\!@#$%^&*()_"']/;
+		// проверка на заполненность поля и на запрещённые знаки
+		if (currentValue == "" || regular.test(currentValue)) {
 			element.classList.add('warning-input')
 			setTimeout(() => {
 				element.classList.remove('warning-input')

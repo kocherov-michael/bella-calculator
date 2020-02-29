@@ -58,8 +58,9 @@ export default class LoginPage {
 		})
 		.then(response => response.json())
 		.then(result => {
-			// полученные данные сначала сохраняем в локальное хранилище
-			localStorage.setItem('bella-calculator', JSON.stringify(result))
+			
+			// полученные данные сначала сохраняем в локальное хранилище, профильтровав корзину от старых элементов
+			LocalStorage.checkTrashcanAndSave(result)
 		})
 		.then(() => {
 			// убрать сообщение о загрузке

@@ -15,7 +15,7 @@ export default class GarbageListPage extends DefaultPage {
 		const {page, workerName, weekNumber, previousAttr} = args
 		super.createHeader(args)
 		super.createHeaderBackArrow(page, previousAttr, weekNumber, workerName)
-		super.showHeaderName(page, workerName, weekNumber)
+		this.showHeaderName()
 		this.addForm()
 		this.addFieldList()
 	}
@@ -167,5 +167,12 @@ export default class GarbageListPage extends DefaultPage {
 
 		cancelButtonElement.addEventListener('click', this.closeForm.bind(this))
 		closeIconElement.addEventListener('click', this.closeForm.bind(this))
+	}
+
+	// показать название страницы в шапке
+	showHeaderName () {
+		const headerTextElement = document.querySelector(`[data-header-text="${this.page}"]`)
+
+		headerTextElement.textContent = 'Корзина'
 	}
 }

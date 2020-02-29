@@ -670,6 +670,22 @@ export default class LocalStorage {
 		}
 	}
 
+	// проверить на старость удалённых элементов, отфильтровать и сохранить
+	static checkTrashcanAndSave (dataObj) {
+		// миллисекунды сейчас
+		const now = new Date().getTime()
+		// обходим удаённые элементы в обратном порядке, чтобы при удалении текущего элемента не изменядлся индекс у ещё не пройденных
+		for (let i = dataObj.removedElements.length - 1; i >= 0; i--) {
+			// удаляем элементы старше недели, либо у которых дата создания не указана
+			if (!dataObj.removedElements[i].ms || ((now - dataObj.removedElements[i].ms) > 604800000)) {
+				dataObj.removedElements.splice(i, 1)
+			}
+		}
+		// сохраняем объект с отфильтрованной корзиной в localStorage
+		localStorage.setItem('bella-calculator', JSON.stringify(dataObj))
+
+	}
+
 	// получить вес всех предыдущих недель работника
 	// или вес всех недель, если конкретная неделя не указана
 	static getWeightPreviousWeekItems(workerName, weekNumber) {
