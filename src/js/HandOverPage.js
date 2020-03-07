@@ -153,7 +153,7 @@ export default class HandOverPage extends DefaultPage {
 			// цепь - правда или браслет - ложь
 			const isChain = Boolean(+lengthSelectElement.value)
 			// цена на цепь либо браслет
-			const price = (isChain ? chain : bracelet) * count
+			const price = Math.round((isChain ? chain : bracelet) * count * 10) / 10
 
 			// создаём объект для записи в память сдачи
 			const handOverObj = {

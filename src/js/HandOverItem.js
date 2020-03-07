@@ -43,7 +43,7 @@ export default class HandOverItem {
 
 		<div class="item__lower">
 			<span>Сумма:</span>
-			<span>${args.price}</span>&nbsp;
+			<span>${Math.round(args.price * 10) / 10}</span>&nbsp;
 			<span>руб</span>
 		</div>`
 

@@ -760,6 +760,8 @@ export default class LocalStorage {
 			weekWeight -= round(oneWeekObj.workerWeekHandOver[i].weightWithPercent)
 			weekSalary += round(oneWeekObj.workerWeekHandOver[i].price)
 		}
+
+		weekSalary = Math.round(weekSalary * 10) / 10
 		
 		// бонус за неделю
 		let bonus = 0
@@ -802,7 +804,10 @@ export default class LocalStorage {
 
 			}
 		}
-		return {workersWeekHandOverWeight, workersWeekSalary}
+		return {
+			workersWeekHandOverWeight: Math.round(workersWeekHandOverWeight * 1000) / 1000, 
+			workersWeekSalary: Math.round(workersWeekSalary * 10) / 10
+		}
 	}
 
 	// получаем остаток предыдущих недель для бригады
