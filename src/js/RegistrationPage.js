@@ -34,6 +34,18 @@ export default class RegistrationPage {
 	<button class="start-form__registration login-button login-button_color_secondary" data-login-button>Войти</button>`
 	}
 
+	// показать прелоадер загрузки страницы
+	preloaderShow () {
+		const wrapperElement = document.querySelector('[data-wrapper]')
+		wrapperElement.classList.add('wrapper--show-load')	
+	}
+
+	// скрыть прелоадер
+	preloaderHide () {
+		const wrapperElement = document.querySelector('[data-wrapper]')
+		wrapperElement.classList.remove('wrapper--show-load')
+	}
+
 	listenLoginPage () {
 		const currentPageElement = document.querySelector(`[data-page="${this.page}"]`)
 		const registrationButtonElement = currentPageElement.querySelector(`[data-registration-button]`)
@@ -56,6 +68,9 @@ export default class RegistrationPage {
 			}
 			
 			const userObj = {userEmail, userPassword}
+
+			// показываем сообщение о загрузке
+			this.preloaderShow()
 			
 			fetch('assets/php/registration.php', {
 				method: 'post', 
@@ -75,6 +90,9 @@ export default class RegistrationPage {
 					
 					else if (result === 'success') {
 						const result = LocalStorage.registerUser(userObj)
+
+						// убираем сообщение о загрузке
+						this.preloaderHide()
 						
 						Router.changeNextPage({
 							currentPageAttr: 'registration', 

@@ -27,19 +27,16 @@ export default class LoginPage {
 		}
 	}
 
-	// показать сообщение о загрузке страницы
-	preloader() {
-		// если сообщения нет, то создаём его
-		if ( !this.icon) {
-			this.icon = document.createElement('div')
-			this.icon.style = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);'
-			this.icon.textContent = 'Загрузка...'
-			document.body.append(this.icon)
-		}
-		// если сообщение есть, то удаляем
-		else if (this.icon) {
-			this.icon.parentNode.removeChild(this.icon)
-		}
+	// показать прелоадер загрузки страницы
+	preloaderShow () {
+		const wrapperElement = document.querySelector('[data-wrapper]')
+		wrapperElement.classList.add('wrapper--show-load')	
+	}
+
+	// скрыть прелоадер
+	preloaderHide () {
+		const wrapperElement = document.querySelector('[data-wrapper]')
+		wrapperElement.classList.remove('wrapper--show-load')
 	}
 
 	// загрузка данных из облака
@@ -47,7 +44,7 @@ export default class LoginPage {
 		// почта залогинившегося пользователя
 		const userEmail = window.userEmail
 		// показать сообщение о загрузке
-		this.preloader()
+		this.preloaderShow()
 		// каждый раз при обновлении страницы обновляем из облака
 		fetch('assets/php/dataRead.php', {
 			method: 'post', 
@@ -64,7 +61,7 @@ export default class LoginPage {
 		})
 		.then(() => {
 			// убрать сообщение о загрузке
-			this.preloader()
+			this.preloaderHide()
 			// только после загрузки данных из облака в локальное хранилище начинаем отрисовку страницы
 			Router.openFirstPage({page: 'weeksList'})
 		})
@@ -109,8 +106,6 @@ export default class LoginPage {
 
 		loginButtonElement.addEventListener('click', (event) => {
 			event.preventDefault()
-			// проверяем не нажали ли ещё кнопку
-			if (this.busyButton) return
 
 			// проверяем корректность email
 			const userEmail = LoginPage.validate(loginEmailElement)
@@ -130,9 +125,9 @@ export default class LoginPage {
 			// console.log(userObj)
 
 			// если нажали на кнопку - сообщаем пользователю
-			loginButtonElement.textContent = 'Загрузка...'
-			// и блокируем дальнейшия нажатия в ожидании ответа
-			this.busyButton = true
+			this.preloaderShow()
+
+			// отправляем запрос на проверку логина
 			;(async () => {
 				try {
 					let response = await fetch('assets/php/login.php', {
@@ -147,9 +142,8 @@ export default class LoginPage {
 
 					// когда получили ответ
 					if (result) {
-						// разблокируем кнопку
-						loginButtonElement.textContent = 'Войти'
-						this.busyButton = false
+						// убираем анимацию загрузки
+						this.preloaderHide()
 					}
 
 					// проверяем результаты запроса
@@ -204,57 +198,6 @@ export default class LoginPage {
 				}
 			})()
 				
-				
-
-			// fetch('assets/php/login.php', {
-			// 	method: 'post', 
-			// 	body: JSON.stringify({userEmail, userPassword}),
-			// 	headers: {
-			// 		'content-type': 'application/json'
-			// 	}
-			// })
-			// 	// .then(response => response.text())
-			// 	// .then(text => console.log(text))
-			// 	.then(response => {response.json()})
-			// 	.then(result => {
-			// 		console.log(result)
-
-					
-			// 		// проверяем результаты запроса
-			// 		if (result === 'wrong password') {
-			// 			LoginPage.showInputError(loginPasswordElement, 'Пароль введён неверно')
-			// 		} 
-
-			// 		else if (result === 'wrong email') {
-			// 			LoginPage.showInputError(loginEmailElement, 'Данная почта не зарегистрирована')
-			// 		}
-
-			// 		else if (!result.trim()){
-			// 			// если данные у пользователя пустая строка
-			// 			LocalStorage.login({userEmail, userPassword})
-			// 			Router.changeNextPage({
-			// 				currentPageAttr: 'login', 
-			// 				nextPageAttr: 'weeksList', 
-			// 				weekNumber: ''
-			// 			})
-			// 		}
-
-			// 		else if ( JSON.parse(result) instanceof Object) {
-						
-			// 			LocalStorage.login({userEmail, userPassword})
-			// 			LocalStorage.save(JSON.parse(result))
-
-			// 			Router.changeNextPage({
-			// 				currentPageAttr: 'login', 
-			// 				nextPageAttr: 'weeksList', 
-			// 				weekNumber: ''
-			// 			})
-			// 		} 
-
-			// 		else  {
-			// 			console.log('непредвиденная ошибка')
-			// 		}
-			// 	})
 		})
 
 		forgotButtonElement.addEventListener('click', (event) => {
