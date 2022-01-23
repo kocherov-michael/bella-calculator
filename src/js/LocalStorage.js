@@ -1,15 +1,19 @@
+let cacheDataObj = null
 export default class LocalStorage {
 	constructor (args = {}) {
 
 	}
 
 	static read () {
-		const dataObj = JSON.parse(localStorage.getItem('bella-calculator')) || {}
-
-		return dataObj
+		if (cacheDataObj) {
+			return cacheDataObj
+		} else {
+			return JSON.parse(localStorage.getItem('bella-calculator')) || {}
+		}
 	}
 
 	static save(dataObj) {
+		cacheDataObj = dataObj
 		localStorage.setItem('bella-calculator', JSON.stringify(dataObj))
 	}
 
@@ -45,6 +49,28 @@ export default class LocalStorage {
 		} else {
 			dataObj.fontSize = dataObj.fontSize || 18
 			return dataObj.fontSize
+		}
+	}
+
+	// установить либо получить fontSize
+	static weekNorm (norm) {
+		const dataObj = LocalStorage.read() || {}
+		if (norm) {
+			dataObj.weekNorm = norm
+			LocalStorage.save(dataObj)
+		} else {
+			return +dataObj.weekNorm || 7500
+		}
+	}
+
+	// установить либо получить размер бонуса
+	static bonusSize (size) {
+		const dataObj = LocalStorage.read() || {}
+		if (size) {
+			dataObj.bonusSize = size
+			LocalStorage.save(dataObj)
+		} else {
+			return +dataObj.bonusSize || 20
 		}
 	}
 
@@ -622,6 +648,9 @@ export default class LocalStorage {
 		let summWeight = 0
 		// и для бонуса
 		let summBonus = 0
+
+		const weekNorm = LocalStorage.weekNorm()
+		const bonusSize = LocalStorage.bonusSize()
 		
 		// обходим все недели, ищем в них работника по имени
 		for (let i = 0; i < dataObj.weeks.length; i++) {
@@ -651,8 +680,12 @@ export default class LocalStorage {
 					}
 
 					let bonus = 0
-					if (weekSalary > 6600) {
-						bonus = Math.round((weekSalary - 6600) * 2) / 10
+					if (weekSalary > weekNorm) {
+						try {
+							bonus = Math.round(((weekSalary - weekNorm) * bonusSize) / 10) / 10
+						} catch(e) {
+							console.log(e)
+						}
 					}
 
 					summBonus += bonus
@@ -688,8 +721,14 @@ export default class LocalStorage {
 		
 		// бонус за неделю
 		let bonus = 0
-		if (weekSalary > 6600) {
-			bonus = Math.round((weekSalary - 6600) * 2) / 10
+		const weekNorm = LocalStorage.weekNorm()
+		const bonusSize = LocalStorage.bonusSize()
+		if (weekSalary > weekNorm) {
+			try {
+				bonus = Math.round(((weekSalary - weekNorm) * bonusSize) / 10) / 10
+			} catch(e) {
+				console.log(e)
+			}
 		}
 
 		// вес с предыдущих недель

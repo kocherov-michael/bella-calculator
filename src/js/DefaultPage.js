@@ -19,13 +19,16 @@ export default class DefaultPage extends PageHandler {
 		const fontSize = LocalStorage.fontSize()
 		document.body.style = `font-size: ${fontSize}px`
 
-		for (let size = 10; size <= 20; size += 2 ) {
+		for (let size = 8; size <= 20; size += 2 ) {
 			let selected = ''
 			if ( size == fontSize ) {
 				selected = 'selected'
 			}
 			optionTemplate += `<option class="option" value="${size}" ${selected}>${size}</option>`
 		}
+
+		const weekNorm = LocalStorage.weekNorm()
+		const bonusSize = LocalStorage.bonusSize()
 		
 		headerElement.innerHTML = ''
 		headerElement.innerHTML = 
@@ -43,6 +46,14 @@ export default class DefaultPage extends PageHandler {
 					${optionTemplate}
 				</select>
 				<div class="font-select__text">Размер шрифта</div>
+			</label>
+			<label class="menu__item menu__item--input">
+				<input class="menu__input" type="number" value="${weekNorm}" data-week-norm>
+				<div class="font-select__text">Недельная норма</div>
+			</label>
+			<label class="menu__item menu__item--input">
+				<input class="menu__input" type="number" value="${bonusSize}" data-bonus-size>
+				<div class="font-select__text">Размер бонуса ( % )</div>
 			</label>
 			<button class="menu__item" data-next="quotation" data-quotation-link="${page}">Котировки</button>
 			<button class="menu__item" data-next="weavingList"
@@ -69,6 +80,8 @@ export default class DefaultPage extends PageHandler {
 		const garbageLinkElement = sectionElement.querySelector('[data-garbage-link]')
 		const brigadierCheckBoxElement = sectionElement.querySelector('[data-check-brigadier]')
 		const fontSizeElement = sectionElement.querySelector('[data-font-size]')
+		const weekNormElement = sectionElement.querySelector('[data-week-norm]')
+		const bonusSizeElement = sectionElement.querySelector('[data-bonus-size]')
 		const copyBaseElement = sectionElement.querySelector('[data-copy-base]')
 
 		// прослушка кнопки гамбургера
@@ -136,6 +149,16 @@ export default class DefaultPage extends PageHandler {
 		fontSizeElement.addEventListener('change', () => {
 			document.body.style = `font-size: ${fontSizeElement.value}px`
 			LocalStorage.fontSize(fontSizeElement.value)
+		})
+
+		// input недельной нормы
+		weekNormElement.addEventListener('change', (e) => {
+			LocalStorage.weekNorm(e.target.value)
+		})
+
+		// input размера бонуса
+		bonusSizeElement.addEventListener('change', (e) => {
+			LocalStorage.bonusSize(e.target.value)
 		})
 
 		// копируем базу данных

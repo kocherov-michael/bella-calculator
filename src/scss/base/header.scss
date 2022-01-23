@@ -46,8 +46,7 @@
 
 	&__line {
 		width: 14px;
-		border-top: 1px solid $border-menu;
-		border-bottom: 1px solid $border-menu;
+		border-top: 2px solid $border-menu;
 		transition: all .4s ease;
 	}
 	&:before {
